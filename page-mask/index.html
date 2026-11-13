@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="zh-CN" data-title-zh="PageMask · 收起网页上不想看的部分" data-title-en="PageMask · Hide the parts of a page you don't want" data-desc-zh="PageMask 是一个 Chrome 扩展：在你主动添加的网站上，点选不想看的元素把它们收起来，标签页标题和图标也能一起变低调。数据只存在你的浏览器里。" data-desc-en="PageMask is a Chrome extension: on sites you add yourself, click the parts of a page you don't want and they're gone — and the tab goes low-key too. Your data stays in your browser.">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="PageMask 是一个 Chrome 扩展：在你主动添加的网站上，点选不想看的元素把它们收起来，标签页标题和图标也能一起变低调。数据只存在你的浏览器里。">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
+<title>PageMask · 收起网页上不想看的部分</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpath d='M6 13.5C6 11.1 7.9 9.3 10.3 9.3h11.4c2.4 0 4.3 1.8 4.3 4.2 0 5.6-4.5 9.5-10 9.5S6 19.1 6 13.5Z' fill='%23fff'/%3E%3Cellipse cx='11.4' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3Cellipse cx='20.6' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3C/svg%3E">
+<script>
+/* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文） */
+(function () {
+  'use strict';
+  var lang = null;
+  try { lang = localStorage.getItem('pagemask-landing-lang'); } catch (e) {}
+  if (lang === 'en') {
+    document.documentElement.classList.add('lang-en');
+    document.documentElement.lang = 'en';
+  }
+})();
+</script>
+<style>
+/* ── 色彩：与扩展 styles/tokens.css 同一套明暗两档（bg / bg-subtle / fg / muted / accent / border）。
+   结构按 modern-web-guidance「dark-mode」：原始色值 → 语义变量默认浅色 →
+   @media prefers-color-scheme 兜底（不支持 light-dark() 的浏览器）→ @supports light-dark()。
+   对比度沿用 tokens.css 已实测的组合：fg/bg 15.78·12.75，muted/bg 4.83·5.98，
+   accent/bg 5.17·7.68，border-control/bg 3.25·4.13（正文 ≥4.5，控件边界 ≥3）。 ── */
+:root {
+  color-scheme: light dark;
+
+  /* 原始色值 */
+  --accent-l: #2563eb;        --accent-d: #93b4ff;
+  --accent-hover-l: #1d4ed8;  --accent-hover-d: #b4cbff;
+  --accent-active-l: #1e40af; --accent-active-d: #c9dbff;
+  --on-accent-l: #ffffff;     --on-accent-d: #1f2329;
+  --fg-l: #1f2329;            --fg-d: #e5e7eb;
+  --muted-l: #6b7280;         --muted-d: #9aa0a6;
+  --bg-l: #ffffff;            --bg-d: #1f2329;
+  --bg-subtle-l: #f6f7f9;     --bg-subtle-d: #2a2e35;
+  --control-hover-l: #eef0f3; --control-hover-d: #23262c;
+  --control-active-l: #e4e7eb;--control-active-d: #1d2025;
+  --bg-selected-l: #bcc1c8;   --bg-selected-d: #303743;
+  --border-l: #d1d5db;        --border-d: #3f444c;
+  --border-control-l: #8a8f98;--border-control-d: #7d838c;
+
+  /* 语义变量（默认浅色） */
+  --accent: var(--accent-l);
+  --accent-hover: var(--accent-hover-l);
+  --accent-active: var(--accent-active-l);
+  --on-accent: var(--on-accent-l);
+  --fg: var(--fg-l);
+  --muted: var(--muted-l);
+  --bg: var(--bg-l);
+  --bg-subtle: var(--bg-subtle-l);
+  --control-hover: var(--control-hover-l);
+  --control-active: var(--control-active-l);
+  --bg-selected: var(--bg-selected-l);
+  --border: var(--border-l);
+  --border-control: var(--border-control-l);
+
+  /* 动效：只动颜色类属性，150ms（design-ui §九）；reduced-motion 降到 120ms */
+  --motion: 150ms;
+  --ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --radius: 8px;
+  --radius-card: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: var(--accent-d);
+    --accent-hover: var(--accent-hover-d);
+    --accent-active: var(--accent-active-d);
+    --on-accent: var(--on-accent-d);
+    --fg: var(--fg-d);
+    --muted: var(--muted-d);
+    --bg: var(--bg-d);
+    --bg-subtle: var(--bg-subtle-d);
+    --control-hover: var(--control-hover-d);
+    --control-active: var(--control-active-d);
+    --bg-selected: var(--bg-selected-d);
+    --border: var(--border-d);
+    --border-control: var(--border-control-d);
+  }
+}
+@supports (color: light-dark(#fff, #000)) {
+  :root {
+    --accent: light-dark(var(--accent-l), var(--accent-d));
+    --accent-hover: light-dark(var(--accent-hover-l), var(--accent-hover-d));
+    --accent-active: light-dark(var(--accent-active-l), var(--accent-active-d));
+    --on-accent: light-dark(var(--on-accent-l), var(--on-accent-d));
+    --fg: light-dark(var(--fg-l), var(--fg-d));
+    --muted: light-dark(var(--muted-l), var(--muted-d));
+    --bg: light-dark(var(--bg-l), var(--bg-d));
+    --bg-subtle: light-dark(var(--bg-subtle-l), var(--bg-subtle-d));
+    --control-hover: light-dark(var(--control-hover-l), var(--control-hover-d));
+    --control-active: light-dark(var(--control-active-l), var(--control-active-d));
+    --bg-selected: light-dark(var(--bg-selected-l), var(--bg-selected-d));
+    --border: light-dark(var(--border-l), var(--border-d));
+    --border-control: light-dark(var(--border-control-l), var(--border-control-d));
+  }
+}
+@media (forced-colors: active) {
+  :root {
+    --accent: Highlight;
+    --accent-hover: Highlight;
+    --accent-active: Highlight;
+    --on-accent: HighlightText;
+    --fg: CanvasText;
+    --muted: CanvasText;
+    --bg: Canvas;
+    --bg-subtle: Canvas;
+    --control-hover: Canvas;
+    --control-active: Canvas;
+    --bg-selected: Canvas;
+    --border: CanvasText;
+    --border-control: CanvasText;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion: 120ms; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ── 基础 ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+h1, h2, h3, p, ul, ol { margin: 0; }
+svg { display: block; }
+main:focus { outline: none; }
+.container { max-width: 960px; margin-inline: auto; padding-inline: 20px; }
+
+/* ── 双语切换：无 JS 时默认显示中文；html.lang-en 时显示英文 ── */
+html:not(.lang-en) body [lang="en"] { display: none; }
+html.lang-en body [lang="zh-CN"] { display: none; }
+
+/* ── 焦点可见 ── */
+:where(a, button, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* 状态切换只动颜色类属性 */
+a, button, summary {
+  transition:
+    color var(--motion) var(--ease),
+    background-color var(--motion) var(--ease),
+    border-color var(--motion) var(--ease);
+}
+
+/* ── 跳转链接（skip link）：默认视觉隐藏，键盘聚焦时出现 ── */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── 页头 ── */
+.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.site-header .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  padding-block: 12px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+.brand svg { width: 26px; height: 26px; color: var(--accent); }
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav a {
+  display: inline-block;
+  padding: 6px 2px;
+  font-size: 15px;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: 4px;
+}
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lang-group {
+  display: inline-flex;
+  gap: 4px;
+  margin-inline-start: auto;
+  padding: 3px;
+  border: 1px solid var(--border-control);
+  border-radius: 999px;
+}
+.lang-group button {
+  min-height: 30px;
+  padding: 3px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lang-group button:hover { color: var(--fg); }
+.lang-group button[aria-pressed="true"] { background: var(--bg-selected); color: var(--fg); }
+
+/* ── 按钮：主操作实心强调色，次操作浅底 + 控件色边框（一屏最多一个主操作） ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:active { background: var(--accent-active); }
+.btn-secondary { background: var(--bg); color: var(--fg); border-color: var(--border-control); }
+.btn-secondary:hover { background: var(--control-hover); }
+.btn-secondary:active { background: var(--control-active); }
+
+/* 正文里的链接：强调色 + 常驻下划线 */
+.text-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.text-link:hover { color: var(--accent-hover); }
+.text-link:active { color: var(--accent-active); }
+/* 独立摆放的文字入口（不嵌在句子里）：补上下内边距，可点区 ≥24px（WCAG 2.5.8；
+   句子里的行内链接按其「inline」例外豁免） */
+.link-standalone { display: inline-block; padding: 4px 0; }
+
+/* ── 区块 ── */
+.section { padding-block: 64px; }
+.section.band { background: var(--bg-subtle); }
+.section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.section-intro {
+  margin-top: 10px;
+  max-width: 62ch;
+  color: var(--muted);
+}
+
+/* ── 首屏 ── */
+.hero { padding-block: 84px 72px; text-align: center; }
+.hero h1 {
+  font-size: clamp(34px, 5vw, 44px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.hero .lede {
+  max-width: 36em;
+  margin: 18px auto 0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+.trust {
+  max-width: 44em;
+  margin: 20px auto 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── 卡片 ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+.card {
+  padding: 24px 22px;
+  border-radius: var(--radius-card);
+  background: var(--bg-subtle);
+}
+.band .card { background: var(--bg); }
+.card .card-icon { width: 30px; height: 30px; color: var(--accent); }
+.card h3 { margin-top: 14px; font-size: 17px; font-weight: 600; line-height: 1.4; }
+.card p { margin-top: 8px; }
+
+/* ── 三步 ── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;
+}
+.steps li {
+  padding: 20px 22px;
+  border-radius: var(--radius-card);
+  background: var(--bg-subtle);
+}
+.step-no {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+.steps p { margin-top: 12px; }
+
+/* ── 安装 ── */
+.install-list { margin-top: 20px; padding-inline-start: 24px; }
+.install-list li { margin-block: 8px; }
+.note {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+  font-size: 15px;
+}
+.install-cta { margin-top: 24px; }
+
+/* ── 常见问题：details 手风琴（按 modern-web-guidance「accordion」，非互斥，summary 内不放标题） ── */
+.faq-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+.faq-list details {
+  background: var(--bg);
+  border: 1px solid var(--border-control);
+  border-radius: 10px;
+}
+.faq-list summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+  padding: 14px 16px;
+  border-radius: 9px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary:hover { background: var(--control-hover); }
+.faq-list .chev { width: 16px; height: 16px; flex: none; color: var(--muted); }
+.faq-list details[open] .chev { transform: rotate(180deg); }
+.faq-a { padding: 0 16px 16px 44px; }
+
+/* ── 页脚 ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding-block: 28px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+}
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer a:hover { color: var(--fg); }
+
+/* ── 响应式：360px 起单列 ── */
+@media (max-width: 719px) {
+  .section { padding-block: 48px; }
+  .hero { padding-block: 56px 48px; }
+  .card-grid, .point-grid, .steps { grid-template-columns: 1fr; }
+  .faq-a { padding-left: 16px; }
+}
+@media (max-width: 479px) {
+  .site-header .container { gap: 8px 16px; }
+  .lang-group { margin-inline-start: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main"><span lang="zh-CN">跳到主要内容</span><span lang="en">Skip to main content</span></a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5C3 7.5 4.6 6 6.6 6h10.8c2 0 3.6 1.5 3.6 3.5 0 4.8-4.2 8.3-9 8.3S3 14.3 3 9.5Z"/>
+        <ellipse cx="8.1" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+        <ellipse cx="15.9" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>PageMask</span>
+    </a>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="#features"><span lang="zh-CN">功能</span><span lang="en">Features</span></a></li>
+        <li><a href="#how"><span lang="zh-CN">怎么用</span><span lang="en">How it works</span></a></li>
+        <li><a href="#install"><span lang="zh-CN">安装</span><span lang="en">Install</span></a></li>
+        <li><a href="#privacy"><span lang="zh-CN">隐私</span><span lang="en">Privacy</span></a></li>
+        <li><a href="#faq"><span lang="zh-CN">常见问题</span><span lang="en">FAQ</span></a></li>
+      </ul>
+    </nav>
+    <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
+      <button type="button" id="lang-zh" aria-pressed="true">中文</button>
+      <button type="button" id="lang-en" aria-pressed="false">English</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <section class="hero">
+    <div class="container">
+      <h1>PageMask</h1>
+      <p class="lede">
+        <span lang="zh-CN">收起网页上不想看的部分——在你主动添加的网站上，点选元素把它们收起来；标签页的标题和图标也能一起变低调。不用学任何代码，鼠标点选就行。</span>
+        <span lang="en">Hide the parts of a page you don't want. On sites you add yourself, click the elements and they're gone — and the tab title and icon go low-key too. Nothing to learn: point, click, done.</span>
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://github.com/cherishfall/page-mask/releases/latest"><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></a>
+        <a class="btn btn-secondary" href="https://github.com/cherishfall/page-mask"><span lang="zh-CN">GitHub 仓库</span><span lang="en">View on GitHub</span></a>
+      </div>
+      <p class="trust">
+        <span lang="zh-CN">数据只存在你的浏览器里：没有账号、没有遥测、不上传任何东西。</span>
+        <span lang="en">Your data stays in your browser: no account, no telemetry, nothing gets uploaded.</span>
+      </p>
+    </div>
+  </section>
+
+  <section id="features" class="section band">
+    <div class="container">
+      <h2><span lang="zh-CN">功能</span><span lang="en">Features</span></h2>
+      <div class="card-grid">
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9.5C3 7.5 4.6 6 6.6 6h10.8c2 0 3.6 1.5 3.6 3.5 0 4.8-4.2 8.3-9 8.3S3 14.3 3 9.5Z"/>
+            <ellipse cx="8.1" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+            <ellipse cx="15.9" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3><span lang="zh-CN">收起的内容</span><span lang="en">Hidden items</span></h3>
+          <p>
+            <span lang="zh-CN">在网页上点选不想看的部分——推广位、推荐流、侧栏、页脚都可以。三种收起方式：「消失」让下面的内容往上顶，「留空」看不见但位置还占着，「盖住」不改动网站自身的样式，任何网站都可用。选中一次，整个网站都照它办；可以逐条删除，删错 5 秒内可撤销。</span>
+            <span lang="en">Pick the parts of a page you don't want — promos, feeds, sidebars, footers. Three ways to hide: "Disappear" moves the content below up, "Keep space" leaves the slot empty, "Cover" works on any site without touching the site's own styles. One pick covers the whole site; delete items one by one, and a deletion can be undone within 5 seconds.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4.5" width="18" height="15" rx="2"/>
+            <path d="M3 9h18"/>
+            <circle cx="6.4" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+            <path d="M9.8 6.8h6.4"/>
+          </svg>
+          <h3><span lang="zh-CN">标签页标题和图标</span><span lang="en">Tab title &amp; icon</span></h3>
+          <p>
+            <span lang="zh-CN">把标签页标题换成「阅读」这样的低调字样；图标可以保留网站原来的、也可以不显示，或者换成内置的十种图标之一。网站自己改标题时，会被自动改回来。</span>
+            <span lang="en">Turn the tab title into something low-key like "Reading". Keep the site's own icon, show no icon at all, or pick one of the ten built-in icons. If the site rewrites its title, PageMask changes it back automatically.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3><span lang="zh-CN">整页变灰</span><span lang="en">Turn the whole page gray</span></h3>
+          <p>
+            <span lang="zh-CN">一个开关，让整个页面变成黑白——文字、图片、视频、背景图全都一样，位置不变、链接照常点、文字照样读。声音完全不参与，音量仍在播放器自己的按钮里。</span>
+            <span lang="en">One switch turns the entire page black &amp; white — text, pictures, videos and background images alike. Everything keeps its place, links still work and text stays readable. Sound is not touched: volume stays with the player's own button.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10.3c2.9 4.3 5.9 6.3 9 6.3s6.1-2 9-6.3"/>
+            <path d="M7.6 15.3l-1.5 2.3"/>
+            <path d="M12 16.7v2.7"/>
+            <path d="M16.4 15.3l1.5 2.3"/>
+          </svg>
+          <h3><span lang="zh-CN">遮住这一页</span><span lang="en">Cover this page</span></h3>
+          <p>
+            <span lang="zh-CN">一键遮住整页，连这个标签页的声音一起按住；刷新或离开页面就自动还原。遮住后页面上只剩一颗「恢复」小按钮，点一下就回到刚才的样子。</span>
+            <span lang="en">One click covers the whole page and holds that tab's sound as well; reloading or leaving the page restores everything. A small "Restore" button stays on the page — click it to go back to what you were doing.</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section">
+    <div class="container">
+      <h2><span lang="zh-CN">怎么用</span><span lang="en">How it works</span></h2>
+      <ol class="steps">
+        <li>
+          <span class="step-no" aria-hidden="true">1</span>
+          <p>
+            <span lang="zh-CN">把 PageMask 固定到工具栏：点浏览器右上角的拼图图标，再点 PageMask 旁边的图钉。</span>
+            <span lang="en">Pin PageMask to the toolbar: click the puzzle-piece icon at the top of Chrome, then the pin next to PageMask.</span>
+          </p>
+        </li>
+        <li>
+          <span class="step-no" aria-hidden="true">2</span>
+          <p>
+            <span lang="zh-CN">在要设置的网站上打开 PageMask 弹窗。第一次会先请你「允许访问」这个网站——这是 Chrome 在问，只问这一次。</span>
+            <span lang="en">Open the PageMask popup on the site you want to set up. The first time, Chrome asks you to "Allow access" for that site — it asks only once.</span>
+          </p>
+        </li>
+        <li>
+          <span class="step-no" aria-hidden="true">3</span>
+          <p>
+            <span lang="zh-CN">点「收起内容」，在页面上点选要收起的元素，看一眼效果再保存。之后这个网站的页面上会有一颗悬浮按钮：点一下按你的设置显示，再点一下回到原样。</span>
+            <span lang="en">Click "Hide items", pick the elements on the page, check the result and save. From then on the page has a floating button: one click shows your settings, another click goes back to the site as it is.</span>
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="install" class="section">
+    <div class="container">
+      <h2><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></h2>
+      <p class="section-intro">
+        <span lang="zh-CN">PageMask 正在申请上架 Chrome 应用商店，审核通过后这里会换成商店安装链接。当前可以先从 GitHub Releases 下载 zip 手动安装，需要 Chrome 116 或更高版本。</span>
+        <span lang="en">PageMask is under review for the Chrome Web Store; once it is listed, this section will link to the store. For now, download the zip from GitHub Releases and install it manually — Chrome 116 or later is required.</span>
+      </p>
+      <ol class="install-list">
+        <li>
+          <span lang="zh-CN">在 GitHub Releases 页面下载最新的 zip，解压到一个你会一直保留的文件夹。</span>
+          <span lang="en">On GitHub Releases, download the latest zip and unzip it into a folder you will keep.</span>
+        </li>
+        <li>
+          <span lang="zh-CN">打开 Chrome，在地址栏输入 chrome://extensions，打开右上角的「开发者模式」。</span>
+          <span lang="en">Open chrome://extensions in Chrome and turn on Developer mode (top right).</span>
+        </li>
+        <li>
+          <span lang="zh-CN">点「加载已解压的扩展程序」，选择刚解压出来的文件夹。</span>
+          <span lang="en">Click Load unpacked and select the unzipped folder.</span>
+        </li>
+      </ol>
+      <p class="note">
+        <span lang="zh-CN">以后换新版本时，把新文件覆盖到同一个文件夹，再在 chrome://extensions 点这个扩展卡片上的刷新按钮——不要点「移除」，也不要换文件夹，否则已有的设置会清空。这是 Chrome 对所有未打包扩展的行为，不是 PageMask 的毛病。</span>
+        <span lang="en">When a new version comes out, overwrite the same folder and click the reload button on the extension card in chrome://extensions. Don't click "Remove" and don't switch folders — either wipes your settings. This is how Chrome treats every unpacked extension, not something specific to PageMask.</span>
+      </p>
+      <p class="install-cta">
+        <a class="btn btn-secondary" href="https://github.com/cherishfall/page-mask/releases/latest">
+          <span lang="zh-CN">前往 GitHub Releases 下载</span>
+          <span lang="en">Download from GitHub Releases</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section id="privacy" class="section band">
+    <div class="container">
+      <h2><span lang="zh-CN">隐私</span><span lang="en">Privacy</span></h2>
+      <p class="section-intro">
+        <span lang="zh-CN">PageMask 没有服务器，也没有账号。下面四条是它的工作方式，完整说明见隐私政策。</span>
+        <span lang="en">PageMask has no server and no account. These four points are how it works; the full policy has the details.</span>
+      </p>
+      <div class="card-grid">
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M3.5 12h17"/>
+            <path d="M12 3.5c2.6 2.4 3.9 5.2 3.9 8.5s-1.3 6.1-3.9 8.5c-2.6-2.4-3.9-5.2-3.9-8.5s1.3-6.1 3.9-8.5Z"/>
+            <path d="M5 5.5l14 13"/>
+          </svg>
+          <h3><span lang="zh-CN">不联网</span><span lang="en">No network</span></h3>
+          <p>
+            <span lang="zh-CN">PageMask 自身不发起任何网络请求：没有统计、没有广告、没有第三方代码。</span>
+            <span lang="en">PageMask makes no network requests of its own — no analytics, no ads, no third-party code.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="5.5" width="14" height="9.5" rx="1.5"/>
+            <path d="M3.5 18h17"/>
+          </svg>
+          <h3><span lang="zh-CN">数据只在本机</span><span lang="en">Data stays on this device</span></h3>
+          <p>
+            <span lang="zh-CN">设置只存在浏览器的本地存储（chrome.storage.local）里，卸载 PageMask 就全部消失。</span>
+            <span lang="en">Settings live only in your browser's local storage (chrome.storage.local); uninstalling PageMask removes all of them.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5.5" y="10.5" width="13" height="9" rx="2"/>
+            <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>
+            <circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3><span lang="zh-CN">按站点逐个允许访问</span><span lang="en">Access, one site at a time</span></h3>
+          <p>
+            <span lang="zh-CN">安装时不请求任何网站的权限。只有你在某个网站上点了「允许访问」，PageMask 才会在那个网站上工作；没添加的网站完全不受影响。</span>
+            <span lang="en">No site permissions are requested at install time. PageMask works on a site only after you click "Allow access" there; sites you haven't added are not touched at all.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6.5 3.5h6.8l5.2 5.2V18a2.5 2.5 0 0 1-2.5 2.5h-9.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5Z"/>
+            <path d="M13.3 3.5v5.2h5.2"/>
+            <path d="M12 19v-7.5"/>
+            <path d="M9.3 14.2 12 11.5l2.7 2.7"/>
+          </svg>
+          <h3><span lang="zh-CN">随身带走</span><span lang="en">Take your settings with you</span></h3>
+          <p>
+            <span lang="zh-CN">全部网站设置可以导出成一个文件，在另一台电脑上导入。</span>
+            <span lang="en">All site settings export as one file; import it on another computer.</span>
+          </p>
+        </div>
+
+      </div>
+      <p class="install-cta">
+        <a class="text-link link-standalone" href="privacy.html">
+          <span lang="zh-CN">阅读完整隐私政策</span>
+          <span lang="en">Read the full privacy policy</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section id="faq" class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title"><span lang="zh-CN">常见问题</span><span lang="en">Frequently asked questions</span></h2>
+      <div class="faq-list">
+
+        <details>
+          <summary>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg>
+            <span lang="zh-CN">会影响我没设置的网站吗？</span>
+            <span lang="en">Will it affect sites I haven't set up?</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              <span lang="zh-CN">完全不会。你不主动添加的网站，PageMask 不会向页面注入任何脚本、样式或界面。</span>
+              <span lang="en">Not at all. On sites you haven't added yourself, PageMask injects no script, no style and no UI into the page.</span>
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg>
+            <span lang="zh-CN">需要注册账号吗？</span>
+            <span lang="en">Do I need an account?</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              <span lang="zh-CN">不需要。没有账号，也没有登录；设置就保存在你这台电脑的浏览器里。</span>
+              <span lang="en">No. There is no account and no sign-in. Your settings live in the browser on this computer.</span>
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg>
+            <span lang="zh-CN">设置能换电脑吗？</span>
+            <span lang="en">Can I move my settings to another computer?</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              <span lang="zh-CN">可以。把全部设置导出成一个文件，在另一台电脑上导入就行。</span>
+              <span lang="en">Yes. Export all your settings as one file and import it on the other computer.</span>
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg>
+            <span lang="zh-CN">收起的东西还能找回来吗？</span>
+            <span lang="en">Can I get hidden items back?</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              <span lang="zh-CN">可以。在设置里逐条删除，删错 5 秒内可撤销；也可以用「恢复网站原来的内容」一次全恢复。</span>
+              <span lang="en">Yes. Delete items one by one in the settings — a deletion can be undone within 5 seconds — or use "Use the site's own content" to restore everything at once.</span>
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <ul>
+      <li><a href="https://github.com/cherishfall/page-mask"><span lang="zh-CN">GitHub 仓库</span><span lang="en">GitHub repository</span></a></li>
+      <li><a href="https://github.com/cherishfall/page-mask/blob/master/LICENSE">MIT License</a></li>
+      <li><a href="privacy.html"><span lang="zh-CN">隐私政策</span><span lang="en">Privacy policy</span></a></li>
+    </ul>
+    <p>© 2026 cherishfall</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pagemask-landing-lang';
+  var root = document.documentElement;
+  var btnZh = document.getElementById('lang-zh');
+  var btnEn = document.getElementById('lang-en');
+  var group = document.getElementById('lang-group');
+  function stored() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+  function apply(lang, persist) {
+    var en = lang === 'en';
+    root.classList.toggle('lang-en', en);
+    root.lang = en ? 'en' : 'zh-CN';
+    btnZh.setAttribute('aria-pressed', en ? 'false' : 'true');
+    btnEn.setAttribute('aria-pressed', en ? 'true' : 'false');
+    document.title = en ? root.dataset.titleEn : root.dataset.titleZh;
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', en ? root.dataset.descEn : root.dataset.descZh);
+    if (group) group.setAttribute('aria-label', en ? 'Language' : '界面语言');
+    if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) {} }
+  }
+  btnZh.addEventListener('click', function () { apply('zh', true); });
+  btnEn.addEventListener('click', function () { apply('en', true); });
+  apply(stored() === 'en' ? 'en' : 'zh', false);
+})();
+</script>
+</body>
+</html>

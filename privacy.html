@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="zh-CN" data-title-zh="隐私政策 · PageMask" data-title-en="Privacy Policy · PageMask" data-desc-zh="PageMask 的隐私政策：不收集、不上传任何数据，设置只存在你的浏览器里。" data-desc-en="PageMask's privacy policy: no data collection, no uploads; settings stay in your browser.">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="PageMask 的隐私政策：不收集、不上传任何数据，设置只存在你的浏览器里。">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
+<title>隐私政策 · PageMask</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpath d='M6 13.5C6 11.1 7.9 9.3 10.3 9.3h11.4c2.4 0 4.3 1.8 4.3 4.2 0 5.6-4.5 9.5-10 9.5S6 19.1 6 13.5Z' fill='%23fff'/%3E%3Cellipse cx='11.4' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3Cellipse cx='20.6' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3C/svg%3E">
+<script>
+/* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文） */
+(function () {
+  'use strict';
+  var lang = null;
+  try { lang = localStorage.getItem('pagemask-landing-lang'); } catch (e) {}
+  if (lang === 'en') {
+    document.documentElement.classList.add('lang-en');
+    document.documentElement.lang = 'en';
+  }
+})();
+</script>
+<style>
+/* ── 色彩：与扩展 styles/tokens.css 同一套明暗两档（bg / bg-subtle / fg / muted / accent / border）。
+   结构按 modern-web-guidance「dark-mode」：原始色值 → 语义变量默认浅色 →
+   @media prefers-color-scheme 兜底（不支持 light-dark() 的浏览器）→ @supports light-dark()。
+   对比度沿用 tokens.css 已实测的组合：fg/bg 15.78·12.75，muted/bg 4.83·5.98，
+   accent/bg 5.17·7.68，border-control/bg 3.25·4.13（正文 ≥4.5，控件边界 ≥3）。 ── */
+:root {
+  color-scheme: light dark;
+
+  /* 原始色值 */
+  --accent-l: #2563eb;        --accent-d: #93b4ff;
+  --accent-hover-l: #1d4ed8;  --accent-hover-d: #b4cbff;
+  --accent-active-l: #1e40af; --accent-active-d: #c9dbff;
+  --on-accent-l: #ffffff;     --on-accent-d: #1f2329;
+  --fg-l: #1f2329;            --fg-d: #e5e7eb;
+  --muted-l: #6b7280;         --muted-d: #9aa0a6;
+  --bg-l: #ffffff;            --bg-d: #1f2329;
+  --bg-subtle-l: #f6f7f9;     --bg-subtle-d: #2a2e35;
+  --control-hover-l: #eef0f3; --control-hover-d: #23262c;
+  --control-active-l: #e4e7eb;--control-active-d: #1d2025;
+  --bg-selected-l: #bcc1c8;   --bg-selected-d: #303743;
+  --border-l: #d1d5db;        --border-d: #3f444c;
+  --border-control-l: #8a8f98;--border-control-d: #7d838c;
+
+  /* 语义变量（默认浅色） */
+  --accent: var(--accent-l);
+  --accent-hover: var(--accent-hover-l);
+  --accent-active: var(--accent-active-l);
+  --on-accent: var(--on-accent-l);
+  --fg: var(--fg-l);
+  --muted: var(--muted-l);
+  --bg: var(--bg-l);
+  --bg-subtle: var(--bg-subtle-l);
+  --control-hover: var(--control-hover-l);
+  --control-active: var(--control-active-l);
+  --bg-selected: var(--bg-selected-l);
+  --border: var(--border-l);
+  --border-control: var(--border-control-l);
+
+  /* 动效：只动颜色类属性，150ms（design-ui §九）；reduced-motion 降到 120ms */
+  --motion: 150ms;
+  --ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --radius: 8px;
+  --radius-card: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: var(--accent-d);
+    --accent-hover: var(--accent-hover-d);
+    --accent-active: var(--accent-active-d);
+    --on-accent: var(--on-accent-d);
+    --fg: var(--fg-d);
+    --muted: var(--muted-d);
+    --bg: var(--bg-d);
+    --bg-subtle: var(--bg-subtle-d);
+    --control-hover: var(--control-hover-d);
+    --control-active: var(--control-active-d);
+    --bg-selected: var(--bg-selected-d);
+    --border: var(--border-d);
+    --border-control: var(--border-control-d);
+  }
+}
+@supports (color: light-dark(#fff, #000)) {
+  :root {
+    --accent: light-dark(var(--accent-l), var(--accent-d));
+    --accent-hover: light-dark(var(--accent-hover-l), var(--accent-hover-d));
+    --accent-active: light-dark(var(--accent-active-l), var(--accent-active-d));
+    --on-accent: light-dark(var(--on-accent-l), var(--on-accent-d));
+    --fg: light-dark(var(--fg-l), var(--fg-d));
+    --muted: light-dark(var(--muted-l), var(--muted-d));
+    --bg: light-dark(var(--bg-l), var(--bg-d));
+    --bg-subtle: light-dark(var(--bg-subtle-l), var(--bg-subtle-d));
+    --control-hover: light-dark(var(--control-hover-l), var(--control-hover-d));
+    --control-active: light-dark(var(--control-active-l), var(--control-active-d));
+    --bg-selected: light-dark(var(--bg-selected-l), var(--bg-selected-d));
+    --border: light-dark(var(--border-l), var(--border-d));
+    --border-control: light-dark(var(--border-control-l), var(--border-control-d));
+  }
+}
+@media (forced-colors: active) {
+  :root {
+    --accent: Highlight;
+    --accent-hover: Highlight;
+    --accent-active: Highlight;
+    --on-accent: HighlightText;
+    --fg: CanvasText;
+    --muted: CanvasText;
+    --bg: Canvas;
+    --bg-subtle: Canvas;
+    --control-hover: Canvas;
+    --control-active: Canvas;
+    --bg-selected: Canvas;
+    --border: CanvasText;
+    --border-control: CanvasText;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion: 120ms; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ── 基础 ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+h1, h2, h3, p, ul, ol { margin: 0; }
+svg { display: block; }
+main:focus { outline: none; }
+.container { max-width: 960px; margin-inline: auto; padding-inline: 20px; }
+
+/* ── 双语切换：无 JS 时默认显示中文；html.lang-en 时显示英文 ── */
+html:not(.lang-en) body [lang="en"] { display: none; }
+html.lang-en body [lang="zh-CN"] { display: none; }
+
+/* ── 焦点可见 ── */
+:where(a, button, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* 状态切换只动颜色类属性 */
+a, button, summary {
+  transition:
+    color var(--motion) var(--ease),
+    background-color var(--motion) var(--ease),
+    border-color var(--motion) var(--ease);
+}
+
+/* ── 跳转链接（skip link）：默认视觉隐藏，键盘聚焦时出现 ── */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── 页头 ── */
+.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.site-header .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  padding-block: 12px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+.brand svg { width: 26px; height: 26px; color: var(--accent); }
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav a {
+  display: inline-block;
+  padding: 6px 2px;
+  font-size: 15px;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: 4px;
+}
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lang-group {
+  display: inline-flex;
+  gap: 4px;
+  margin-inline-start: auto;
+  padding: 3px;
+  border: 1px solid var(--border-control);
+  border-radius: 999px;
+}
+.lang-group button {
+  min-height: 30px;
+  padding: 3px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lang-group button:hover { color: var(--fg); }
+.lang-group button[aria-pressed="true"] { background: var(--bg-selected); color: var(--fg); }
+
+/* ── 政策正文 ── */
+.policy { padding-block: 40px 64px; }
+.back { font-size: 15px; }
+.policy h1 {
+  margin-top: 14px;
+  font-size: clamp(28px, 4vw, 34px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.policy-meta { margin-top: 12px; color: var(--muted); font-size: 14px; }
+.policy-note {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+  font-size: 15px;
+}
+.policy section { margin-top: 36px; }
+.policy h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.policy p { margin-top: 12px; }
+.policy ul, .policy ol { margin-top: 10px; padding-inline-start: 24px; }
+.policy li { margin-block: 6px; }
+.policy li::marker { color: var(--muted); }
+.policy .text-link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.policy .text-link:hover { color: var(--accent-hover); }
+.policy .text-link:active { color: var(--accent-active); }
+/* 独立摆放的文字入口（不嵌在句子里）：补上下内边距，可点区 ≥24px（WCAG 2.5.8；
+   句子里的行内链接按其「inline」例外豁免） */
+.link-standalone { display: inline-block; padding: 4px 0; }
+
+/* ── 页脚 ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding-block: 28px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+}
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer a:hover { color: var(--fg); }
+
+/* ── 响应式：360px 起单列 ── */
+@media (max-width: 479px) {
+  .site-header .container { gap: 8px 16px; }
+  .lang-group { margin-inline-start: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main"><span lang="zh-CN">跳到主要内容</span><span lang="en">Skip to main content</span></a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5C3 7.5 4.6 6 6.6 6h10.8c2 0 3.6 1.5 3.6 3.5 0 4.8-4.2 8.3-9 8.3S3 14.3 3 9.5Z"/>
+        <ellipse cx="8.1" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+        <ellipse cx="15.9" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>PageMask</span>
+    </a>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html#features"><span lang="zh-CN">功能</span><span lang="en">Features</span></a></li>
+        <li><a href="index.html#how"><span lang="zh-CN">怎么用</span><span lang="en">How it works</span></a></li>
+        <li><a href="index.html#install"><span lang="zh-CN">安装</span><span lang="en">Install</span></a></li>
+        <li><a href="index.html#privacy"><span lang="zh-CN">隐私</span><span lang="en">Privacy</span></a></li>
+        <li><a href="index.html#faq"><span lang="zh-CN">常见问题</span><span lang="en">FAQ</span></a></li>
+      </ul>
+    </nav>
+    <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
+      <button type="button" id="lang-zh" aria-pressed="true">中文</button>
+      <button type="button" id="lang-en" aria-pressed="false">English</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div class="container policy">
+    <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
+    <h1><span lang="zh-CN">隐私政策</span><span lang="en">Privacy Policy</span></h1>
+    <p class="policy-meta"><span lang="zh-CN">生效日期 2026-10-27 · 最后更新 2026-11-11</span><span lang="en">Effective: 2026-10-27 · Last updated: 2026-11-11</span></p>
+    <p class="policy-note"><span lang="zh-CN">中文与英文内容一致；Chrome 应用商店审核以英文全文为准。</span><span lang="en">The Chinese and English texts say the same thing; the English text is the canonical version for the Chrome Web Store review.</span></p>
+
+    <p style="margin-top: 24px;">
+      <span lang="zh-CN">PageMask 是一个 Chrome 扩展：在你主动添加的网站上收起你选择的页面元素，可把图片 / 视频变成黑白的（变灰），遮住整页时连标签页声音一起按住，也可为该网站设置标签页标题与图标。本政策说明它处理哪些数据。</span>
+      <span lang="en">PageMask is a Chrome extension that hides page elements you choose on websites you add, can turn pictures and videos gray, hold a tab's sound together with the full-page cover, and set a tab title and icon for that site. This policy explains what data it handles.</span>
+    </p>
+
+    <section>
+      <h2><span lang="zh-CN">概要</span><span lang="en">Summary</span></h2>
+      <p>
+        <span lang="zh-CN">PageMask 不向开发者或任何第三方发送任何数据。它没有服务器、没有账号、没有统计、没有广告、没有第三方代码。下面描述的一切都只留在你自己的浏览器里。</span>
+        <span lang="en">PageMask does not send any data to the developer or to anyone else. There is no server, account, analytics, advertising or third-party code. Everything described below stays in your own browser.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">保存在你设备上的数据</span><span lang="en">Data stored on your device</span></h2>
+      <p>
+        <span lang="zh-CN">只针对你主动添加的网站，PageMask 会在浏览器的扩展本地存储（chrome.storage.local）里保存：</span>
+        <span lang="en">Only for sites you add, PageMask stores in your browser's local extension storage (chrome.storage.local):</span>
+      </p>
+      <ul>
+        <li>
+          <span lang="zh-CN">网站身份（可注册域名，例如 weibo.com；IP 地址、localhost 与带端口的地址按原样保留）；</span>
+          <span lang="en">the site's identity (its registrable domain, e.g. weibo.com; IP addresses, localhost and addresses with a port are kept as-is);</span>
+        </li>
+        <li>
+          <span lang="zh-CN">你的收起设置：用来定位你所选元素的 CSS 选择器、一个短标签（最多 8 个字符，取自元素文字或无障碍名称，你可以修改）、收起方式、适用的页面（如果你选了某一类页面，就是一段网址路径前缀）；</span>
+          <span lang="en">your hide settings: the CSS selectors that identify the elements you picked, a short label (up to 8 characters taken from the element's text or accessibility label, which you can edit), the hiding method, and the pages they apply to (a URL path prefix, if you chose one);</span>
+        </li>
+        <li>
+          <span lang="zh-CN">你为该网站设置的标签页标题与图标图片，以及该网站的开关状态；</span>
+          <span lang="en">the tab title and icon image you set for that site, and the site's on/off state;</span>
+        </li>
+        <li>
+          <span lang="zh-CN">该网站的一个开关：「整页变灰」（该网站是否整页黑白显示）；</span>
+          <span lang="en">one per-site switch for "Turn the whole page gray" (whether the entire page is shown in black &amp; white);</span>
+        </li>
+        <li>
+          <span lang="zh-CN">页面内按钮的位置，以及每条收起设置最近一次打开页面时是否仍找得到目标（带时间戳）；</span>
+          <span lang="en">the position of the on-page button, and whether each hide setting still found its element the last time the page was opened (with a timestamp);</span>
+        </li>
+        <li>
+          <span lang="zh-CN">一个全局默认的标签页标题。</span>
+          <span lang="en">one global default tab title.</span>
+        </li>
+      </ul>
+      <p>
+        <span lang="zh-CN">为了工作，PageMask 会在你添加的网站上于本地读取页面结构（让你点选元素、核对保存的设置是否仍然找得到目标；只在变灰开关打开期间，还会用来按住自动播放的视频）。除上面那个短标签之外，页面内容不会被保存，也永远不会被发送出去。</span>
+        <span lang="en">To work, PageMask reads the page structure locally on sites you added (to let you pick elements, to check that your settings still match, and — only while the gray switch is on — to hold videos that the site autoplays). That page content is not stored except for the short label above, and is never transmitted.</span>
+      </p>
+      <p>
+        <span lang="zh-CN">遮住整页（「遮住这一页」）时会把该标签页静音，用的是 Chrome 自带的标签页静音。这个状态由浏览器记在标签页上，不由 PageMask 保存；不同步、不上传，也不需要 tabs 权限。静音与幕布同生共死：撤幕布、刷新或离开页面即解除。PageMask 只解除自己设置的那一份静音，不会动你或别的扩展设置的静音。</span>
+        <span lang="en">Covering the page ("Cover this page") also mutes that tab using Chrome's own tab mute. That mute state is held by the browser on the tab, not stored by PageMask; it is not synced, not uploaded, and does not add a tabs permission. The mute lives exactly as long as the cover: uncovering, refreshing or leaving the page removes it. PageMask only removes the mute it set itself, and does not touch a mute you or another extension set.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">我们不做的事</span><span lang="en">What we don't do</span></h2>
+      <p>
+        <span lang="zh-CN">我们不收集、不传输、不出售、不分享任何数据。你的数据不会被用于广告、画像、信用评估或放贷。PageMask 对数据的使用符合 Chrome 应用商店的用户数据政策，包括 Limited Use 要求。</span>
+        <span lang="en">We do not collect, transmit, sell or share any data. Your data is not used for advertising, profiling, credit or lending. PageMask's use of data complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">权限</span><span lang="en">Permissions</span></h2>
+      <ul>
+        <li>
+          <span lang="zh-CN">storage：在本地保存上述设置。</span>
+          <span lang="en">storage: saves the settings above locally.</span>
+        </li>
+        <li>
+          <span lang="zh-CN">activeTab：打开 popup 时读取当前标签页的网址，用来判断是哪个网站。</span>
+          <span lang="en">activeTab: when you open the popup, reads the current tab's URL to identify the site.</span>
+        </li>
+        <li>
+          <span lang="zh-CN">scripting 与按网站的主机权限：只在你开启某个网站时，针对这一个网站申请，并且只用于在该网站上应用你的设置——包括变灰样式，以及变灰开关打开期间对自动播放视频的按停。变灰开关没有带来新权限。</span>
+          <span lang="en">scripting and per-site host access: requested one site at a time, only when you enable that site, and used only to apply your settings there — including the gray styles and the on-page autoplay hold while the gray switch is on. The gray switch adds no permission.</span>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">保留期限与你掌握的操作</span><span lang="en">Retention and your controls</span></h2>
+      <p>
+        <span lang="zh-CN">数据一直保留，直到你删掉它。在管理页对某个网站点「删除这个网站的设置」，会删除该网站的设置并收回它的访问权限；卸载 PageMask 会删除它保存的全部数据；「导出」会生成一个由你自己保存的文件，PageMask 之后无法读取或删除它。你也可以在 Chrome 扩展详情页的「网站访问权限」里移除某个网站的权限。</span>
+        <span lang="en">Data stays until you remove it. "Delete this site's settings" (「删除这个网站的设置」) in the management page deletes that site's settings and removes its access permission. Uninstalling PageMask deletes all of its stored data. "Export" creates a file you save yourself; PageMask cannot access or delete it afterwards. You can also remove a site's access under "Site access" on Chrome's extension details page.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">儿童</span><span lang="en">Children</span></h2>
+      <p>
+        <span lang="zh-CN">PageMask 不面向儿童，也不会在知情的情况下处理儿童的个人信息。</span>
+        <span lang="en">PageMask is not directed at children and does not knowingly handle children's personal information.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">变更</span><span lang="en">Changes</span></h2>
+      <p>
+        <span lang="zh-CN">如果本政策发生变化，新版本会发布在这个网址上并更新日期，变更也会写进<a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">更新日志</a>。</span>
+        <span lang="en">If this policy changes, the new version will be published at this URL with an updated date, and changes will be noted in the <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">release notes</a>.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2><span lang="zh-CN">联系方式</span><span lang="en">Contact</span></h2>
+      <p>
+        <span lang="zh-CN">邮箱：<a class="text-link" href="mailto:cherishfall@hotmail.com">cherishfall@hotmail.com</a> · 问题反馈：<a class="text-link" href="https://github.com/cherishfall/page-mask/issues">GitHub Issues</a></span>
+        <span lang="en">Email: <a class="text-link" href="mailto:cherishfall@hotmail.com">cherishfall@hotmail.com</a> · Issues: <a class="text-link" href="https://github.com/cherishfall/page-mask/issues">GitHub Issues</a></span>
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <ul>
+      <li><a href="https://github.com/cherishfall/page-mask"><span lang="zh-CN">GitHub 仓库</span><span lang="en">GitHub repository</span></a></li>
+      <li><a href="https://github.com/cherishfall/page-mask/blob/master/LICENSE">MIT License</a></li>
+      <li><a href="privacy.html"><span lang="zh-CN">隐私政策</span><span lang="en">Privacy policy</span></a></li>
+    </ul>
+    <p>© 2026 cherishfall</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pagemask-landing-lang';
+  var root = document.documentElement;
+  var btnZh = document.getElementById('lang-zh');
+  var btnEn = document.getElementById('lang-en');
+  var group = document.getElementById('lang-group');
+  function stored() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+  function apply(lang, persist) {
+    var en = lang === 'en';
+    root.classList.toggle('lang-en', en);
+    root.lang = en ? 'en' : 'zh-CN';
+    btnZh.setAttribute('aria-pressed', en ? 'false' : 'true');
+    btnEn.setAttribute('aria-pressed', en ? 'true' : 'false');
+    document.title = en ? root.dataset.titleEn : root.dataset.titleZh;
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', en ? root.dataset.descEn : root.dataset.descZh);
+    if (group) group.setAttribute('aria-label', en ? 'Language' : '界面语言');
+    if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) {} }
+  }
+  btnZh.addEventListener('click', function () { apply('zh', true); });
+  btnEn.addEventListener('click', function () { apply('en', true); });
+  apply(stored() === 'en' ? 'en' : 'zh', false);
+})();
+</script>
+</body>
+</html>

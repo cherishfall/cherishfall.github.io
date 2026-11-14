@@ -46,6 +46,8 @@
   --bg-selected-l: #bcc1c8;   --bg-selected-d: #303743;
   --border-l: #d1d5db;        --border-d: #3f444c;
   --border-control-l: #8a8f98;--border-control-d: #7d838c;
+  /* 品牌色调（呼应图标）：淡蓝场（M3 tonal surface），文档页头卡与品牌顶边共用 */
+  --brand-tint-l: #eef4ff;    --brand-tint-d: #222b45;
 
   /* 语义变量（默认浅色） */
   --accent: var(--accent-l);
@@ -61,6 +63,7 @@
   --bg-selected: var(--bg-selected-l);
   --border: var(--border-l);
   --border-control: var(--border-control-l);
+  --brand-tint: var(--brand-tint-l);
 
   /* 动效：只动颜色类属性，150ms（design-ui §九）；reduced-motion 降到 120ms */
   --motion: 150ms;
@@ -83,6 +86,7 @@
     --bg-selected: var(--bg-selected-d);
     --border: var(--border-d);
     --border-control: var(--border-control-d);
+    --brand-tint: var(--brand-tint-d);
   }
 }
 @supports (color: light-dark(#fff, #000)) {
@@ -100,6 +104,7 @@
     --bg-selected: light-dark(var(--bg-selected-l), var(--bg-selected-d));
     --border: light-dark(var(--border-l), var(--border-d));
     --border-control: light-dark(var(--border-control-l), var(--border-control-d));
+    --brand-tint: light-dark(var(--brand-tint-l), var(--brand-tint-d));
   }
 }
 @media (forced-colors: active) {
@@ -117,6 +122,7 @@
     --bg-selected: Canvas;
     --border: CanvasText;
     --border-control: CanvasText;
+    --brand-tint: Canvas;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -183,7 +189,30 @@ a, button, summary {
 }
 
 /* ── 页头 ── */
-.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.site-header { position: relative; border-bottom: 1px solid var(--border); background: var(--bg); }
+/* 品牌顶边（与首页同一份）：渐变用的正是图标的两个蓝——底块 #2563eb → 眼罩 #1e40af。
+   亮暗两档同值：它是品牌件，不是语义色 */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+}
+@media (forced-colors: active) {
+  .site-header::before { background: Highlight; }
+}
+/* 文档页头卡（M3 tonal container）：标题区坐在淡蓝场上，正文仍在白底（GOV.UK 纪律）。
+   与 index.html 的 hero 共用 --brand-tint；changelog.html 由本文件作模板生成，同款生效 */
+.page-head {
+  margin: 28px 0 8px;
+  padding: 22px 26px 20px;
+  background: var(--brand-tint);
+  border-radius: var(--radius-card);
+}
+/* 目检提示项：muted 灰在淡蓝场上贴着 AA 线，页头卡内的次要文字改用正文色降透明度——
+   层次保留（字号已区分），对比度回到舒适区（两档都 >6:1） */
+.page-head .policy-meta { color: var(--fg); opacity: 0.78; }
 .site-header .container {
   display: flex;
   flex-wrap: wrap;
@@ -369,10 +398,12 @@ a, button, summary {
 
 <main id="main" tabindex="-1">
     <div class="container policy">
+    <div class="page-head">
     <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
     <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
     <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.1 · 2026-11-14 · 共 52 个版本</span><span lang="en">Latest version 1.0.1 · 2026-11-14 · 52 versions</span></p>
     <p class="policy-note"><span lang="zh-CN">本页由仓库里的 <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> 生成，内容逐条一致；每个版本下中文与英文逐条对应。</span><span lang="en">This page is generated from <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the repository and matches it item by item; under each version, the Chinese and English texts correspond item by item.</span></p>
+    </div>
 
     <section class="rel" id="v1-0-1">
       <h2 class="rel-h"><span class="rel-ver">1.0.1</span><time class="rel-date" datetime="2026-11-14">2026-11-14</time></h2>

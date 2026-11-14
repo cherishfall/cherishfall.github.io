@@ -44,6 +44,9 @@
   --bg-selected-l: #bcc1c8;   --bg-selected-d: #303743;
   --border-l: #d1d5db;        --border-d: #3f444c;
   --border-control-l: #8a8f98;--border-control-d: #7d838c;
+  /* 品牌色调（呼应图标）：淡蓝场与光斑（M3 tonal surface） */
+  --brand-tint-l: #eef4ff;    --brand-tint-d: #222b45;
+  --brand-glow-l: rgba(37, 99, 235, 0.14); --brand-glow-d: rgba(147, 180, 255, 0.10);
 
   /* 语义变量（默认浅色） */
   --accent: var(--accent-l);
@@ -59,6 +62,8 @@
   --bg-selected: var(--bg-selected-l);
   --border: var(--border-l);
   --border-control: var(--border-control-l);
+  --brand-tint: var(--brand-tint-l);
+  --brand-glow: var(--brand-glow-l);
 
   /* 动效：只动颜色类属性，150ms（design-ui §九）；reduced-motion 降到 120ms */
   --motion: 150ms;
@@ -81,6 +86,8 @@
     --bg-selected: var(--bg-selected-d);
     --border: var(--border-d);
     --border-control: var(--border-control-d);
+    --brand-tint: var(--brand-tint-d);
+    --brand-glow: var(--brand-glow-d);
   }
 }
 @supports (color: light-dark(#fff, #000)) {
@@ -98,6 +105,8 @@
     --bg-selected: light-dark(var(--bg-selected-l), var(--bg-selected-d));
     --border: light-dark(var(--border-l), var(--border-d));
     --border-control: light-dark(var(--border-control-l), var(--border-control-d));
+    --brand-tint: light-dark(var(--brand-tint-l), var(--brand-tint-d));
+    --brand-glow: light-dark(var(--brand-glow-l), var(--brand-glow-d));
   }
 }
 @media (forced-colors: active) {
@@ -115,6 +124,8 @@
     --bg-selected: Canvas;
     --border: CanvasText;
     --border-control: CanvasText;
+    --brand-tint: Canvas;
+    --brand-glow: transparent;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -181,7 +192,19 @@ a, button, summary {
 }
 
 /* ── 页头 ── */
-.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.site-header { position: relative; border-bottom: 1px solid var(--border); background: var(--bg); }
+/* 品牌顶边（GOV.UK 头部品牌锚的同位手法）：渐变用的正是图标的两个蓝——
+   底块 #2563eb → 眼罩 #1e40af。亮暗两档同值：它是品牌件，不是语义色 */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+}
+@media (forced-colors: active) {
+  .site-header::before { background: Highlight; }
+}
 .site-header .container {
   display: flex;
   flex-wrap: wrap;
@@ -293,7 +316,30 @@ a, button, summary {
 }
 
 /* ── 首屏 ── */
-.hero { padding-block: 84px 72px; text-align: center; }
+/* Hero 色调带（M3 tonal surface）：品牌淡蓝场淡出到正文白底，正文全部落在 var(--bg) 上
+   （GOV.UK 色彩纪律：长文区不上装饰底）；图标后方一枚极轻的品牌光斑——
+   「蓝方块里一页白纸」的图标关系，放大成页面的空间关系 */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: 72px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--brand-tint) 0%, var(--bg) 86%);
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -170px;
+  left: 50%;
+  width: 580px;
+  height: 580px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, var(--brand-glow), transparent 72%);
+  pointer-events: none;
+}
+.hero > .container { position: relative; }
+.hero-icon { display: flex; justify-content: center; margin-bottom: 24px; }
+.hero-icon svg { display: block; width: 72px; height: 72px; filter: drop-shadow(0 6px 14px rgba(37, 99, 235, 0.25)); }
 .hero h1 {
   font-size: clamp(34px, 5vw, 44px);
   font-weight: 600;
@@ -491,6 +537,20 @@ a, button, summary {
 
   <section class="hero">
     <div class="container">
+      <div class="hero-icon" aria-hidden="true">
+        <!-- 图形逐字取自 assets/icon/icon.svg（与页头、扩展、商店同源；改图标两边一起改） -->
+        <svg viewBox="0 0 128 128">
+          <rect x="2" y="2" width="124" height="124" rx="24" fill="#2563eb"/>
+          <rect x="34" y="12" width="60" height="104" rx="8" fill="#ffffff"/>
+          <rect x="42" y="82" width="44" height="7" rx="3.5" fill="#9aa3af"/>
+          <rect x="42" y="95" width="30" height="7" rx="3.5" fill="#9aa3af"/>
+          <g transform="rotate(-10 64 50) translate(-4 -6)">
+            <path d="M26 48 C34 36 50 36 58 45 L64 51 L70 45 C78 36 94 36 102 48 C102 64 88 70 76 63 L64 56 L52 63 C40 70 26 64 26 48 Z" fill="#1e40af"/>
+            <circle cx="45" cy="51" r="6" fill="#ffffff"/>
+            <circle cx="83" cy="51" r="6" fill="#ffffff"/>
+          </g>
+        </svg>
+      </div>
       <h1>PageMask</h1>
       <p class="lede">
         <span lang="zh-CN">收起网页上不想看的部分——在你主动添加的网站上，点选元素把它们收起来；标签页的标题和图标也能一起变低调。不用学任何代码，鼠标点选就行。</span>

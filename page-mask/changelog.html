@@ -306,11 +306,12 @@ a, button, summary {
 .link-standalone { display: inline-block; padding: 4px 0; }
 
 /* ── 页脚 ── */
+/* 页脚品牌块：与 index.html 同一份——图标深蓝 → 主蓝的渐变，每页一个有力的品牌收尾。
+   文字全白：白 on #2563eb ≈ 5.1:1（AA），层级靠字号不靠颜色 */
 .site-footer {
-  border-top: 1px solid var(--border);
-  background: var(--bg-subtle);
-  padding-block: 28px;
-  color: var(--muted);
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  padding-block: 32px;
+  color: #ffffff;
   font-size: 14px;
 }
 .site-footer .container {
@@ -330,11 +331,11 @@ a, button, summary {
 .site-footer a {
   display: inline-block;
   padding: 4px 0;
-  color: var(--muted);
+  color: #ffffff;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.site-footer a:hover { color: var(--fg); }
+.site-footer a:hover { text-decoration-thickness: 2px; }
 
 /* ── 响应式：360px 起单列 ── */
 @media (max-width: 479px) {

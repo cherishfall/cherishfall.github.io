@@ -192,19 +192,7 @@ a, button, summary {
 }
 
 /* ── 页头 ── */
-.site-header { position: relative; border-bottom: 1px solid var(--border); background: var(--bg); }
-/* 品牌顶边（GOV.UK 头部品牌锚的同位手法）：渐变用的正是图标的两个蓝——
-   底块 #2563eb → 眼罩 #1e40af。亮暗两档同值：它是品牌件，不是语义色 */
-.site-header::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-}
-@media (forced-colors: active) {
-  .site-header::before { background: Highlight; }
-}
+.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
 .site-header .container {
   display: flex;
   flex-wrap: wrap;
@@ -303,31 +291,18 @@ a, button, summary {
 
 /* ── 区块 ── */
 .section { padding-block: 64px; }
-/* 分区带用品牌淡蓝（M3 tonal surface）：整页的节奏 = 淡蓝带与白底交替，
-   活力来自色彩节奏而不是装饰元素；带上的卡片保持白底（GOV.UK：内容区高对比） */
-.section.band { background: var(--brand-tint); }
+.section.band { background: var(--bg-subtle); }
 .section h2 {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.3;
-}
-/* 节奏记号：标题上方的品牌小色条（纯装饰，aria 无关；对比不适用于非文本元素） */
-.section h2::before {
-  content: "";
-  display: block;
-  width: 28px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--accent);
-  margin-bottom: 10px;
 }
 .section-intro {
   margin-top: 10px;
   max-width: 62ch;
   color: var(--muted);
 }
-/* 淡蓝带上的次要文字：muted 灰在 tint 上贴着 AA 线，同 page-head 的口径改用正文色降透明度 */
-.band .section-intro { color: var(--fg); opacity: 0.75; }
+/* hero 淡蓝场上的次要文字：muted 灰贴着 AA 线，改用正文色降透明度（同 page-head 口径） */
 .hero .trust { color: var(--fg); opacity: 0.72; }
 
 /* ── 首屏 ── */
@@ -467,12 +442,11 @@ a, button, summary {
 .faq-a { padding: 0 16px 16px 44px; }
 
 /* ── 页脚 ── */
-/* 页脚品牌块：图标深蓝 → 主蓝的渐变，每页一个有力的品牌收尾（M3 inverse-surface 思路）。
-   文字全白：白 on #2563eb ≈ 5.1:1（AA），层级靠字号不靠颜色 */
 .site-footer {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-  padding-block: 32px;
-  color: #ffffff;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding-block: 28px;
+  color: var(--muted);
   font-size: 14px;
 }
 .site-footer .container {
@@ -492,11 +466,11 @@ a, button, summary {
 .site-footer a {
   display: inline-block;
   padding: 4px 0;
-  color: #ffffff;
+  color: var(--muted);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.site-footer a:hover { text-decoration-thickness: 2px; }
+.site-footer a:hover { color: var(--fg); }
 
 /* ── 响应式：360px 起单列 ── */
 @media (max-width: 719px) {

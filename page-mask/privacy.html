@@ -187,21 +187,10 @@ a, button, summary {
 }
 
 /* ── 页头 ── */
-.site-header { position: relative; border-bottom: 1px solid var(--border); background: var(--bg); }
-/* 品牌顶边（与首页同一份）：渐变用的正是图标的两个蓝——底块 #2563eb → 眼罩 #1e40af。
-   亮暗两档同值：它是品牌件，不是语义色 */
-.site-header::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-}
-@media (forced-colors: active) {
-  .site-header::before { background: Highlight; }
-}
+.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
 /* 文档页头卡（M3 tonal container）：标题区坐在淡蓝场上，正文仍在白底（GOV.UK 纪律）。
-   与 index.html 的 hero 共用 --brand-tint；changelog.html 由本文件作模板生成，同款生效 */
+   与 index.html 的 hero 共用 --brand-tint；changelog.html 由本文件作模板生成，同款生效。
+   这是文档页唯一的品牌时刻（frontend-design：boldness 花在一处，其余安静） */
 .page-head {
   margin: 28px 0 8px;
   padding: 22px 26px 20px;
@@ -287,7 +276,9 @@ a, button, summary {
   margin-top: 16px;
   padding: 12px 16px;
   border-radius: var(--radius);
-  background: var(--bg-subtle);
+  /* 页头卡内嵌的说明条：用纯白与淡蓝卡分层（bg-subtle 灰在蓝卡里色温错位，目检提示项）；
+     卡外无 page-head 时仍是灰底白页，无观感差异 */
+  background: var(--bg);
   font-size: 15px;
 }
 .policy section { margin-top: 36px; }
@@ -304,12 +295,11 @@ a, button, summary {
 .link-standalone { display: inline-block; padding: 4px 0; }
 
 /* ── 页脚 ── */
-/* 页脚品牌块：与 index.html 同一份——图标深蓝 → 主蓝的渐变，每页一个有力的品牌收尾。
-   文字全白：白 on #2563eb ≈ 5.1:1（AA），层级靠字号不靠颜色 */
 .site-footer {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-  padding-block: 32px;
-  color: #ffffff;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding-block: 28px;
+  color: var(--muted);
   font-size: 14px;
 }
 .site-footer .container {
@@ -329,11 +319,11 @@ a, button, summary {
 .site-footer a {
   display: inline-block;
   padding: 4px 0;
-  color: #ffffff;
+  color: var(--muted);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.site-footer a:hover { text-decoration-thickness: 2px; }
+.site-footer a:hover { color: var(--fg); }
 
 /* ── 响应式：360px 起单列 ── */
 @media (max-width: 479px) {

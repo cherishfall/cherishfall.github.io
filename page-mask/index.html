@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
 <title>PageMask · 收起网页上不想看的部分</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpath d='M6 13.5C6 11.1 7.9 9.3 10.3 9.3h11.4c2.4 0 4.3 1.8 4.3 4.2 0 5.6-4.5 9.5-10 9.5S6 19.1 6 13.5Z' fill='%23fff'/%3E%3Cellipse cx='11.4' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3Cellipse cx='20.6' cy='14' rx='2.3' ry='1.5' fill='%232563eb'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect x='2' y='2' width='124' height='124' rx='24' fill='%232563eb'/%3E%3Crect x='34' y='12' width='60' height='104' rx='8' fill='%23fff'/%3E%3Crect x='42' y='82' width='44' height='7' rx='3.5' fill='%239aa3af'/%3E%3Crect x='42' y='95' width='30' height='7' rx='3.5' fill='%239aa3af'/%3E%3Cg transform='rotate(-10 64 50) translate(-4 -6)'%3E%3Cpath d='M26 48 C34 36 50 36 58 45 L64 51 L70 45 C78 36 94 36 102 48 C102 64 88 70 76 63 L64 56 L52 63 C40 70 26 64 26 48 Z' fill='%231e40af'/%3E%3Ccircle cx='45' cy='51' r='6' fill='%23fff'/%3E%3Ccircle cx='83' cy='51' r='6' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E">
 <script>
 /* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文） */
 (function () {
@@ -199,7 +199,7 @@ a, button, summary {
   color: var(--fg);
   text-decoration: none;
 }
-.brand svg { width: 26px; height: 26px; color: var(--accent); }
+.brand svg { flex: none; width: 26px; height: 26px; }
 .site-nav ul {
   display: flex;
   flex-wrap: wrap;
@@ -455,10 +455,18 @@ a, button, summary {
 <header class="site-header">
   <div class="container">
     <a class="brand" href="./">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 9.5C3 7.5 4.6 6 6.6 6h10.8c2 0 3.6 1.5 3.6 3.5 0 4.8-4.2 8.3-9 8.3S3 14.3 3 9.5Z"/>
-        <ellipse cx="8.1" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
-        <ellipse cx="15.9" cy="10.2" rx="2" ry="1.25" fill="currentColor" stroke="none"/>
+      <!-- 品牌图标就是扩展主图标：图形逐字取自 cherishfall/page-mask 的 assets/icon/icon.svg（128px 版，
+           也就是商店列表与扩展管理页显示的那一份）。改图标时两边一起改，不要在这里另画一版。 -->
+      <svg viewBox="0 0 128 128" aria-hidden="true">
+        <rect x="2" y="2" width="124" height="124" rx="24" fill="#2563eb"/>
+        <rect x="34" y="12" width="60" height="104" rx="8" fill="#ffffff"/>
+        <rect x="42" y="82" width="44" height="7" rx="3.5" fill="#9aa3af"/>
+        <rect x="42" y="95" width="30" height="7" rx="3.5" fill="#9aa3af"/>
+        <g transform="rotate(-10 64 50) translate(-4 -6)">
+          <path d="M26 48 C34 36 50 36 58 45 L64 51 L70 45 C78 36 94 36 102 48 C102 64 88 70 76 63 L64 56 L52 63 C40 70 26 64 26 48 Z" fill="#1e40af"/>
+          <circle cx="45" cy="51" r="6" fill="#ffffff"/>
+          <circle cx="83" cy="51" r="6" fill="#ffffff"/>
+        </g>
       </svg>
       <span>PageMask</span>
     </a>

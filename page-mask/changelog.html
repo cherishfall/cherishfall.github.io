@@ -392,9 +392,47 @@ a, button, summary {
     <div class="page-head">
     <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
     <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
-    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.1 · 2026-11-14 · 共 52 个版本</span><span lang="en">Latest version 1.0.1 · 2026-11-14 · 52 versions</span></p>
+    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.2 · 2026-11-15 · 共 53 个版本</span><span lang="en">Latest version 1.0.2 · 2026-11-15 · 53 versions</span></p>
     <p class="policy-note"><span lang="zh-CN">本页由仓库里的 <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> 生成，内容逐条一致；每个版本下中文与英文逐条对应。</span><span lang="en">This page is generated from <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the repository and matches it item by item; under each version, the Chinese and English texts correspond item by item.</span></p>
     </div>
+
+    <section class="rel" id="v1-0-2">
+      <h2 class="rel-h"><span class="rel-ver">1.0.2</span><time class="rel-date" datetime="2026-11-15">2026-11-15</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>「盖住」不再首屏闪现</strong>：给元素选「盖住」方式后，打开该网站的瞬间目标内容不会先露一帧再被盖住（首屏遮挡现在会等遮罩层就位才撤）</li>
+        <li><strong>扩展更新后旧设置立即接管</strong>：隐藏了悬浮按钮的网站在扩展更新 / 重载后，旧实例留下的样式由新实例正确接管——此前删规则、关灰度会"看起来没反应"，要手动刷新页面</li>
+        <li><strong>切换界面语言立即生效</strong>：只靠语言兜底标题的网站，切换界面语言后已打开标签页的假标题立刻跟着换</li>
+        <li><strong>慢设备上「遮住这一页」不再误报</strong>：遮罩铺开所需时间较长时不再提示失败</li>
+        <li><strong>键盘操作不断线</strong>：站点设置页删行、撤销，以及三处「允许访问」授权完成后，焦点回到列表中正确的位置，不再跳回页首</li>
+        <li><strong>深色界面下的点选框</strong>：向导的选中 / 悬停描边颜色跟随网页底色而非界面主题——深色界面 + 浅色网页时描边依然清晰（对比度 ≥3:1）</li>
+        <li><strong>向导清单更好读</strong>：收起项清单底部新增"下面还有"的渐隐提示；「盖住」的幽灵号牌改为半透明，不再完全盖住底下的文字</li>
+        <li><strong>界面小修</strong>：欢迎页一处用词与术语表对齐；透明度过淡提示改为"所在的位置"（原"原来的位置"易误解为默认位置）；导入结果统一用"跳过"；插件设置页快捷键入口文字与卡内其他行对齐</li>
+        <li><strong>文档</strong>：隐私政策的短标签长度口径与实现对齐（自动填好、可编辑、最长 60 字符；在线页同批更新）</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>功能与权限集合与 1.0.1 完全一致（<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + 按站点可选主机权限），安装时不授予任何站点</li>
+        <li>门禁：编译、单测 862 项（57 文件）、E2E 十二脚本（新增"扩展重载后样式接管"与"深浅色 tokens"两道）、真机站点验证（匿名页）、check:docs / check:package 全绿（1.0.2 构建实测）</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>"Cover" no longer flashes on first paint</strong>: after choosing the "cover" method for an element, opening that site no longer shows the target for a frame before it gets covered (the first-paint shield now stays until the cover layer is in place)</li>
+        <li><strong>Old settings take over correctly after extension updates</strong>: on sites where the floating button is hidden, styles left by the old instance after an update / reload are now taken over by the new one — previously deleting a rule or turning gray off could "look like nothing happened" until a manual reload</li>
+        <li><strong>Switching the interface language applies immediately</strong>: on sites relying on the language-fallback tab title, already-open tabs now follow the switch right away</li>
+        <li><strong>"Cover this page" no longer reports failure on slow devices</strong>: when the cover takes longer to spread, no more false failure notice</li>
+        <li><strong>Keyboard path stays connected</strong>: after deleting a row or undoing on the site settings page, and after all three "Allow access" confirmations, focus returns to the right place in the list instead of jumping to the top of the page</li>
+        <li><strong>Pick outline in dark UI</strong>: the wizard's selection / hover outline color now follows the page background instead of the UI theme — with a dark UI on a light page the outline stays clearly visible (contrast ≥3:1)</li>
+        <li><strong>Easier-to-read wizard lists</strong>: the items list gains a bottom fade hinting "more below"; ghost badges for covered items become semi-transparent so they no longer fully hide the text underneath</li>
+        <li><strong>Small UI fixes</strong>: one welcome-page wording now matches the glossary; the low-opacity hint says "where the button is" instead of "its original position"; import results consistently say "skipped"; the shortcut entry on the Settings page aligns with the card's other rows</li>
+        <li><strong>Docs</strong>: the privacy policy's short-label length now matches the implementation (auto-filled, editable, up to 60 characters; online copy updated in the same batch)</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Features and permission set are identical to 1.0.1 (<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + optional per-site host permissions); no site access is granted at install time</li>
+        <li>Gates: compile, 862 unit tests (57 files), E2E across twelve scripts (two new: "style takeover after extension reload" and "light/dark tokens"), real-site verification (anonymous pages), check:docs / check:package all green (verified on the 1.0.2 build)</li>
+      </ul>
+    </section>
 
     <section class="rel" id="v1-0-1">
       <h2 class="rel-h"><span class="rel-ver">1.0.1</span><time class="rel-date" datetime="2026-11-14">2026-11-14</time></h2>

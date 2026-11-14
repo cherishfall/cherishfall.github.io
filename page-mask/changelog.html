@@ -1,0 +1,1731 @@
+<!doctype html>
+<!-- 本文件由 cherishfall/page-mask 仓库的 scripts/gen-changelog-page.mjs 从 CHANGELOG.md 生成，不要手改；
+     样式与页头页脚随 privacy.html 模板同步，改那里然后重新生成。 -->
+<html lang="zh-CN" data-title-zh="更新日志 · PageMask" data-title-en="Changelog · PageMask" data-desc-zh="PageMask 每个版本的改动记录：最新版本在最上面，中文与英文逐条对应。" data-desc-en="What changed in each version of PageMask, newest first; Chinese and English correspond item by item.">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="PageMask 每个版本的改动记录：最新版本在最上面，中文与英文逐条对应。">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
+<title>更新日志 · PageMask</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect x='2' y='2' width='124' height='124' rx='24' fill='%232563eb'/%3E%3Crect x='34' y='12' width='60' height='104' rx='8' fill='%23fff'/%3E%3Crect x='42' y='82' width='44' height='7' rx='3.5' fill='%239aa3af'/%3E%3Crect x='42' y='95' width='30' height='7' rx='3.5' fill='%239aa3af'/%3E%3Cg transform='rotate(-10 64 50) translate(-4 -6)'%3E%3Cpath d='M26 48 C34 36 50 36 58 45 L64 51 L70 45 C78 36 94 36 102 48 C102 64 88 70 76 63 L64 56 L52 63 C40 70 26 64 26 48 Z' fill='%231e40af'/%3E%3Ccircle cx='45' cy='51' r='6' fill='%23fff'/%3E%3Ccircle cx='83' cy='51' r='6' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+/* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文） */
+(function () {
+  'use strict';
+  var lang = null;
+  try { lang = localStorage.getItem('pagemask-landing-lang'); } catch (e) {}
+  if (lang === 'en') {
+    document.documentElement.classList.add('lang-en');
+    document.documentElement.lang = 'en';
+  }
+})();
+</script>
+<style>
+/* ── 色彩：与扩展 styles/tokens.css 同一套明暗两档（bg / bg-subtle / fg / muted / accent / border）。
+   结构按 modern-web-guidance「dark-mode」：原始色值 → 语义变量默认浅色 →
+   @media prefers-color-scheme 兜底（不支持 light-dark() 的浏览器）→ @supports light-dark()。
+   对比度沿用 tokens.css 已实测的组合：fg/bg 15.78·12.75，muted/bg 4.83·5.98，
+   accent/bg 5.17·7.68，border-control/bg 3.25·4.13（正文 ≥4.5，控件边界 ≥3）。 ── */
+:root {
+  color-scheme: light dark;
+
+  /* 原始色值 */
+  --accent-l: #2563eb;        --accent-d: #93b4ff;
+  --accent-hover-l: #1d4ed8;  --accent-hover-d: #b4cbff;
+  --accent-active-l: #1e40af; --accent-active-d: #c9dbff;
+  --on-accent-l: #ffffff;     --on-accent-d: #1f2329;
+  --fg-l: #1f2329;            --fg-d: #e5e7eb;
+  --muted-l: #6b7280;         --muted-d: #9aa0a6;
+  --bg-l: #ffffff;            --bg-d: #1f2329;
+  --bg-subtle-l: #f6f7f9;     --bg-subtle-d: #2a2e35;
+  --control-hover-l: #eef0f3; --control-hover-d: #23262c;
+  --control-active-l: #e4e7eb;--control-active-d: #1d2025;
+  --bg-selected-l: #bcc1c8;   --bg-selected-d: #303743;
+  --border-l: #d1d5db;        --border-d: #3f444c;
+  --border-control-l: #8a8f98;--border-control-d: #7d838c;
+
+  /* 语义变量（默认浅色） */
+  --accent: var(--accent-l);
+  --accent-hover: var(--accent-hover-l);
+  --accent-active: var(--accent-active-l);
+  --on-accent: var(--on-accent-l);
+  --fg: var(--fg-l);
+  --muted: var(--muted-l);
+  --bg: var(--bg-l);
+  --bg-subtle: var(--bg-subtle-l);
+  --control-hover: var(--control-hover-l);
+  --control-active: var(--control-active-l);
+  --bg-selected: var(--bg-selected-l);
+  --border: var(--border-l);
+  --border-control: var(--border-control-l);
+
+  /* 动效：只动颜色类属性，150ms（design-ui §九）；reduced-motion 降到 120ms */
+  --motion: 150ms;
+  --ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --radius: 8px;
+  --radius-card: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: var(--accent-d);
+    --accent-hover: var(--accent-hover-d);
+    --accent-active: var(--accent-active-d);
+    --on-accent: var(--on-accent-d);
+    --fg: var(--fg-d);
+    --muted: var(--muted-d);
+    --bg: var(--bg-d);
+    --bg-subtle: var(--bg-subtle-d);
+    --control-hover: var(--control-hover-d);
+    --control-active: var(--control-active-d);
+    --bg-selected: var(--bg-selected-d);
+    --border: var(--border-d);
+    --border-control: var(--border-control-d);
+  }
+}
+@supports (color: light-dark(#fff, #000)) {
+  :root {
+    --accent: light-dark(var(--accent-l), var(--accent-d));
+    --accent-hover: light-dark(var(--accent-hover-l), var(--accent-hover-d));
+    --accent-active: light-dark(var(--accent-active-l), var(--accent-active-d));
+    --on-accent: light-dark(var(--on-accent-l), var(--on-accent-d));
+    --fg: light-dark(var(--fg-l), var(--fg-d));
+    --muted: light-dark(var(--muted-l), var(--muted-d));
+    --bg: light-dark(var(--bg-l), var(--bg-d));
+    --bg-subtle: light-dark(var(--bg-subtle-l), var(--bg-subtle-d));
+    --control-hover: light-dark(var(--control-hover-l), var(--control-hover-d));
+    --control-active: light-dark(var(--control-active-l), var(--control-active-d));
+    --bg-selected: light-dark(var(--bg-selected-l), var(--bg-selected-d));
+    --border: light-dark(var(--border-l), var(--border-d));
+    --border-control: light-dark(var(--border-control-l), var(--border-control-d));
+  }
+}
+@media (forced-colors: active) {
+  :root {
+    --accent: Highlight;
+    --accent-hover: Highlight;
+    --accent-active: Highlight;
+    --on-accent: HighlightText;
+    --fg: CanvasText;
+    --muted: CanvasText;
+    --bg: Canvas;
+    --bg-subtle: Canvas;
+    --control-hover: Canvas;
+    --control-active: Canvas;
+    --bg-selected: Canvas;
+    --border: CanvasText;
+    --border-control: CanvasText;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion: 120ms; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ── 基础 ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+h1, h2, h3, p, ul, ol { margin: 0; }
+svg { display: block; }
+main:focus { outline: none; }
+.container { max-width: 960px; margin-inline: auto; padding-inline: 20px; }
+
+/* ── 双语切换：无 JS 时默认显示中文；html.lang-en 时显示英文 ── */
+html:not(.lang-en) body [lang="en"] { display: none; }
+html.lang-en body [lang="zh-CN"] { display: none; }
+
+/* ── 焦点可见 ── */
+:where(a, button, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* 状态切换只动颜色类属性 */
+a, button, summary {
+  transition:
+    color var(--motion) var(--ease),
+    background-color var(--motion) var(--ease),
+    border-color var(--motion) var(--ease);
+}
+
+/* ── 跳转链接（skip link）：默认视觉隐藏，键盘聚焦时出现 ── */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── 页头 ── */
+.site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.site-header .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  padding-block: 12px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+.brand svg { flex: none; width: 26px; height: 26px; }
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav a {
+  display: inline-block;
+  padding: 6px 2px;
+  font-size: 15px;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: 4px;
+}
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lang-group {
+  display: inline-flex;
+  gap: 4px;
+  margin-inline-start: auto;
+  padding: 3px;
+  border: 1px solid var(--border-control);
+  border-radius: 999px;
+}
+.lang-group button {
+  min-height: 30px;
+  padding: 3px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lang-group button:hover { color: var(--fg); }
+.lang-group button[aria-pressed="true"] { background: var(--bg-selected); color: var(--fg); }
+
+/* ── 政策正文 ── */
+.policy { padding-block: 40px 64px; }
+.back { font-size: 15px; }
+.policy h1 {
+  margin-top: 14px;
+  font-size: clamp(28px, 4vw, 34px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.policy-meta { margin-top: 12px; color: var(--muted); font-size: 14px; }
+.policy-note {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+  font-size: 15px;
+}
+.policy section { margin-top: 36px; }
+.policy h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.policy p { margin-top: 12px; }
+.policy ul, .policy ol { margin-top: 10px; padding-inline-start: 24px; }
+.policy li { margin-block: 6px; }
+.policy li::marker { color: var(--muted); }
+.policy .text-link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.policy .text-link:hover { color: var(--accent-hover); }
+.policy .text-link:active { color: var(--accent-active); }
+/* 独立摆放的文字入口（不嵌在句子里）：补上下内边距，可点区 ≥24px（WCAG 2.5.8；
+   句子里的行内链接按其「inline」例外豁免） */
+.link-standalone { display: inline-block; padding: 4px 0; }
+
+/* ── 页脚 ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding-block: 28px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+}
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer a:hover { color: var(--fg); }
+
+/* ── 响应式：360px 起单列 ── */
+@media (max-width: 479px) {
+  .site-header .container { gap: 8px 16px; }
+  .lang-group { margin-inline-start: 0; }
+}
+
+/* ── 更新日志（本页专属；token 与上文同一套） ── */
+.rel { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); }
+.rel-h { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.rel-ver { font-size: 20px; font-weight: 600; }
+.rel-date { color: var(--muted); font-size: 14px; font-weight: 400; }
+.rel h3 { margin-top: 20px; font-size: 16px; font-weight: 600; }
+.rel ul { margin-top: 10px; }
+.rel code, .policy p code {
+  background: var(--bg-subtle);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main"><span lang="zh-CN">跳到主要内容</span><span lang="en">Skip to main content</span></a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <!-- 品牌图标就是扩展主图标：图形逐字取自 cherishfall/page-mask 的 assets/icon/icon.svg（128px 版，
+           也就是商店列表与扩展管理页显示的那一份）。改图标时两边一起改，不要在这里另画一版。 -->
+      <svg viewBox="0 0 128 128" aria-hidden="true">
+        <rect x="2" y="2" width="124" height="124" rx="24" fill="#2563eb"/>
+        <rect x="34" y="12" width="60" height="104" rx="8" fill="#ffffff"/>
+        <rect x="42" y="82" width="44" height="7" rx="3.5" fill="#9aa3af"/>
+        <rect x="42" y="95" width="30" height="7" rx="3.5" fill="#9aa3af"/>
+        <g transform="rotate(-10 64 50) translate(-4 -6)">
+          <path d="M26 48 C34 36 50 36 58 45 L64 51 L70 45 C78 36 94 36 102 48 C102 64 88 70 76 63 L64 56 L52 63 C40 70 26 64 26 48 Z" fill="#1e40af"/>
+          <circle cx="45" cy="51" r="6" fill="#ffffff"/>
+          <circle cx="83" cy="51" r="6" fill="#ffffff"/>
+        </g>
+      </svg>
+      <span>PageMask</span>
+    </a>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html#features"><span lang="zh-CN">功能</span><span lang="en">Features</span></a></li>
+        <li><a href="index.html#how"><span lang="zh-CN">怎么用</span><span lang="en">How it works</span></a></li>
+        <li><a href="index.html#install"><span lang="zh-CN">安装</span><span lang="en">Install</span></a></li>
+        <li><a href="index.html#privacy"><span lang="zh-CN">隐私</span><span lang="en">Privacy</span></a></li>
+        <li><a href="index.html#faq"><span lang="zh-CN">常见问题</span><span lang="en">FAQ</span></a></li>
+        <li><a href="changelog.html"><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></a></li>
+      </ul>
+    </nav>
+    <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
+      <button type="button" id="lang-zh" aria-pressed="true">中文</button>
+      <button type="button" id="lang-en" aria-pressed="false">English</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+    <div class="container policy">
+    <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
+    <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
+    <p class="policy-meta"><span lang="zh-CN">最新版本 0.9.8 · 2026-11-14 · 共 50 个版本</span><span lang="en">Latest version 0.9.8 · 2026-11-14 · 50 versions</span></p>
+    <p class="policy-note"><span lang="zh-CN">本页由仓库里的 <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> 生成，内容逐条一致；每个版本下中文与英文逐条对应。</span><span lang="en">This page is generated from <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the repository and matches it item by item; under each version, the Chinese and English texts correspond item by item.</span></p>
+
+    <section class="rel" id="v0-9-8">
+      <h2 class="rel-h"><span class="rel-ver">0.9.8</span><time class="rel-date" datetime="2026-11-14">2026-11-14</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>欢迎页第 1 步的图示改成真实 Chrome 的样子</strong>：原来把工具栏和扩展菜单画成同一条横条，还用一个字母方块代替插件图标；现在画的是「点拼图图标 → 在扩展列表里找到 PageMask → 点行尾图钉」这两步，图标用的是插件自己的真实图标</li>
+        <li><strong>删除这个网站的设置，确认框不再贴着弹窗边缘</strong>：宽度算法没把四周留白算进去，288 像素的框实际撑到 330，而弹窗只有 320 像素宽。现在左右各留 16 像素；管理页与设置页里同类的确认框也统一了内边距和边框</li>
+        <li><strong>插件里的隐私政策网址换新地址</strong>：随这次更新指向 <code>https://cherishfall.github.io/page-mask/privacy.html</code>。PageMask 的所有页面现在都收在 <code>/page-mask/</code> 路径下，旧地址 <code>https://cherishfall.github.io/privacy.html</code> 已移除，访问会返回找不到页面（404）——0.9.8 之前的版本还写着旧地址，升级后即指向新页</li>
+        <li><strong>仓库文档整理</strong>：术语表、隐私政策、商店提交材料三份文档从根目录收进 <code>docs/</code>；面向用户的说明书、开发约定里的位置信息和链接全部同步。根目录只留 GitHub 与各类工具默认会去找的 6 份文件</li>
+        <li><strong>落地页改到 <code>/page-mask/</code> 路径</strong>：<code>https://cherishfall.github.io/page-mask/</code> 是 PageMask 的主页，站点根页改成项目索引，以后加别的项目不会挤在一起</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>确认框仍然出现在它原本的窗口里：插件弹窗里的停在弹窗中，网页里的停在网页中。这是 Chrome 原生确认框的行为，改变不了；本次统一的是三处确认框的外观</li>
+        <li>门禁：编译、单测 845 项（57 文件）、E2E 十脚本 1110 项断言、check:docs / check:package 全绿</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>The first onboarding illustration now matches real Chrome.</strong> It used to show the toolbar and the extensions menu as a single bar, with a letter block standing in for the extension icon. It now shows the actual two steps — click the puzzle icon, find PageMask in the list of extensions, click the pin at the end of that row — and uses the extension's real icon</li>
+        <li><strong>"Delete this site's settings" no longer fills the popup edge to edge.</strong> The dialog width was calculated without its padding, so a 288 px box rendered at 330 px inside a 320 px popup. It now leaves 16 px on each side, and the same dialogs in the management and settings pages share one set of padding and border styles</li>
+        <li><strong>The privacy policy link inside the extension points at the new address</strong>: <code>https://cherishfall.github.io/page-mask/privacy.html</code>. Every PageMask page now lives under the <code>/page-mask/</code> path; the old address, <code>https://cherishfall.github.io/privacy.html</code>, has been removed and returns not found (404). Versions before 0.9.8 still carry the old address and point at the new page once updated</li>
+        <li><strong>Repository docs tidied up.</strong> The glossary, privacy policy and store submission material moved from the root into <code>docs/</code>; location references and links in the user-facing docs and contributor guidance were updated. Six files remain at the root because GitHub and common tools look for them there</li>
+        <li><strong>The landing page moved to <code>/page-mask/</code></strong>: <code>https://cherishfall.github.io/page-mask/</code> is now PageMask's home, and the site root is a simple index of projects, so future projects get their own paths</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Confirmation dialogs still appear in the window they belong to: one inside the popup, one in the web page. That is how Chrome's native dialogs behave and cannot be changed; what is now consistent is how the three dialogs look</li>
+        <li>Gates: typecheck, 845 unit tests (57 files), 1110 assertions across ten E2E scripts, check:docs / check:package all green</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-7">
+      <h2 class="rel-h"><span class="rel-ver">0.9.7</span><time class="rel-date" datetime="2026-11-13">2026-11-13</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>插件设置页「关于」卡补「隐私政策」入口</strong>：一行链接指向在线隐私政策页。Chrome 商店的隐私披露要求「显著披露必须在扩展界面内」，商店描述页不算——此前扩展里没有政策入口，现在有了</li>
+        <li><strong>在线落地页上线</strong>：<a href="https://cherishfall.github.io/">https://cherishfall.github.io/</a>（中英双语，含功能说明、三步用法、安装方式、隐私四问、常见问题），隐私政策页 <a href="https://cherishfall.github.io/privacy.html">https://cherishfall.github.io/privacy.html</a> 与仓库里的 <code>PRIVACY.md</code> 逐条等义</li>
+        <li><strong>隐私政策链接改指已上线的页面</strong>：商店材料、README、隐私政策文件的链接统一指向上面那个公开地址，不再依赖仓库是否公开（商店对隐私政策死链直接拒审）</li>
+        <li>「关于」卡原为每行各自排布，各行值起点不齐（英文态 127/144/138/163 像素），改成两列网格后齐平</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>新增 <code>docs/store-submission-guide.md</code>：从注册开发者账号到提交审核、发布、后续更新的逐步操作指南，每条政策事实都附官方来源链接；含审核员备注写法、常见拒审原因与本项目的预防动作对照表</li>
+        <li>门禁：编译、单测 840 项（56 文件）、E2E 十脚本 1108 项、check:docs / check:package 全绿</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>"Privacy policy" link added to the About card</strong> in plugin settings, pointing at the online policy page. The store's disclosure rules require prominent disclosure inside the extension UI (a store listing does not count) — there was no policy entry before, now there is</li>
+        <li><strong>Landing page is live</strong>: <a href="https://cherishfall.github.io/">https://cherishfall.github.io/</a> (bilingual: features, three-step usage, install, four privacy answers, FAQ), with the policy at <a href="https://cherishfall.github.io/privacy.html">https://cherishfall.github.io/privacy.html</a>, equivalent item by item to the repository's <code>PRIVACY.md</code></li>
+        <li><strong>Privacy policy links now point at the live page</strong> in the store materials, README and the policy file itself — no longer dependent on whether the repository is public (a dead privacy-policy link is an automatic rejection)</li>
+        <li>The About card's rows now share a two-column grid, so their values line up (previously 127/144/138/163 px in English)</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>New <code>docs/store-submission-guide.md</code>: a step-by-step guide from developer account to submission, review, publication and updates, every policy fact carrying an official source link; includes reviewer-notes guidance and a table mapping common rejection reasons to this extension's preventive actions</li>
+        <li>Gates: typecheck, 840 unit tests (56 files), ten E2E scripts (1108 assertions), check:docs / check:package all green</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-6">
+      <h2 class="rel-h"><span class="rel-ver">0.9.6</span><time class="rel-date" datetime="2026-11-13">2026-11-13</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>真实网站 E2E 恢复全绿</strong>：测试工具的站点身份计算没跟上 0.9.0 的「一个网站 = 可注册域名」改造，真站（微信读书 / 得到 / 墨问）的测试档案写错了键、流程停在第一步。现测试侧直接复用扩展内核的同一份实现（构建时转译，附三层一致性单测），三站完整流程（点选 → 看效果 → 保存 → 规则真实命中）恢复通过；顺带修掉脚本两层旧失配（裸域授权、保存后的「先保持原样」确认）</li>
+        <li><strong>小修</strong>：权限匹配对显式 <code>:*</code> 通配端口按官方语义处理；管理页「⋯」展开态在高对比度模式下可见；下划线离字距离收口成共享 token；两处开发文档旧说法同步</li>
+        <li><strong>加固</strong>：导入文件超 20MB 给人话报错（不再卡住页面）；收起项名称超长按码点截断（与标题同口径）；向导打开消息补来源校验（与其他特权消息同口径）</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>第二轮独立审查（真站 E2E / 夜间新增代码复审 / 安全与隐私探针）结论：无功能坏点；安全探针七项全安全（零远程资源、零 HTML 注入通道、特权消息全校验、权限申请全部用户手势同步回合）</li>
+        <li>门禁：编译、单测 840 项（56 文件）、E2E 十脚本 1107 项、真站三站、check:docs / check:package 全绿</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>Real-site E2E restored to green</strong>: the test harness computed site identity by full hostname, missing the 0.9.0 change to registrable domains — test profiles landed under wrong keys on real sites (WeRead / Dedao / Mowen). The harness now reuses the extension's own implementation (transpiled at test time, with three-layer consistency tests); the full flow (pick → preview → save → rules actually match) passes again on all three sites, plus two older script mismatches fixed (bare-domain grants, the save-time "keep as is" dialog)</li>
+        <li><strong>Small fixes</strong>: explicit <code>:*</code> wildcard ports follow Chrome's documented semantics; the management-row "⋯" expanded state is visible in forced-colors mode; text-underline offset consolidated into a shared token; two stale doc mentions synced</li>
+        <li><strong>Hardening</strong>: imports over 20 MB get a plain-language error instead of freezing the page; hide-item names longer than 60 code points are truncated (same as titles); the open-wizard message now validates its sender like other privileged messages</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Second independent review round (real-site E2E / fresh-code review / security &amp; privacy probe) found no functional defects; the probe's seven areas all came back safe (zero remote resources, zero HTML-injection channels, all privileged messages validated, every permission request in a user-gesture turn)</li>
+        <li>Gates: typecheck, 840 unit tests (56 files), ten E2E scripts (1107 assertions), three real sites, check:docs / check:package all green</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-5">
+      <h2 class="rel-h"><span class="rel-ver">0.9.5</span><time class="rel-date" datetime="2026-11-13">2026-11-13</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>站点设置页：「标签页标题」「标签页图标」合并为一张「标题和图标」卡</strong>。向导、弹窗、胶囊菜单里它们本来就是一项，设置页是唯一拆开的地方（0.3.0 的旧结构一直没跟着合）。合并后卡内仍是「标签页标题」「标签页图标」两个字段，自动保存不变；「恢复网站原来的标题和图标」收进卡内底部，与「恢复网站原来的内容」同款</li>
+        <li><strong>站点设置页「整页变灰」的说明气泡修复</strong>。此前悬停只见问号光标、气泡渲染到了页面外（宿主行少一个定位锚）；位置从行中央移到开关左侧、与弹窗一致。新增两条机器守门（锚类静态检查 + 三处页面逐枚悬停断言），同类问题第四次出现的路被堵死</li>
+        <li><strong>带非默认端口的页面不再误报「还没允许访问」</strong>。此前匹配模式未写端口时按「只匹配默认端口」判定，与 Chrome 官方语义（未写端口 = 所有端口）相反：已授权网站打开带端口的页面会照常生效，不再陷入「允许访问也没用」的死循环</li>
+        <li><strong>健壮性</strong>。悬浮按钮上开关 / 拖动定位写入失败时回滚并提示（此前静默失败）；幕布「恢复」按钮换到更小的窗口后不再停在屏幕外；页面还没加载完就打开「标题和图标」「收起内容」不再无响应；另修六处小问题（导入不再接受非法站点名、瞬时读权限失败不再全量注销注入、遮罩结果误报等）</li>
+        <li><strong>文案精修</strong>。数量单位统一为「项」；说明句句尾句号清零并新增标点守门测试；撤掉幕布的动作统一叫「恢复」；待授权提示不再承诺「允许之后就会按设置显示」（开关若在「原样」，这句话是假的）；英文侧修正单复数、冠词、指代与开关命名（"Show the floating button"）</li>
+        <li><strong>视觉统一</strong>。立「文字入口」规则（导航蓝 / 次级灰 / 危险红，能点的文字看得出来能点）并全项目归档；暗色模式下未选中的单选圆点对比补足（1.41 → 5.98:1）；欢迎页功能顺序对齐权威表、插图与胶囊选中底对比补足、演示状态与文案一致、补讲「整页变灰」段；「⋯」菜单展开时按钮有选中态；插件设置与管理页若干对齐（同词卡头去重、说明位置统一到字段下方、小控件点击区补足）</li>
+        <li><strong>商店材料</strong>。6 张截图脚本修通（虚构域名映射本地，截图不再出现 127.0.0.1）、权限描述与版本史更正</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>机器守门新增：ⓘ 宿主锚类静态检查 + <code>check-info-tips</code>（三处页面逐枚悬停断言气泡在视口内）；说明句标点守门；欢迎页顺序从权威对照表派生断言；暗色单选对比断言</li>
+        <li><code>docs/design-ui.md</code> 新增「文字入口」一节（五档，含 GOV.UK / Carbon / Ant 出处）与「危险色两档」登记；站点设置页区块「五改四」，<code>docs/design-surfaces.md</code> 对照表、<code>GLOSSARY.md</code>、<code>docs/design.md</code> 同步</li>
+        <li>界面用词变更仅两处英文侧：辅助行开关 "Show the floating button"、灰度卡名 "Whole-page gray"（对照表逐字同步）；中文用词不变</li>
+        <li>门禁：编译、单测 835 项（55 文件）、E2E 十脚本（含新增 check-info-tips）、check:docs / check:package 全绿；产物 <code>.output/page-mask-0.9.5-chrome.zip</code></li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>Site settings: "Tab title" and "Tab icon" are now one "Title &amp; icon" card</strong>. The wizard, popup and capsule menu already treat them as one item; the settings page was the only place still splitting them (a 0.3.0-era structure). The card keeps both field names, autosave unchanged; "Use the site's own title and icon" now sits inside the card bottom, matching "Use the site's own content"</li>
+        <li><strong>Fixed the info bubble on the site settings "Whole-page gray" row</strong>. Hovering used to show only the help cursor — the bubble rendered off-page (its host row lacked a positioning anchor); the bubble also moved from mid-row to the left of the switch, matching the popup. Two machine guards added (a static anchor check plus per-instance hover assertions on three pages)</li>
+        <li><strong>Pages on non-default ports no longer report "not allowed yet"</strong>. Match patterns without an explicit port were treated as default-port-only, the opposite of Chrome's documented semantics (no port = all ports): authorized sites now work on ported pages instead of looping on a pointless permission prompt</li>
+        <li><strong>Robustness</strong>. Floating-button toggle / position writes roll back with a notice on failure (previously silent); the curtain's restore button no longer lands off-screen on smaller windows; opening "Title &amp; icon" / "Hide items" before the page has finished loading no longer no-ops; six smaller fixes (imports reject invalid site keys, a transient permission-read failure no longer unregisters every site, cover-result false negatives, etc.)</li>
+        <li><strong>Copy refinement</strong>. Counts unified to "items"; trailing full stops removed from standing hints with a new punctuation guard; uncovering the curtain is now consistently "Restore"; the pending-authorization hint no longer promises "shown your way" (false when the site switch is off); English fixes for plurals, articles, references, and the toggle label ("Show the floating button")</li>
+        <li><strong>Visual consistency</strong>. A documented "text entry" rule (nav blue / secondary gray / danger red; clickable text looks clickable) applied across surfaces; dark-mode unchecked radios fixed (1.41 → 5.98:1); the welcome guide aligns with the canonical order, illustration and capsule selected-state contrast fixed, demo state now matches its copy, the gray segment is introduced; the "⋯" button shows a selected state while its menu is open; several alignments in plugin settings and management pages (duplicate card/field headings removed, hints moved below their fields, small-control hit areas)</li>
+        <li><strong>Store materials</strong>. Screenshot script fixed (fictional domains mapped locally, no more 127.0.0.1 in shots), permission wording and version history corrected</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>New machine guards: a static ⓘ-anchor check and <code>check-info-tips</code> (hover assertions on three pages); a hint punctuation guard; welcome order derived from the canonical surfaces table; dark radio contrast assertions</li>
+        <li><code>docs/design-ui.md</code> gains a "text entry" section (five tiers with GOV.UK / Carbon / Ant sources) and a two-tier danger-color note; the site settings page goes from five blocks to four, with <code>docs/design-surfaces.md</code>, <code>GLOSSARY.md</code> and <code>docs/design.md</code> synced</li>
+        <li>Only two English wording changes: "Show the floating button" and "Whole-page gray" (table-synced); Chinese wording unchanged</li>
+        <li>Gates: typecheck, 835 unit tests (55 files), ten E2E scripts (including the new check-info-tips), check:docs / check:package all green; artifact <code>.output/page-mask-0.9.5-chrome.zip</code></li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-4">
+      <h2 class="rel-h"><span class="rel-ver">0.9.4</span><time class="rel-date" datetime="2026-11-12">2026-11-12</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>三个开关右边缘对齐</strong>：原来「按你的设置显示」「整页变灰」两个开关在一条竖线上，「悬浮按钮」那个往外偏了 13 像素，看着像三样东西。现在三个落在同一条竖线上</li>
+        <li><strong>底部三行与上方对齐</strong>：「全部网站设置」「插件设置」两个入口改成左右各贴一边（原来各占一半、文字居中），「删除这个网站的设置」与卡片里的说明文字左对齐。分隔线仍横跨整张卡——它是分组线，跨整卡是有理由的例外</li>
+        <li><strong>「悬浮按钮」补上图标</strong>：另外三行标签前都有图标，唯独这行没有，文字比别人靠左 24 像素。现在补了一颗与页面上那颗悬浮按钮同源的轮廓图标，四行文字起点齐了；名字仍是「悬浮按钮」</li>
+        <li><strong>两枚说明气泡位置统一</strong>：「整页变灰」那枚本来贴着开关，「悬浮按钮」那枚被挤在行中间。现在都在各自开关左边、间距一致</li>
+        <li>界面上没有增删任何文字，术语与说法一处未改</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>「同一屏所有行共用一条内容边线」写成成文规矩（<code>docs/design-ui.md</code> §五第 8 条），并进一致性复查清单第 13 条；内容内缩量只在 <code>--pm-card-inset</code> 一处定义</li>
+        <li>新增自动检查：中英两种语言下逐项比对三个开关右缘、底部三行左右落点、四行图标位置、两枚气泡右缘与分隔线宽度；另加 4 项单测守住「内缩量只有一处来源」</li>
+        <li>控件类型按语义保留、不改：开关管记住的状态（按你的设置显示 / 整页变灰 / 悬浮按钮），按钮做一次性动作（遮住这一页刷新即还原）。Apple HIG、Carbon、Ant Design 三家规范同此口径</li>
+        <li>遗留观察：「整页变灰」标签前的圆形图是功能图标，与信息标外形相近；换图形要连悬浮按钮、菜单、站点设置页一起换，另批再议</li>
+        <li>门禁：编译、单测 807 项（51 个文件）、E2E 九个脚本 1067 项断言全绿、文档与打包检查通过</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The three switches now share one edge</strong>: “Shown your way” and “Grayscale whole page” sat on one vertical line while “Floating button” was 13 px further out, so the row read as a different kind of thing. All three now line up on the same edge</li>
+        <li><strong>The bottom rows line up with the cards above</strong>: “All site settings” and “Settings” now hug the left and right ends of the content area (they used to split the row in half with centered text), and “Delete this site’s settings” lines up with the explanatory text inside the cards. The divider still spans the full card width — it separates groups, which is a deliberate exception</li>
+        <li><strong>The floating button row got an icon</strong>: the other three rows have an icon before the label, this one had none, so its text started 24 px further left. It now carries an outline icon taken from the floating button itself, so all four labels start at the same place. The name is still “Floating button”</li>
+        <li><strong>Both info tips moved to the same spot</strong>: the one beside “Grayscale whole page” already sat against its switch, the one beside “Floating button” had been pushed into the middle of the row. Both now sit against their own switch, the same distance away</li>
+        <li>No wording was added or removed, and no name changed</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>“Every row on one screen shares one content edge” is now a written rule (<code>docs/design-ui.md</code> §五, rule 8) and a new entry in the consistency checklist; that inset is expressed in exactly one place (<code>--pm-card-inset</code>)</li>
+        <li>New automated checks compare, in both Chinese and English, the right edges of the three switches, the left and right edges of the bottom rows, the four icon slots, the two info tips and the divider; four new unit tests guard the single source of that inset</li>
+        <li>Control types stay as they are, by meaning: switches manage remembered state (“Shown your way” / “Grayscale whole page” / “Floating button”), buttons perform a one-off action (“Cover this page” is gone on reload). Apple HIG, Carbon and Ant Design all draw the same line</li>
+        <li>Known leftover: the round glyph before “Grayscale whole page” is a function icon that resembles the info tip; replacing it means changing the floating button, its menu and the site settings page together, so it waits for its own round</li>
+        <li>Gates: type check, 807 unit tests (51 files), 1067 E2E assertions across nine scripts, doc and package checks — all green</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-3">
+      <h2 class="rel-h"><span class="rel-ver">0.9.3</span><time class="rel-date" datetime="2026-11-12">2026-11-12</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>默认快捷键撞了 Chrome 自带的按键</strong>：原来的 <code>Ctrl+Shift+G</code> / <code>⌘⇧G</code> 是 Chrome 查找栏的「查找上一个」（macOS 上也是访达的「前往文件夹」），Chrome 会静默不绑定这条命令，装完就没有键可用。换成 <code>Ctrl+Shift+Y</code> / <code>⌘⇧Y</code>：逐项核对过 Chromium 的两张保留快捷键表，这组没有被占用，也是 Chrome 官方 commands 文档示例使用的组合。幕布的 <code>Ctrl+Shift+X</code> 不变</li>
+        <li><strong>弹窗上的键帽跟着真实绑定走</strong>：绑上了就显示，没绑上不显示一个不存在的键。上一版「整页变灰」那一行没有键帽，根因就是这条命令没绑上；换键后与「遮住」那一行一致</li>
+      </ul>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>没绑上时给得出下一步</strong>：插件设置页把「到 Chrome 里设置快捷键」放到整张卡下面、两条命令共用，不再挤在第一行让人以为只管那一条；提示改成「可能被系统或其他扩展占用了」。Chrome 不允许扩展替用户改键，只能把用户送到它自己的快捷键页</li>
+        <li><strong>改完键切回来就能看到新键</strong>：设置页与欢迎页在标签页重新可见时重读一次绑定。原来只监听窗口聚焦，而 Chrome 快捷键页是同一窗口的新标签页，切回来窗口焦点没变，会漏掉</li>
+        <li><strong>弹窗文字再收一轮</strong>：删掉「悬浮按钮」那行只复述标签的说明，以及未设置网站多余的「设置后会出现」，已设置网站的常驻说明从三行减到两行；灰度卡不再用「上面的开关」这种位置指代，也不再把「按网站记」与「独立于主开关」混成一句；遮住卡只留还原时机。状态、错误、危险后果的说明一条没删（见 <code>docs/design-copy.md</code>）</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>ADR-0020 补 0.9.3 修订节，写明根因、保留表核对结论与界面引导的改动；开发日志同步</li>
+        <li>新增 <code>tests/shortcut-binding.test.ts</code> 守门 6 项：建议键不许回到被保留的 G、三处界面都读两条真实绑定、长驻页面重读并移除监听、改键入口在两行之后、没绑上不显示假键</li>
+        <li>注意：本地已装过的扩展只「重新加载」不会重算建议键，需要卸载重装，或到 <code>chrome://extensions/shortcuts</code> 手动给这条命令设一个键；用户在那里设过的键不会被新版本覆盖</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The default shortcut collided with a Chrome built-in</strong>: <code>Ctrl+Shift+G</code> / <code>⌘⇧G</code> is Chrome's "Find previous" (and Finder's "Go to Folder" on macOS), so Chrome silently left the command unbound — the feature shipped with no key. It is now <code>Ctrl+Shift+Y</code> / <code>⌘⇧Y</code>: both Chromium reserved-accelerator tables were checked line by line and this combination is free; it is also the combination used in Chrome's own commands documentation examples. The curtain shortcut (<code>Ctrl+Shift+X</code>) is unchanged</li>
+        <li><strong>Popup keycaps follow the real binding</strong>: shown when bound, hidden when not, instead of implying a key that does not exist. The missing keycap on the gray row was a symptom of the unbound command</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>A next step when unbound</strong>: the settings page now puts "Manage shortcuts in Chrome" below both rows so neither looks unmanageable, and the notice says the system or another extension may have taken the key. Chrome does not let extensions change bindings themselves; the user is sent to the browser's own shortcuts page</li>
+        <li><strong>Rebound shortcuts show up without reopening the page</strong>: the settings page and the welcome page re-read bindings when their tab becomes visible again. The old focus listener missed the common path, because Chrome's shortcuts page opens in a new tab of the same window</li>
+        <li><strong>A leaner popup</strong>: dropped the line under "Floating button" that only restated its label, plus the extra "appears once set up" line on unset sites, so a set-up site now shows two persistent hints instead of three. The gray card names the other switch instead of pointing "above" and no longer mixes persistence with independence into one line; the cover card states only when the page comes back. Status, error and consequence copy is untouched (see <code>docs/design-copy.md</code>)</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>ADR-0020 gains a 0.9.3 revision section covering the root cause, the reserved-accelerator check and the UI changes; the dev log is updated too</li>
+        <li>A new <code>tests/shortcut-binding.test.ts</code> guard (6 checks) locks the fix in: suggested keys must not return to G, all three surfaces must read both live bindings, long-lived pages must re-read and clean up listeners, the manage button must sit below both rows, and no fake keycap when unbound</li>
+        <li>Note: reloading an already-installed local build does not re-evaluate a changed suggested key. Remove and reinstall the extension, or assign a key to this command at <code>chrome://extensions/shortcuts</code>. Keys the user set manually are preserved across updates</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-2">
+      <h2 class="rel-h"><span class="rel-ver">0.9.2</span><time class="rel-date" datetime="2026-11-12">2026-11-12</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>整页变灰也能按快捷键了</strong>：默认 Ctrl+Shift+G（Mac 是 ⌘+Shift+G），按一次变灰、再按一次恢复彩色，状态按网站记；第一次按键当场申请这个网站的权限，不必先打开弹窗。幕布那条快捷键仍是临时的、刷新就还原，两条的性质写在插件设置页的同一句说明里（ADR-0020 修订 ADR-0010「全产品只有一条命令」）</li>
+      </ul>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>键帽提示补齐并区分 Mac / PC</strong>：弹窗的灰度卡、插件设置页的快捷键卡、欢迎页示意图都显示 Chrome 里当前实际绑定的键；没绑定就隐藏（插件设置页给一句「没有绑定快捷键」）。Mac 键帽按 Apple 的键盘规范把 Shift 排在 Command 前面（⇧⌘G），Windows / Linux 仍写 Ctrl+Shift+G；幕布键帽同步改成同一种写法</li>
+        <li><strong>界面文案</strong>：插件设置页一句话说清两条快捷键的差别（遮住是临时的、变灰按网站记），英文按同一个意思重写而不是逐字硬译；Chrome 的快捷键设置页里两条命令也都有中英文说明了</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>新增 ADR-0020 正式修订 ADR-0010，并同步「永不做」清单、术语表与商店提交材料</li>
+        <li>后台变灰命令分支补 7 个单测（含拒绝授权、用户手势丢失、不支持页面、关掉时字段消失）；既有幕布快捷键 6 个用例保持通过</li>
+        <li>变灰开关关闭时写「字段消失」而不是 false，与弹窗开关的落库形状一致</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>A shortcut for turning the whole page gray</strong>: Ctrl+Shift+G by default (⌘+Shift+G on Mac). Press once to turn gray, press again to turn back to color; the setting is remembered per site. The first press asks for that site's access right there, so you don't have to open the popup first. The curtain shortcut is still temporary and disappears on reload — the settings page now spells out the difference in one line (ADR-0020 revises ADR-0010's "only one command" decision)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Shortcut hints now cover both commands and both platforms</strong>: the popup's gray card, the settings page shortcut card and the welcome page illustration all show the shortcut currently bound in Chrome; an unbound shortcut is hidden (the settings page says so). On Mac the keycaps follow Apple's keyboard guideline by putting Shift before Command (⇧⌘G); Windows/Linux still read Ctrl+Shift+G. The curtain keycap uses the same order now</li>
+        <li><strong>Interface copy</strong>: the settings page explains in one sentence that covering is temporary while turning the whole page gray is remembered per site, rewritten in English rather than translated word for word; both commands now have localized descriptions in Chrome's keyboard shortcuts page</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>ADR-0020 formally revises ADR-0010; the "never do" list, glossary and store submission materials were updated with it</li>
+        <li>Seven unit tests cover the new gray command branch (including declined permission, lost user gesture, unsupported pages and the field disappearing when switched off); the six existing curtain shortcut tests still pass</li>
+        <li>Turning the gray switch off now removes the field instead of writing false, matching what the popup switch stores</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-1">
+      <h2 class="rel-h"><span class="rel-ver">0.9.1</span><time class="rel-date" datetime="2026-11-12">2026-11-12</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>带非默认端口的站点管理页打不开（#166，#162 遗留）</strong>：<code>localhost:3000</code>、<code>example.com:8443</code> 这类站点在「全部网站设置」里点了没反应、手输地址也显示「没有这个网站的设置」。现在列表行能进、地址能直达</li>
+        <li><strong>向导点选嵌套内容给提示（#167）</strong>：点中网页组件内部区域（shadow DOM）或网页里嵌的另一层页面（iframe）时，提示「收起设置管不到它，所以没有选中」并拒绝选中——这类选择生成的规则永远不生效，还可能误伤外层同名元素。设计文档承诺的提示从此兑现</li>
+        <li><strong>弹窗不再可能停在「读取中」（#168）</strong>：设置读取失败时落到空态并给一句「重新打开弹窗再试一次」；点「收起内容」没反应时页面也给一句话</li>
+      </ul>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>「在哪些页面收起」改成原生单选分段（#142）</strong>：与「收起方式」同一套控件，读屏统一报「N 选 1」，同屏不再有两种互斥语义</li>
+        <li><strong>弹窗的失效提醒可以点了（#175）</strong>：「N 项可能失效」现在是一个入口，点它直接打开「收起内容」重新选；原样态保存的确认按钮补了「保存」二字（「保存，先保持原样」/「保存，现在打开」）；设置面板的「收起 / 展开」改成「收起面板 / 展开面板」，不再与「收起内容」撞名；删除入口与失效项带下划线、看得出来能点；站点设置页的收起项清单加了序号，同名条目分得清；欢迎页可以「跳过引导」；向导「看效果」的清单带上总数（「这次要收起的内容（6 项）」），行多时最后一行藏在滚动区里也不会漏</li>
+        <li><strong>ⓘ 说明气泡加了指向箭头（#175）</strong>：气泡与它解释的那一行连在一起，不再像在解释上一张卡</li>
+        <li><strong>文案全面梳理（#172 / #173 / #174）</strong>：界面禁词（如「生效」）清零；同一概念全项目一种叫法（「检查一样的」「默认标题」「悬浮按钮」）；常驻提示一律不加句尾句号（立了成文规矩）；标题留空说明改成一句有因果的话（「留空就用「阅读」——如果清成完全空白再保存，Chrome 会改成显示网址」）；站点设置页灰度卡两段说明合并成「行内短句 + ⓘ」</li>
+        <li><strong>界面细节（#169 / #170 / #171）</strong>：开关动效与悬停 / 按下态补齐并符合成文动效规矩；页内浮层遮罩统一一份浓度（暗色自动加深）；键帽样式两套合一；幕布上的恢复按钮补方向键移动（与胶囊同一份步长）</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>商店提交材料、README、隐私政策同步了 0.8.x 以来的旧名与过期状态（「整页变灰」口径、悬浮按钮叫法、插件设置内容清单），中英一致（#163）</li>
+        <li>CI 新增版本三方一致性校验（package.json / 更新日志 / 商店材料）（#176）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Sites on a non-default port were unreachable from the list (#166, #162 regression)</strong>: <code>localhost:3000</code>-style sites did nothing when clicked in “All site settings”, and typing the address directly showed “no settings for this site”. Both paths work now</li>
+        <li><strong>Picking nested content now explains itself (#167)</strong>: clicking inside a widget’s inner area (shadow DOM) or a page embedded in the page (iframe) says hide settings can’t reach it and declines the pick — such rules could never work and could even hide look-alike elements in the outer document. This delivers what the design doc promised</li>
+        <li><strong>The popup can no longer get stuck on “Loading” (#168)</strong>: if settings can’t be read, it falls to the empty state with “reopen the popup and try again”; a dead click on “Hide items” now shows a notice on the page instead</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>“Where it applies” is now a native radio segment (#142)</strong>: the same control as the hide method — screen readers announce it as one-of-N, and the panel no longer mixes two kinds of exclusive choice</li>
+        <li><strong>The stale-items notice in the popup is actionable (#175)</strong>: “N may be broken” now opens “Hide items” to pick again; the “As is” save dialog buttons say Save (“Save, keep as is” / “Save, turn it on now”); the panel labels are “Collapse panel / Expand panel” so they no longer collide with “Hide items”; the delete entry and stale marks are underlined and look clickable; hidden-item rows are numbered so look-alike names are tellable; the welcome page has “Skip this guide”; the wizard’s review list carries a total (“What will be hidden (6 items)”) so a long list can’t hide its last row from you</li>
+        <li><strong>ⓘ bubbles point at their row (#175)</strong>: a small caret ties each bubble to the row it explains instead of the card above</li>
+        <li><strong>Copy pass across every surface (#172 / #173 / #174)</strong>: banned words are gone; one concept one name everywhere; resident hints never end in a full stop (a written rule now); the blank-title note is one causal sentence (“Leave it empty to use “Reading” — if you clear it completely, Chrome will show the address instead”); the site-settings gray card carries one short line plus an ⓘ instead of two stacked paragraphs</li>
+        <li><strong>Interface details (#169 / #170 / #171)</strong>: switch motion and hover/press states fixed to the written motion rules; in-page dialogs share one backdrop shade (darker in dark mode); keycap styles merged; the curtain’s restore button gains arrow-key movement with the same step as the floating button</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Store listing, README and the privacy policy are in sync with post-0.8.x naming and states (“Turn the whole page gray”, “floating button”, the Settings page contents), Chinese and English alike (#163)</li>
+        <li>CI now checks that package.json, the changelog and the store materials agree on the version (#176)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-9-0">
+      <h2 class="rel-h"><span class="rel-ver">0.9.0</span><time class="rel-date" datetime="2026-11-11">2026-11-11</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>网站身份改成可注册域名（#162）</strong>：<code>weibo.com</code>、<code>www.weibo.com</code>、<code>s.weibo.com</code> 现在是同一个网站——一份设置、一次授权、列表一行；<code>weibo.com</code> 与 <code>weibo.cn</code> 仍是两个。升级后第一次读到旧配置时自动合并：收起项取并集，冲突的取最近改过的那份，旧数据不丢。规则仍按每个页面的实际网址生效，「只在 weibo.com 首页收起」不会套到子域页面</li>
+        <li><strong>收起内容多了「恢复网站原来的内容」（#160）</strong>：站点设置页「收起的内容」卡底部与向导的选内容步骤底部各一个入口，与「恢复网站原来的标题和图标」对称。只清收起项，标题、图标、开关、整页变灰一概不动；清之前先确认一次，并写明几项会没了</li>
+        <li><strong>原样态下点保存先问一句（#159）</strong>：之前会静默保存、页面毫无变化，看着像没生效。现在弹一个框问「现在打开吗」——两条路都完成保存，不替你自动打开</li>
+        <li><strong>没有可生效的设置时，开关旁写明「打开后页面不变」（#158）</strong>：弹窗、悬浮按钮、站点设置页三处同一句话、同一个判断；开关照常可拨，不再让人以为坏了</li>
+        <li><strong>界面上的长说明收掉（#161）</strong>：只在前几次有用的引导文字收进 ⓘ 或折叠起来；状态、后果、边界这类「不知道就会做错」的话仍留在界面上，但压成一句</li>
+        <li><strong>三处界面对齐并加了自动检查（#157）</strong>：弹窗、悬浮按钮菜单、站点设置页的排列顺序、叫法与控件来源统一，对照表是唯一权威——改一处漏两处会在提交前报出来；站点设置页的「整页变灰」卡归位，旧名「图片和视频」彻底退场</li>
+      </ul>
+      <h3 lang="zh-CN">取舍（如实说明）</h3>
+      <ul lang="zh-CN">
+        <li>同一注册域名下的不同子域共用一份设置与一次授权。这是「用户认为它们是一个网站」的直接后果：本来想分开配的两个子域会被合并</li>
+        <li>只允许过 <code>weibo.com</code> 的老用户，打开 <code>s.weibo.com</code> 时弹窗会说「这个页面还没允许访问」，点一次「允许访问」补上——升级不会自动替你扩权</li>
+        <li>迁移时新增的授权是「裸域 + 子域」两条模式；带非默认端口的站点用 http、https 两条精确模式（浏览器的匹配模式不支持 <code>*://主机:端口/*</code>）。IP 地址、<code>localhost</code> 与带端口的地址保持原样，不合并子域</li>
+        <li>公共后缀表只内置常见子集（<code>com.cn</code> / <code>co.uk</code> / <code>github.io</code> 等）：表外的后缀会把同后缀的两个独立站点当成一个（共用设置与授权），不会丢数据</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>A site is now its registrable domain (#162)</strong>: <code>weibo.com</code>, <code>www.weibo.com</code> and <code>s.weibo.com</code> are one site — one set of settings, one permission grant, one row in the list; <code>weibo.com</code> and <code>weibo.cn</code> remain two. Existing settings are merged the first time they are read after upgrading: hidden items are unioned and the more recently edited copy wins for shared fields, so nothing is lost. Rules still apply per page URL — “hide only on the weibo.com home page” does not leak onto subdomains</li>
+        <li><strong>“Use the site’s own content” for hidden items (#160)</strong>: one entry at the bottom of the “Hidden items” card and one at the bottom of the wizard’s pick step, mirroring “Use the site’s own title and icon”. It clears hidden items only — title, icon, switch state and grayscale stay; a confirmation first says how many items will go</li>
+        <li><strong>Saving while the site shows “As is” now asks once (#159)</strong>: previously it saved silently with nothing changing on the page, which looked broken. A dialog now asks whether to turn “Show this site your way” on; both answers save, and it never turns it on for you</li>
+        <li><strong>When nothing applies, the switch says “Nothing changes on the page” (#158)</strong>: same sentence and same test in the popup, the floating button and the site settings page; the switch still works, so it no longer looks broken</li>
+        <li><strong>Long explanations trimmed (#161)</strong>: guidance that only matters the first few times now lives behind an ⓘ or a disclosure; state, consequences and limits — the things you get wrong if you don’t know them — stay on screen, one short sentence each</li>
+        <li><strong>The three surfaces are aligned and checked automatically (#157)</strong>: order, wording and control source for the popup, the floating menu and the site settings page now have a single authoritative table, and changing one but not the others fails before commit; the “Grayscale whole page” card moved back into place and the old name is gone</li>
+      </ul>
+      <h3 lang="en">Trade-offs (stated plainly)</h3>
+      <ul lang="en">
+        <li>Subdomains of one registrable domain share one set of settings and one grant. That is the direct consequence of treating them as one site: two subdomains you wanted to configure separately will be merged</li>
+        <li>If you only ever allowed <code>weibo.com</code>, opening <code>s.weibo.com</code> shows “This page isn’t allowed yet” with one “Allow access” button — upgrading does not widen permissions for you</li>
+        <li>A site is granted with two patterns (bare domain plus subdomains); sites on a non-default port use explicit http and https patterns, because match patterns do not support <code>*://host:port/*</code>. IP addresses, <code>localhost</code> and addresses with a port stay exact and do not merge subdomains</li>
+        <li>The public suffix list is a built-in subset (<code>com.cn</code>, <code>co.uk</code>, <code>github.io</code> and other common ones): an unknown suffix makes two independent sites on that suffix share settings and a grant. No data is lost</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-19">
+      <h2 class="rel-h"><span class="rel-ver">0.8.19</span><time class="rel-date" datetime="2026-11-11">2026-11-11</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>「媒体」钮与弹窗开关行的图标换成对比度符（半填充圆）</strong>：0.8.18 把功能从「图片和视频变灰」升级为「整页变灰」后，画着一张图片的图标已经答不上「这是什么东西」；半填充圆是灰度 / 对比度的通行符号（M3 的 contrast 符号、macOS 与 GNOME 的对比度设置同款）。关态 = 描边（圆 + 中线），开态 = 右半填实——与面具图标同一套「描边 / 填实」状态语言，关与开一眼可辨</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The “Media” button and popup switch icon is now a contrast symbol (half-filled circle)</strong>: after 0.8.18 upgraded the feature to “Turn the whole page gray”, the old picture glyph (mountain + sun) no longer answered “what is this”; the half-filled circle is the standard glyph for grayscale / contrast (M3's contrast symbol, also macOS and GNOME contrast settings). Off = outline (circle + midline), on = right half filled — the same outline / filled state language as the mask icon, clearly distinguishable at a glance</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-18">
+      <h2 class="rel-h"><span class="rel-ver">0.8.18</span><time class="rel-date" datetime="2026-11-11">2026-11-11</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>「图片和视频变灰」→「整页变灰」（#156）</strong>：打开后整个页面变成黑白——文字、图片、视频、按钮、背景图、canvas、连 iframe 里的内容全都一样；位置大小不变、链接还能点、文字照样读。此前按媒体类型灰度的路线修了三轮仍不断出现「某类图没灰」（书封走背景图的多抓鱼、登录态的推特），整页灰从机制上消灭这类问题。依据：iOS/macOS 系统灰度同为整屏方案，市面 grayscale 类扩展全部是一条 CSS 规则；技术实测 fixed 元素不受影响、文字保持可读</li>
+        <li><strong>叫法同步</strong>：弹窗、站点设置页、欢迎页、悬浮按钮读屏名统一为「整页变灰」（中英同改）；开关的记忆、三处入口、与「按你的设置显示」的独立性全部不变</li>
+      </ul>
+      <h3 lang="zh-CN">取舍（如实说明）</h3>
+      <ul lang="zh-CN">
+        <li>本扩展自己的悬浮按钮等界面也会跟着页面变黑白（页面上无法豁免整页滤镜，功能不受影响——状态靠形状与明度仍然可辨，与 iOS 系统灰度对浮层的处理一致）</li>
+        <li>≤32px 小图标豁免退场：页面自己的按钮图标也变灰</li>
+        <li>自动播放视频的「点击放行」保留：放行的是播放动作，画面本来就是黑的</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>“Turn pictures &amp; videos gray” → “Turn the whole page gray” (#156)</strong>: flipping it turns the entire page black &amp; white — text, pictures, videos, buttons, background images, <code>&lt;canvas&gt;</code>, even content inside iframes; same place, same size, links still work, text stays readable. The per-media approach kept hitting “this kind of image didn't turn gray” after three rounds of fixes (covers drawn as background images, logged-in X); whole-page gray eliminates that class of problem mechanically. Precedent: iOS/macOS system grayscale is a whole-screen toggle, and every grayscale extension is one CSS rule; verified that fixed-position elements stay put and text remains readable</li>
+        <li><strong>Naming synced</strong>: popup, site settings, the guide and the floating button's accessible name all say “Turn the whole page gray” (Chinese and English); the switch's memory, its three entries and its independence from “Your settings” are unchanged</li>
+      </ul>
+      <h3 lang="en">Trade-offs (stated plainly)</h3>
+      <ul lang="en">
+        <li>PageMask's own interface (the floating button and friends) turns black &amp; white with the page — a page-level filter cannot exempt it, and it keeps working (states stay distinguishable by shape and lightness, matching how iOS system grayscale treats overlays)</li>
+        <li>The ≤32px icon exemption is gone: the site's own button icons turn gray too</li>
+        <li>The click-to-allow rule for autoplaying videos stays: it releases the playback, and the picture is already black &amp; white</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-17">
+      <h2 class="rel-h"><span class="rel-ver">0.8.17</span><time class="rel-date" datetime="2026-11-10">2026-11-10</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>弹窗 ⓘ 信息标对读屏不可达：聚焦时只播报「更多信息」三个字，浮层正文读不到——补 <code>aria-describedby</code> 指向浮层正文，聚焦即播报完整内容</li>
+        <li>弹窗「页面还没加载好」的说明行是异步出现的，读屏感知不到——补 <code>role="status"</code></li>
+        <li>触屏点击胶囊时系统默认的灰色高亮闪一下，叠在自有反馈上显脏——有意关掉（按钮自带悬停 / 按下 / 选中底反馈）</li>
+        <li>弹窗删除确认框内容超高时滚动会连动到弹窗页面——滚动限制在框内</li>
+        <li>两处措辞：ⓘ 浮层与站点设置页对「点击放行视频」统一说成「点一下视频就能看」；不透明度滑杆说明补上方向（数值越小越淡）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>The popup's ⓘ info tags were unreachable for screen readers: focusing announced only “More information” without the popover text — wired <code>aria-describedby</code> to the popover body so focus reads the full content</li>
+        <li>The “page hasn't finished loading” notice appears asynchronously but was invisible to screen readers — added <code>role="status"</code></li>
+        <li>The system tap-highlight flash on touch overlaid the capsule's own hover / press / selected feedback — turned off intentionally</li>
+        <li>Scroll chaining from the popup's delete dialog into the popup page when content overflows — contained to the dialog</li>
+        <li>Two wording nits: the ⓘ popover and the site settings page now use the same phrasing for click-to-allow (“click a video to watch it”); the opacity slider hint spells out the direction (lower = fainter)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-16">
+      <h2 class="rel-h"><span class="rel-ver">0.8.16</span><time class="rel-date" datetime="2026-11-10">2026-11-10</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>悬浮按钮开启态重做（#152）</strong>：0.8.15 的「强调色图标 + 分段底部 2px 指示条」退场——指示条紧贴胶囊边框，看着像两道重复的线；改成图标开关的通行做法（Material 3 图标按钮 / Carbon 工具栏选中态 / iOS 控制中心同路）：填实图标换墨色、分段铺一层淡灰选中底，「开」靠形状（填实 vs 描边）与墨色浓淡两个信号辨认，不再依赖颜色；悬停 / 按下用一层更深的透明薄层表达，状态切换保留 150ms 过渡</li>
+        <li><strong>弹窗观感（#153）</strong>：组件间距 4→8px、卡片内边距 4→12px，把 0.8.15 为英文高度红线压掉的呼吸感还回来；说明文字砍短——已设置网站的卡头不再有说明行，灰度卡、遮住卡、悬浮按钮行的说明各收成一句短话，被砍掉的细节（黑白但可读可点、自动播放的视频会暂停、快捷键照常可用）移进两个 ⓘ 信息标，鼠标悬停或键盘聚焦时浮出、Esc 撤下；删除悬浮按钮行上方的独立分割线；底部「全部网站设置」「插件设置」改回文字链接（muted + 下划线），不再占按钮的视觉档；「标题和图标」「收起内容」两颗入口同为次操作档——已设置网站里「收起内容」不再独占实心蓝主按钮（待授权网站的「允许访问」仍是实心）</li>
+        <li><strong>灰度补两个缺口（#154）</strong>：① 书封 / 封面这类用 CSS 背景图画的内容图现在一并变灰（多抓鱼实测：首页 18 个背景图元素全部变灰，≤32px 小图标照旧豁免）——0.8.15 及之前这类站点等于没开；② 页面没加载好时（比如网络代理抖动出现的 Chrome 错误页）打开灰度不再失败：设置照常保存，弹窗改为一句「这个页面还没加载好。打开之后，图片和视频会自动变黑白」，等页面真正打开灰度自动生效——0.8.15 及之前这种场景只会留下「没能在这个页面上启动」</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>灰度在多抓鱼等「封面走 CSS 背景图」的站点上不生效（根因：纯 img/video 选择器盖不住背景图，本版由内容脚本扫描打标）</li>
+        <li>在没加载好的页面上打开灰度，设置没能保存、灰度永远开不上（根因：Chrome 错误页拒绝脚本注入，配置写入被一并跳过）</li>
+      </ul>
+      <h3 lang="zh-CN">修复（发版审查，0.8.16 收口前）</h3>
+      <ul lang="zh-CN">
+        <li>弹窗顶部的站点名不带端口，和「全部网站设置」列表里的同一个网站对不上号（现在与列表、悬浮按钮用同一套展示名规则）</li>
+        <li>同一个「图片和视频变灰」在浮层说明里被写成「变成黑白」：全项目统一「变灰」的说法（弹窗 ⓘ 浮层、站点设置页说明、欢迎页，中英同步）</li>
+        <li>站点设置页的提示句引用「原样」「按设置」这些要先学的状态名，改成「上面的开关关着 / 打开时」</li>
+        <li>「留空就用『阅读』——标题不能设成空白」读起来自相矛盾，重写成一句连贯的话（向导、站点设置页、插件设置页三处同源）</li>
+        <li>站点设置页「恢复网站原来的标题和图标」看不出能点，补下划线；清单里的序号徽章改成和页面号码牌同一个颜色</li>
+        <li>悬浮按钮选中态的悬停反馈太弱（和选中底几乎一个颜色），加深一档</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Floating button's on state redesigned (#152)</strong>: 0.8.15's accent icon + 2px bottom rule are gone — the rule sat flush against the capsule border and read as a doubled line. The state now follows the common icon-toggle pattern (Material 3 icon button, Carbon selected toolbar icon, iOS Control Center): the filled icon turns ink, the segment gets a quiet gray selected fill, and "on" is carried by shape (filled vs outline) plus ink weight instead of color. Hover and press deepen a translucent state layer; the 150ms transition stays</li>
+        <li><strong>Popup made breathable (#153)</strong>: component spacing 4→8px, card padding 4→12px, giving back the air 0.8.15 traded away for the English height limit. Copy is halved — the set-up site's mask card no longer has a hint line, and the gray / cover / floating-button hints are each one short sentence; the details that were cut (black-and-white but readable and clickable, autoplaying videos pause, shortcuts keep working) moved into two ⓘ info tags that appear on hover or keyboard focus and dismiss with Esc; the standalone divider above the floating-button row is removed; the two footer entries are text links again (muted + underline) instead of buttons; “Title &amp; icon” and “Hide items” are equal secondary buttons — “Hide items” no longer holds the only solid primary (a pending site's “Allow access” still does)</li>
+        <li><strong>Gray closes two gaps (#154)</strong>: ① content images drawn as CSS background images (book covers and the like) now turn gray too — on such sites the switch used to do nothing; ② turning gray on from a page that hasn't finished loading (say, a Chrome error page after a proxy hiccup) no longer fails: the setting is saved, the popup explains “once the page is open, pictures and videos turn gray automatically”, and it takes effect without another toggle</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>Gray had no effect on sites like duozhuayu whose covers are CSS background images (root cause: an img/video selector can't reach background images; this release marks them via the content script)</li>
+        <li>Turning gray on from an error page silently failed to save the setting (root cause: script injection is refused on Chrome error pages, skipping the profile write)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-15">
+      <h2 class="rel-h"><span class="rel-ver">0.8.15</span><time class="rel-date" datetime="2026-11-10">2026-11-10</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>弹窗重排（#148）</strong>：新老网站共用同一套四块卡，顺序与悬浮按钮四段一一对应——① 面具卡（开关 + 「标题和图标」「收起内容」两颗入口并排一行，主操作在右）② 灰度卡 ③ 遮住卡（与前两张同款卡片框，但卡内没有开关，只有按钮 + 快捷键 + 一句「只是临时挡住、刷新就还原」）④ 辅助行（悬浮按钮开关，不带卡片框）。「查看使用说明」从底部挪到标题右侧；没设置过的网站不显示假开关，改用一句肯定句说明设置好之后开关做什么；两颗编辑入口不再置灰——任何状态、开关开或关都能点</li>
+        <li><strong>悬浮按钮开启态收敛（#149）</strong>：去掉整颗墨底反白（真机上太扎眼），改成三个低调但可辨的信号——中性底 + 强调色图标填实 + 分段底部 2px 指示条；悬停 / 按下改用底色变化，不再把整颗压暗；状态切换补 150ms 颜色过渡，系统开启「减弱动态」时保留 120ms 纯色淡变；高对比度模式改用系统高亮色</li>
+        <li><strong>设置面板收窄且可收起（#150）</strong>：选内容 / 看效果两步的面板由 720px 收到 480px（两步仍同宽），标题栏新增「收起 / 展开」——收起后只剩一条标题栏，原本被面板挡住的页面元素可以直接点，草稿不丢；拖动抓手的常态底色与对比度提高，看得出能拖</li>
+        <li><strong>文案专项（#151）</strong>：叫法统一、中英对齐、去口语化——说明文字里不再混用开关全称（全称只留给开关标签本身）；「遮住整页 / 遮住整个页面」等几套叫法统一为「遮住这一页」；英文把 "Hidden items"（概念名）当数量单位的地方改回 "N items set to hide"，「除了这类页面」统一为 "Except these pages"；去掉「有人走过来时」「人走开了」「想收拾的网站」这类不专业说法；「编辑面板」「工具条」「现成的标题」等内部名词退出界面；同一句删除失败提示、同一句「标题不能留成空白」的坑提示各收成一份出处；删掉三个没人用的文案键</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>英文弹窗在「已设置」状态下会超过 Chrome 弹出的 600px 上限（英文说明比中文长），收紧卡片内边距后回到 588.9px</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Popup rebuilt around four cards (#148)</strong>: new and already-set-up sites share one layout, matching the floating button's four segments — ① mask card (switch plus “Title &amp; icon” / “Hide items” side by side, primary action on the right) ② gray card ③ cover card (same card frame, but no switch inside: a button, the shortcut key, and one line saying the cover is temporary) ④ helper row (the floating-button switch, deliberately not a card). “View the guide” moved up next to the title; an unset site shows no fake switch but one plain sentence about what the switch will do; both edit entries are always clickable, whatever the switch says</li>
+        <li><strong>Floating button's on state toned down (#149)</strong>: the solid ink fill is gone (too loud on a real screen); the state now reads through three quiet signals — neutral fill, accent-coloured filled icon, and a 2px accent rule along the bottom of that segment. Hover and press change the background instead of dimming the whole button. State changes get a 150ms colour transition, kept at 120ms of plain colour fade under “reduce motion”, and high-contrast mode uses the system highlight colours</li>
+        <li><strong>Setup panel narrower and collapsible (#150)</strong>: the pick / check panel drops from 720px to 480px (both steps stay the same width), and its title bar gains Collapse / Expand — collapsed it is a single bar, the page underneath is clickable, and drafts are kept; the drag grip got a resting background and stronger contrast so it reads as draggable</li>
+        <li><strong>Copy pass across the whole interface (#151)</strong>: one name per thing, Chinese and English aligned, casual phrasing removed — explanatory text no longer reuses the switch's full label (that label is now the only place it appears); the several names for covering a page collapse into “Cover this page” / 「遮住这一页」; where English used “Hidden items” (a concept name) as a count it now says “N items set to hide”, and the scope option is “Except these pages”; 「有人走过来时」「人走开了」「想收拾的网站」 and their English counterparts are rewritten in plain professional language; internal names (“editor”, “toolbar”, “ready-made titles”) are gone from the interface; the delete-failure line and the “a title can't be blank” caveat each have a single source of truth now; three unused copy keys removed</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>The English popup in the set-up state exceeded Chrome's 600px popup limit (English runs longer than Chinese); tightening the card padding brings it back to 588.9px</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-14">
+      <h2 class="rel-h"><span class="rel-ver">0.8.14</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>删掉这个网站的设置后，页面彻底回到原样</strong>：会话标记（这一页挂出过悬浮按钮）一并清掉——之后这个网站即便以「什么都没设置」的形态再出现，页面也不会莫名冒出悬浮按钮</li>
+        <li><strong>在弹窗里重新打开「悬浮按钮」，页面上真的会出现</strong>：从「关」拨到「开」是明确要求这一页有按钮，页面照办（此前刷新过页面再打开开关会出现「弹窗说开着、页面没按钮」）</li>
+        <li>顺手修掉两处会偶发变红的测试断言（等胶囊真的出现再断言、圆点判断改成精确匹配）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Deleting this site’s settings now clears the page completely</strong>: the keep-alive marker is dropped too, so the site coming back with nothing configured no longer makes a floating button appear out of nowhere</li>
+        <li><strong>Turning “Floating button” back on in the popup really brings it back</strong>: switching from off to on explicitly asks for the button on that page, and the page complies (previously, after a reload the popup said “on” while the page had no button)</li>
+        <li>Two flaky test assertions fixed as well (wait for the button to actually appear; exact class matching for the step dots)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-13">
+      <h2 class="rel-h"><span class="rel-ver">0.8.13</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>遮住/恢复之后悬浮按钮还在</strong>：会话保留（按钮在本次浏览期间不因设置清空而消失）现在按「这一页挂出过」判断，而不是「此刻按钮还在不在」——遮住整页与进设置向导都会临时收起按钮，按新判断它们返回时按钮会挂回来</li>
+        <li>同族场景一并修好：关掉灰度后进设置向导、再退出，按钮同样会挂回来</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The floating button is back after covering and restoring</strong>: the keep-alive rule now asks “did this page ever show it” instead of “is it on screen right now” — covering the page and opening the wizard both take the button down for a moment, and it now comes back when they close</li>
+        <li>The same fix covers the sibling case: unchecking gray, opening the wizard and closing it again keeps the button in place</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-12">
+      <h2 class="rel-h"><span class="rel-ver">0.8.12</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>向导选同类：取消勾选不再弄丢导航</strong>——勾了两组同类时，取消其中一组（哪怕不是亮着的那组），另一组的「第 i / N 个」导航不再消失；换组瞬间强调框也不再闪现在上一组成员上</li>
+        <li><strong>同类号牌的定位标记不再被文案污染</strong>：位置号牌「第 i / N 个」用固定标记，不影响其他测试按号牌前缀统计</li>
+        <li><strong>向导遮罩预览所见 = 保存所得</strong>：预览遮罩底色改用与运行时同一套算法（按被遮元素背后的实际底色计算、圆角跟随），不再硬编码灰色——深色或彩色页面上预览不再与保存后不一致</li>
+        <li><strong>悬浮按钮的图标钮补上读屏名称</strong>：面具主钮与「媒体」钮此前只靠悬停提示当名称（部分读屏不播报），与「遮住」钮统一</li>
+        <li><strong>填实（开启）状态补悬停/按下反馈</strong>：设计规范要求五种状态缺一不可，此前只有关着的状态有</li>
+        <li><strong>失效项按钮统一叫「重新选一次」</strong>：与失效提示、GLOSSARY 同一套叫法；向导文字链命中区垫到 24px</li>
+        <li><strong>文案</strong>：自动播放的视频「被按住」改说「会暂停」；欢迎页第 3 步不再引入「媒体」这个要学的叫法（直接说图片图标）；「盖住」统一为「遮住」；选内容的取消动作统一为「取消选中」（GLOSSARY 登记）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Wizard: unchecking one group no longer kills the other group's navigator</strong>; the highlight no longer flashes on the previous group when switching</li>
+        <li><strong>The position badge no longer leaks localized text into its test id</strong></li>
+        <li><strong>Wizard mask preview now matches what saving produces</strong>: the preview tint uses the same color logic as the runtime masks (computed from the real background, following the element's radius) instead of a hardcoded gray</li>
+        <li><strong>The floating button's icon buttons have screen-reader names now</strong>, consistent with the cover button</li>
+        <li><strong>The filled (ON) state has hover/pressed feedback</strong>, completing the five required states</li>
+        <li><strong>The stale-row button is now uniformly “Pick again”</strong>, matching the stale hint and the glossary; text links in the wizard get a 24px hit area</li>
+        <li><strong>Copy</strong>: autoplaying videos are “paused” (not “held down”); the welcome page no longer introduces a second name for the gray switch; “cover” unified to the product verb; deselection wording unified</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-11">
+      <h2 class="rel-h"><span class="rel-ver">0.8.11</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>欢迎页分步单屏</strong>：一次只显示一步，内容列放宽到 720px，常态不用滚动；第 2 步补上「图片和视频变灰」的介绍（共四件事），第 3 步按最新胶囊形态重写</li>
+        <li><strong>弹窗新增「重看插件介绍」</strong>：在弹窗底部，随时能回看</li>
+        <li><strong>向导选内容时同类可逐个查看</strong>：勾上「另外 N 个一样的也一起收起」后，行内出现「第 i / N 个」和「上一个 / 下一个」，页面上当前成员用实线框标出并自动滚到视野中央；整组虚线框保留</li>
+        <li><strong>向导面板定宽</strong>：选内容与看效果两步面板宽度不再随内容变来变去</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>欢迎页与插件功能的同步加了一份守门测试：以后加新功能，欢迎页文案没跟上会直接挂测试</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The welcome page now shows one step per screen</strong>: the content column widens to 720px and fits without scrolling; step 2 now introduces “Turn pictures &amp; videos gray” (four things in all), and step 3 matches the current floating button</li>
+        <li><strong>“See the intro again” in the popup</strong>: the intro is reachable at any time from the popup footer</li>
+        <li><strong>Step through similar matches in the wizard</strong>: after checking “Also hide the other N like this one”, the row shows “i of N” with Previous / Next; the current match on the page gets a solid highlight and is scrolled into view, while the dashed group outline stays</li>
+        <li><strong>Stable wizard width</strong>: the panel no longer resizes as rows appear during picking</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>A guard test now keeps the welcome page in sync: adding a feature without updating the intro fails the tests</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-10">
+      <h2 class="rel-h"><span class="rel-ver">0.8.10</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>面具卡</strong>：「按你的设置显示」开关成为卡片头部（带与悬浮按钮主钮同源同态的面具图标），卡内是「收起内容」与「标题和图标」两颗钮——看一眼就知道这颗开关管着哪两件事</li>
+        <li>开关关着时，卡内两颗钮置灰暂不可用，卡底一行说明「打开开关就能改」（iOS / Windows 设置的通行做法）</li>
+        <li><strong>灰度卡与悬浮按钮卡</strong>：「图片和视频变灰」「悬浮按钮」也换成同一款卡片容器，三张卡一个样子</li>
+        <li>卡片分组不改任何行为：开关怎么拨、按钮进哪个流程、设置存在哪，全都和之前一样</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The mask card</strong>: the "Show this site your way" switch now heads a card (with the same mask icon as the floating button's main button), and "Hide items" / "Title &amp; icon" sit inside it — the popup now shows what that switch governs at a glance</li>
+        <li>With the switch off, the two buttons inside are paused and a one-line hint says turning the switch back on lets you edit (the usual iOS / Windows settings pattern)</li>
+        <li><strong>Matching cards</strong>: "Turn pictures &amp; videos gray" and "Floating button" use the same card container — one look across the panel</li>
+        <li>Pure regrouping: switches, flows and storage behave exactly as before</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-9">
+      <h2 class="rel-h"><span class="rel-ver">0.8.9</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>主按钮换威尼斯面具图标</strong>：横长圆润轮廓 + 两道弯眼缝，与产品名 PageMask 对应——旧版实心蛋形加两只小圆眼在 13px 下像骷髅/头套剪影，装机反馈「太吓人」；填实态眼缝镂空，读得出「面具」</li>
+        <li><strong>开关状态整钮填实</strong>：功能开着 = 那颗钮整颗变成墨色底、图标反白（iOS 控制中心同类做法）；关着 = 透明底描边，比开着明显低调。开/关不再只靠 13px 图标内部的填实差异来猜</li>
+        <li>对比发生在胶囊自己的墨底/白底上，任何网页底色下都看得清（深浅主题反色对 ≥11:1）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The main button is now a venetian mask icon</strong>: a rounded, horizontal outline with two curved eye slits, matching the PageMask name — the old solid egg shape with two dot eyes read like a skull at 13px and users called it scary; the filled state keeps the eye slits hollow so it still reads as a mask</li>
+        <li><strong>Switch states now fill the whole button</strong>: a feature that is ON turns its button into a solid ink chip with an inverted icon (like iOS Control Center); OFF is an outlined icon on transparent background, clearly quieter than ON. You no longer have to guess from fill differences inside a 13px icon</li>
+        <li>The contrast happens on the capsule's own ink/white surfaces, so it stays readable over any web page (inverted pair ≥11:1 in both themes)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-8">
+      <h2 class="rel-h"><span class="rel-ver">0.8.8</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>拖动不再需要把手</strong>：按住悬浮按钮的任何位置拖动即可移动——按下后移动超过 8 像素才算拖动，不足就是正常点击，按钮不会误触（与 iOS 辅助功能的悬浮球同类做法）；拖动把手整段退场，静止宽度 126 → 约 101 像素，高度 26 不变（无障碍下限）</li>
+        <li><strong>键盘移动保留</strong>：Tab 聚焦到按钮本体后用方向键移动（每次 15 像素），位置照旧按网站记住、拖动越界自动收回视口内</li>
+        <li><strong>触屏补齐</strong>：主按钮在触屏上与其他图标钮一样放大到 40×40（0.8.6 起它漏在放大档外）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>No more drag handle</strong>: press and drag the floating button anywhere to move it — moving more than 8px after pressing counts as a drag, less is a normal click, so buttons never misfire (the same approach as iOS AssistiveTouch); the handle segment is gone, resting width shrinks from 126 to about 101px, height stays 26 (the accessibility floor)</li>
+        <li><strong>Keyboard moving stays</strong>: Tab to the button body and use arrow keys to move it (15px per press); position is still remembered per site and drags are clamped back into the viewport</li>
+        <li><strong>Touch catch-up</strong>: on touch screens the main button now enlarges to 40×40 like the other icon buttons (it was missing from that tier since 0.8.6)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-7">
+      <h2 class="rel-h"><span class="rel-ver">0.8.7</span><time class="rel-date" datetime="2026-11-09">2026-11-09</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>「只灰度」网站在胶囊上关掉灰度，悬浮按钮不再当场消失</strong>：胶囊挂载判据只在页面加载时评估；会话中间把最后一项设置关掉（胶囊或弹窗均可），已经挂着的按钮当页保留——页面上始终有入口能拨回来；刷新后按判据该藏就藏。「删除这个网站的设置」仍然立即清理页面</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Turning gray off from the floating button no longer removes the button itself on gray-only sites</strong>: the mount check now runs only when the page loads. Clearing the last setting mid-session (from the button or the popup) keeps the mounted button for the rest of the page visit, so there is always an entry point to switch back; after a reload the usual visibility rule applies. "Delete this site's settings" still clears the page right away</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-6">
+      <h2 class="rel-h"><span class="rel-ver">0.8.6</span><time class="rel-date" datetime="2026-11-08">2026-11-08</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>主按钮换成面具图标</strong>：填实=按你的设置显示、描边=原样；不再用「圆点+文字」</li>
+        <li><strong>单一形态</strong>：mini 形态、折叠钮与文字标签退场，⋯ 菜单常驻——原来的 mini 用户因此获得拖动与菜单</li>
+        <li><strong>位置自由定位</strong>：不再限制在浏览器两侧，窗口变化自动夹回视口</li>
+        <li><strong>拖动把手悬停才出现</strong>（触屏常显），静止时少一颗钮</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The main button is now a mask icon</strong>: filled = "Your settings", outline = "As is"; the dot + label pair is retired</li>
+        <li><strong>One single form</strong>: the mini form, collapse button and text label are gone, and the ⋯ menu is always at hand — former mini users gain dragging and the menu</li>
+        <li><strong>Free positioning</strong>: the button is no longer confined to the browser's sides; window changes snap it back into the viewport</li>
+        <li><strong>The drag handle appears on hover only</strong> (always visible on touch), so the resting button carries one less piece</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-5">
+      <h2 class="rel-h"><span class="rel-ver">0.8.5</span><time class="rel-date" datetime="2026-11-08">2026-11-08</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>弹窗在还没设置过的网站上直接提供灰度开关</strong>：打开它会像第一次设置一样申请这个网站的访问权限，然后 PageMask 补一份只带灰度的配置、当前页面立即变灰、悬浮按钮挂载——收起的内容和标签页标题图标一概不碰</li>
+        <li>这类「只灰度」站点的主按钮暂无可视效果（收起与标题图标都为空），属已知形态；之后通过向导添加收起或标题后照常生效</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>The popup offers the gray switch on sites that have never been set up</strong>: turning it on asks for that site's access, first-time-style; PageMask then creates a profile that carries only the gray setting, and the current page turns gray right away with the floating button mounted — nothing about hidden elements or the tab title is touched</li>
+        <li>Such gray-only sites show a main button without a visible effect yet (nothing but the gray is configured) — a known shape; adding rules or a title via the wizard later works as usual</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-4">
+      <h2 class="rel-h"><span class="rel-ver">0.8.4</span><time class="rel-date" datetime="2026-11-08">2026-11-08</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>原样态+灰度的首帧遮挡按时撤掉</strong>：切「原样」时首帧遮挡会换成灰度样式文本，之前落地后没显式撤、靠 1.5 秒兜底超时——极端情况下刷新后立刻进向导，向导里页面会先发灰再突然恢复。现在与清爽态路径对称，正式样式落地即撤</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The first-paint shield is released on time in "As is" + gray</strong>: switching to "As is" swaps the shield to the gray stylesheet text, but it was never explicitly released — it relied on a 1.5s fallback. In the worst case, opening the wizard right after a reload showed a gray-tinted page that suddenly regained color. Now symmetric with the "Your settings" path: the shield is released as soon as the formal styles land</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-3">
+      <h2 class="rel-h"><span class="rel-ver">0.8.3</span><time class="rel-date" datetime="2026-11-08">2026-11-08</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>主开关收窄</strong>：「按你的设置显示 / 原样」现在只管两件定制——收起的内容、标签页标题和图标。切「原样」= 把你收起的正经内容还给你、标签页回到本来的样子</li>
+        <li><strong>灰度独立</strong>：图片和视频的变灰按自己的开关走，原样态下照常生效——恢复正经内容的时候，页面该低调还是低调；胶囊「媒体」钮在任何状态下按下都有可见反应</li>
+        <li><strong>胶囊顺序</strong>：媒体钮挪到遮住钮前面（全功能与 mini 相同）——媒体是随看随切的高频状态，遮住是应急动作，离主按钮最远</li>
+        <li><strong>媒体钮开启态图标</strong>：只填实框里的山和太阳、外框保持描边（此前整颗填实会糊成一个方块）；弹窗开关行的小图标同步同一套状态</li>
+        <li>灰度的说明文案改为讲独立（不再有「只在按设置时起作用」句）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The main switch is narrowed</strong>: 「按你的设置显示 / 原样」 ("Your settings" / "As is") now governs exactly two customizations — what's hidden and the tab title &amp; icon. "As is" gives you back the parts you hid and the site's own title</li>
+        <li><strong>The gray switch is fully independent</strong>: pictures and videos follow their own switch and stay gray in either state — restoring the real content no longer drags the gray along, and the capsule "Media" button always has a visible effect</li>
+        <li><strong>Capsule order</strong>: the Media button now sits before the Cover button (both forms) — a frequently flipped state belongs near the main button, the emergency action farthest away</li>
+        <li><strong>Media button's on-state icon</strong>: only the mountain and sun inside the frame are filled while the frame keeps its stroke (the fully-filled version read as a plain square); the popup's row icon follows the same state</li>
+        <li>The gray switch's hint copy now describes its independence</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-2">
+      <h2 class="rel-h"><span class="rel-ver">0.8.2</span><time class="rel-date" datetime="2026-11-07">2026-11-07</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>扩展更新后的静音清扫覆盖未配置的站点</strong>：一次性幕布页不在内容脚本重注入范围内，它的残留静音之前要等到下一次导航才解除；现在更新 / 重载时对所有标签页清扫一遍（只解除本扩展设的那份）</li>
+        <li><strong>放行记录随容器子树移出也清掉</strong>：信息流把整张卡片换掉时，卡片里放行过的视频同样不再被内部记录钉住（补子树分支的回归单测）</li>
+        <li><strong>幕布静音的导航兜底与遮 / 撤消息确认共用同一条队列</strong>（补交错回归单测）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The update-time mute sweep now covers unconfigured sites</strong>: a one-shot curtain page is not in the content-script reinjection range, so its leftover mute used to wait for the next navigation; updates and reloads now sweep every tab (only the extension's own mute is removed)</li>
+        <li><strong>Allow records clear with the subtree</strong>: when a feed swaps out a whole card, a video the user unblocked inside it is no longer pinned by the internal record (regression test for the subtree branch added)</li>
+        <li><strong>Regression tests for the navigation fallback sharing the same per-tab queue</strong> as cover / restore messages</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-1">
+      <h2 class="rel-h"><span class="rel-ver">0.8.1</span><time class="rel-date" datetime="2026-11-07">2026-11-07</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>放行过的视频被信息流移出文档后不再被钉住</strong>：内部记录会随元素移出页面一并清掉；同一个视频再插回来按新一轮算，超出去过的点击窗口后自动播放重新被压制（补回归单测）</li>
+        <li><strong>快速连按遮住 / 恢复不再留下哑掉的标签页</strong>：同一标签页的静音写入改为按消息到达顺序串行执行，连发时最终状态 = 最后一条消息的方向（补三连发回归单测）</li>
+        <li><strong>扩展更新 / 重载瞬间不再残留静音</strong>：上一个实例在幕布静音中失效时它的解除消息发不出去；新实例启动时补一次单向解除（只解除本扩展设的那份）</li>
+        <li>测试稳定性：滚动跟手断言由固定两帧改为「3 秒内追上」，不再因 scroll 事件与动画帧的先后抖动而误报</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>A video you unblocked is no longer pinned after the feed removes it</strong>: the internal record is cleared together with the element leaving the page; if the same video element comes back it starts a new round, and autoplay is held again once your click window has passed (regression test added)</li>
+        <li><strong>Rapid cover / restore no longer leaves a muted tab behind</strong>: mute writes for one tab now run serially in message order, so the final state always matches the last message (regression test added)</li>
+        <li><strong>No mute residue across extension updates / reloads</strong>: when the previous instance dies under the curtain its unmute message dies with it; the new instance releases any leftover of ours when it starts</li>
+        <li>Test stability: the scroll-follow assertion now waits up to 3 seconds instead of a fixed two frames, so it no longer misfires on scroll-event / animation-frame jitter</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-8-0">
+      <h2 class="rel-h"><span class="rel-ver">0.8.0</span><time class="rel-date" datetime="2026-11-07">2026-11-07</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>图片和视频变灰</strong>：一个按网站记的开关。图片和视频变成黑白的，位置不变、大小不变、链接还能点、截图里的字还能看清——整个页面从花花绿绿降到像一篇图文资料；≤32px 的小图标与表情保持原样。声音完全不参与：音量归播放器自己的按钮和 Chrome 右键标签页「静音网站」</li>
+        <li><strong>自动播放的视频被按住</strong>：站点自己让视频播起来的（X 刷信息流那种自动播放）一律按停，页面上没有会动的东西；你点击某个视频区域，那一个视频就放行正常播放，画面保持黑白。被按停的视频不替网站恢复播放</li>
+        <li><strong>遮住这一页连声音一起按住</strong>：幕布遮住哪个标签页就静哪个标签页，恢复（或刷新、离开页面）时声音跟着回来；只解除本扩展设的那份静音，你自己用 Chrome 右键或播放器静音的不受影响。没添加过的网站用弹窗遮住，同样连声音一起遮</li>
+        <li><strong>胶囊上的「媒体」钮</strong>：全功能与 mini 形态都有，一点就变灰 / 还原；弹窗一行开关、站点设置页「图片和视频」卡，三处是同一组设置。弹窗重排：「遮住这一页」带上与胶囊同源的闭眼 / 睁眼图标、媒体开关行带上媒体图标</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>0.7.x 的「收起图片 / 收起视频 / 静音网页」三个开关退场</strong>：原来开着收起图片或收起视频的网站，升级后自动等于「图片和视频变灰」开着；「静音网页」的常设开关不再提供——想让某个网站一直没声，用 Chrome 自带的右键标签页「静音网站」（按域名持久）。悬浮按钮「⋯」菜单里的媒体三行随之移除</li>
+      </ul>
+      <h3 lang="zh-CN">说明</h3>
+      <ul lang="zh-CN">
+        <li>「变灰」只是去掉颜色：图片 / 视频请求照发，不省流量、不代替广告过滤工具；CSS 背景图、iframe 内嵌播放器、<code>&lt;canvas&gt;</code>、内联 SVG 不变灰</li>
+        <li>不新增权限：黑白观感是一条样式表，幕布静音用 Chrome 自带的标签页静音（不需要 <code>tabs</code> 权限，只解除本扩展设的那份）</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>Turn pictures &amp; videos gray</strong>: one per-site switch. Pictures and videos turn black &amp; white — same place, same size, links still work, text in screenshots stays readable — and a loud feed reads like a quiet article; icons and emoji up to 32px stay as they are. Sound is not touched at all: volume belongs to the player's own button and Chrome's "Mute site"</li>
+        <li><strong>Autoplaying videos are held down</strong>: videos the site starts by itself (a scrolling feed on X, for example) are paused, so nothing on the page moves; click a video and that one plays normally, still in black &amp; white. Videos we paused are not resumed for the site</li>
+        <li><strong>Covering a page holds its sound</strong>: the tab under the curtain is muted; uncovering, reloading or leaving the page brings the sound back. Only the mute this extension set is removed — a mute you set via Chrome or the player is untouched. It works on sites you have not added too (cover from the popup)</li>
+        <li><strong>A "Media" button on the floating capsule</strong>: both the full and mini forms have it — one click turns the gray on or off. The popup gets one switch row and the site's settings page a "Pictures &amp; videos" card, all the same setting. The popup is re-laid out, and its "Cover this page" button and gray switch now carry the same icons as the capsule</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The 0.7.x "Hide images / Hide videos / Mute this page" switches are retired</strong>: a site that had hiding enabled automatically becomes "gray" after the update; the always-on mute switch is gone — to keep a site silent, use Chrome's own right-click "Mute site" (persistent per site). The floating menu's three media switches are removed accordingly</li>
+      </ul>
+      <h3 lang="en">Notes</h3>
+      <ul lang="en">
+        <li>"Gray" only removes color: image and video requests still happen — not a data saver, not an ad blocker; CSS background images, embedded players inside iframes, <code>&lt;canvas&gt;</code> and inline SVG are not grayed</li>
+        <li>No new permissions: the black &amp; white look is one stylesheet, and the curtain mute uses Chrome's own tab mute (no <code>tabs</code> permission; only the extension's own mute is ever removed)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-7-1">
+      <h2 class="rel-h"><span class="rel-ver">0.7.1</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>删掉某个网站的设置，不会把别的标签页重新静音</strong>：此前手动取消过静音的标签页，删除别的网站时不再被按回去；只解除本扩展设置、且按当前设置已经不该继续静音的那一份</li>
+        <li><strong>收回站点权限、整体导入替换设置时也不留哑掉的标签页</strong>：这两条删除类路径现在和「删除这个网站的设置」一样收尾</li>
+        <li><strong>小图标判定更稳</strong>：一律按页面上实际显示的尺寸算；还没排好版时宁可先灰一帧，等图片加载完或样式变了再重判，写着小尺寸、实际被放大的大图不会再漏出来</li>
+        <li><strong>视频被替换、开关反复拨动、播放器在页面里挪位置都能正确还原</strong>：挪位置不再被当成移除，静音不会闪断；关掉开关时放回这一轮开始前的声音状态</li>
+        <li><strong>图片加载完立刻重判</strong>：懒加载的小图标不再一直灰着，不必等页面上恰好还有别的变动</li>
+        <li><strong>界面与商店材料的小处收口</strong>：讲整组开关的那句话和每行的说明分开、菜单未选中项也有看得见的空框、三处开关分组让读屏软件认得；商店材料如实写明会读取标签页地址、菜单默认项数与实际一致</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Deleting one site's settings no longer re-mutes other tabs</strong>: a tab you had manually unmuted is no longer muted again when you delete a different site. PageMask only removes the mute it set itself when the current settings no longer call for it</li>
+        <li><strong>No muted tabs left behind</strong> when site permission is revoked or an import replaces all settings; both paths now clean up the same way as deleting a site's settings</li>
+        <li><strong>Small-icon detection is more reliable</strong>: it always uses the size actually shown on the page. Until an image is laid out it stays grey for a frame, then re-checks after loading or a style change, so a large image declared as 16×16 cannot slip through</li>
+        <li><strong>Videos restore correctly</strong> when replaced, when switches are flipped repeatedly, and when a player is moved around the page. Moving a player is no longer treated as removal, so sound does not flicker back; turning a switch off restores the sound state from the start of that round</li>
+        <li><strong>Images are re-checked as soon as they load</strong>: lazy-loaded small icons no longer stay grey until something else happens to change the page</li>
+        <li><strong>Interface and store-listing polish</strong>: the note about the whole group is separated from the per-switch notes, unselected menu items show a visible empty box, all three switch groups are announced properly by screen readers, and the store listing now states accurately that tab URLs are read and matches the menu's real item count</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-7-0">
+      <h2 class="rel-h"><span class="rel-ver">0.7.0</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>收起图片</strong>：网页上的图片变成灰块，位置不变、链接还能点，按钮上的小图标与表情保持原样。这是「看起来收起」，图片请求照发，不省流量、不代替广告过滤工具</li>
+        <li><strong>收起视频</strong>：视频变成灰块，并且暂停、不出声。网站脚本反复调播放也会被按住；切回原样时只把声音放回改动前的状态，不替网站恢复播放</li>
+        <li><strong>静音网页</strong>：用 Chrome 自带的标签页静音让这个标签页不出声，画面照常，标签页上会出现静音的小喇叭。只解除本扩展设置的那一份静音，不动你手动静音、Chrome 自带的「静音网站」或其他扩展设置的静音</li>
+        <li><strong>三处入口，同一组设置</strong>：站点设置页新增「图片、视频和声音」卡片（每行一句说明），弹窗底部收成一组三行，悬浮按钮「⋯」菜单新增一组带勾选标记的开关（点一下不关菜单，可以连着拨几个）。改哪一处，另两处和页面效果都跟着变</li>
+        <li><strong>原样态连声音一起还原</strong>：切「原样」会把灰块、视频停播、标签页静音一并还原；切回「按你的设置显示」重新生效。删除这个网站的设置也不会留下哑掉的标签页</li>
+        <li><strong>不新增权限</strong>：标签页静音走浏览器自己的开关，不需要 <code>tabs</code> 权限；没有拦请求、没有新增主机权限。已知边界写进界面说明、README 与商店材料</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>Hide images</strong>: pictures turn into grey blocks that stay in place with their links still working; small icons on buttons and emoji are left alone. This changes only what you see — image requests still happen, so it is neither a data saver nor an ad blocker</li>
+        <li><strong>Hide videos</strong>: videos turn into grey blocks, pause and go silent. Repeated calls to play by the site's own scripts are held back too. Switching back restores the previous sound state rather than resuming playback for the site</li>
+        <li><strong>Mute this page</strong>: uses Chrome's own tab mute so the tab makes no sound while the picture stays as it is (Chrome shows a muted speaker icon on the tab). PageMask only removes the mute it set itself and leaves your own mute, Chrome's "Mute site" and other extensions' mutes alone</li>
+        <li><strong>Three places, one set of settings</strong>: a "Pictures, videos &amp; sound" card on the site's settings page (a plain-language note under each switch), a compact three-row group at the bottom of the popup, and a group of ticked switches in the floating button's "⋯" menu (which stays open so you can flip several). Change any one of them and the other two and the page follow</li>
+        <li><strong>"As is" brings the sound back too</strong>: switching to the original view restores the grey blocks, the paused/silenced videos and the tab mute together; switching back applies them again. Deleting a site's settings does not leave a muted tab behind</li>
+        <li><strong>No new permissions</strong>: tab mute uses the browser's own switch and needs no <code>tabs</code> permission; no requests are blocked and no host permission was added. The limits are spelled out in the interface, the README and the store listing</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-7">
+      <h2 class="rel-h"><span class="rel-ver">0.6.7</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>「右下角的小按钮」改叫「悬浮按钮」</strong>：原来那个是位置描述，不像个名字。弹窗开关、插件设置的卡片标题、欢迎页第 3 步同步改（#124）</li>
+        <li><strong>两个管理页的互跳入口对齐</strong>：都在页面标题行右侧、同一个次要按钮（有边框、深色字），插件设置页顶部不再另放一条「← 全部网站设置」（#124）</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>「插件设置」入口的字色是蓝的</strong>：链接做成按钮时，全局的链接色盖住了按钮文字色；补一条 <code>a.button</code> 的字色，现在和旁边的按钮同色（#124）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>"The small button in the corner" is now "Floating button"</strong>: the old label described where it sits instead of naming it. The popup switch, the settings card and the welcome step all use the new name (#124)</li>
+        <li><strong>The two management pages now link to each other the same way</strong>: same secondary button in the title row on the right; the settings page no longer has a separate "← All site settings" link at the top (#124)</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The "Extension settings" link was blue</strong>: the global link colour overrode the button's text colour when a link is styled as a button; <code>a.button</code> now keeps the button colour (#124)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-6">
+      <h2 class="rel-h"><span class="rel-ver">0.6.6</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>「看效果」那一屏太挤</strong>：面板最大宽度 560 → 720，正文字号不变但一行放得下「名字 / 范围 / 调整 / ✕」；左右内边距恢复到 16——上批把内边距挪到标题栏时<strong>连左右一起挪走了</strong>，文字会顶到面板边缘（#123）</li>
+        <li><strong>拖动工具条不再贴死视口边缘</strong>：四边至少留 16，视觉上不再是「被截断」（#123）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>「退出设置」按钮每次都先问一次</strong>：0.6.4 起整条标题栏可拖，按在按钮上不拖动、松手就是一次点击，误触一次这次选的内容全没；现在无论有没有改动都会确认，没改动时说明「这次还没有未保存的改动」。Esc 仍然只在真有未保存内容时才问（#123）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The "see how it looks" panel was cramped</strong>: max width 560 → 720 so the four columns (name / scope / adjust / remove) fit on one line, and the body's horizontal padding is back to 16 — the previous release moved the padding onto the title bar and took the left/right padding with it, so text ran to the panel edge (#123)</li>
+        <li><strong>Dragging the toolbar no longer pins it to the viewport edge</strong>: it keeps a 16px gap on all sides (#123)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>"Exit setup" now always asks once</strong>: since 0.6.4 the whole title bar is draggable, so a slightly-off press lands as a click and throws away the current picks; the confirmation now appears whether or not anything changed, and says so plainly when nothing is unsaved. Esc still only asks when there is unsaved work (#123)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-5">
+      <h2 class="rel-h"><span class="rel-ver">0.6.5</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>10 个内置图标改成同一套画法</strong>：统一描边粗细、统一字形框、圆头圆角，只有细节点缀用实心。此前一半是描边、一半是实心，凑成一排不像一套（#121）</li>
+        <li><strong>图标选中态不再只靠颜色</strong>：选中的那一格右上角多一枚勾选角标，色弱用户也分得出选的是哪一个（WCAG 1.4.1，#121）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The 10 built-in icons now share one drawing system</strong>: same stroke weight, same glyph box, rounded caps and joins, with fills only for small details. Previously half were outlines and half were solid — side by side they didn't read as a set (#121)</li>
+        <li><strong>The selected icon no longer relies on colour alone</strong>: the chosen tile gets a check badge in its top-right corner, so colour-blind users can still tell which one is picked (WCAG 1.4.1, #121)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-4">
+      <h2 class="rel-h"><span class="rel-ver">0.6.4</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>页内浮层在白底网页上分不出边界</strong>：向导工具条与确认框原来只有一层几乎看不见的阴影，白底上等于没有边界；现在有 1px 描边 + 近 / 中 / 远三层阴影，系统强制颜色模式下也有边（#118）</li>
+      </ul>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>向导工具条的整条标题栏都能拖</strong>：按在标题、进度或空白处都能移动，按钮照常点击；把手可点区从 24 加到 32（触屏 44），图形不变（#119）</li>
+        <li><strong>小胶囊「⋯」菜单多了「调整不透明度」</strong>：点了直接打开插件设置的不透明度那一栏，滚到卡片、焦点落在滑杆上（#120）</li>
+        <li><strong>标签页图标改成三选一</strong>：网站原来的图标 / 不显示图标 / 换成内置的 10 个图标——不用再自己找图上传（#121）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li>插件设置里不再有「默认图标」：图标三态之后它没有要解决的问题（#121）</li>
+        <li><strong>只换标题、不动图标的网站，标签页上会保留网站自己的图标</strong>（#121）</li>
+        <li>遮住整页时标签页图标固定为空白，不跟着站点设置走；撤掉幕布后换回该站自己选的那一张（#121）</li>
+      </ul>
+      <h3 lang="zh-CN">文档</h3>
+      <ul lang="zh-CN">
+        <li>README 新增「升级：换版本不丢设置」：固定目录覆盖 + 刷新，别卸载（#122）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>In-page panels no longer disappear into white pages</strong>: the wizard toolbar and dialog had only a barely visible shadow; they now have a 1px border plus near / mid / far shadows, and keep an edge in forced-colors mode (#118)</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>The whole title bar of the wizard toolbar is draggable</strong>: press the title, the step text or empty space to move it — buttons still click normally; the grip's hit area went from 24 to 32 (44 on touch) with the artwork unchanged (#119)</li>
+        <li><strong>The small button's ⋯ menu gained "Adjust opacity"</strong>: opens the extension settings on the opacity card, scrolls to it and focuses the slider (#120)</li>
+        <li><strong>Tab icon is now a three-way choice</strong>: the site's own icon / no icon / one of 10 built-in icons — no more hunting for image files (#121)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li>The default-icon setting is gone: the three-way choice leaves it nothing to do (#121)</li>
+        <li><strong>Sites that only change the title now keep the site's own tab icon</strong> (#121)</li>
+        <li>Covering a page always uses a blank tab icon regardless of the site's choice, and restoring brings back the icon that site picked (#121)</li>
+      </ul>
+      <h3 lang="en">Docs</h3>
+      <ul lang="en">
+        <li>README gained "Upgrading without losing your settings": overwrite the same folder and hit reload, don't remove (#122)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-3">
+      <h2 class="rel-h"><span class="rel-ver">0.6.3</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>向导开着时弹窗不再报「没能遮住」</strong>：页面控制器拒遮（向导正开着）时不再触发重新注入——重新注入会把用户正开着的向导关掉（#115）</li>
+        <li><strong>一次遮住请求不再可能被两个控制器互相推让掉</strong>：控制器接口补「遮住进行中」标记，接管方据此把这次请求接住补遮（#115）</li>
+        <li><strong>「遮住」报成功更严谨</strong>：注入后的回查避开一次性脚本还在加载的窗口（等一拍重查）；毫秒级的「读配置还没读完」窗口也并入「遮住进行中」（#115）</li>
+        <li>删除确认框关闭后焦点不再被菜单的收起事件拽走；列表「⋯」快速点两行不再可能报错（#115）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li>表单与视觉细节：向导和胶囊面板的标题输入也不再触发密码管理器；弹窗底部链接文字颜色与按钮一致；欢迎页示意图显式不可点；单选行间距与命中区补齐；清理不再使用的文案键（#115）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The popup no longer reports "couldn't cover" while the wizard is open</strong>: when the page controller refuses (the wizard owns the page), the fallback no longer re-injects — which would tear down the user's open wizard (#115)</li>
+        <li><strong>A cover request can no longer be dropped between two controllers</strong>: the controller interface gained a "covering in progress" flag so the adopting controller picks up and completes the request (#115)</li>
+        <li><strong>"Covered" reporting is stricter</strong>: the post-injection check waits out the one-shot script's module load; the millisecond window while it reads storage now also counts as "in progress" (#115)</li>
+        <li>Focus is no longer yanked out of the delete dialog by the menu's collapse event; clicking "⋯" on two list rows quickly can no longer throw (#115)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li>Form and visual details: the wizard and capsule-panel title inputs no longer trigger the password manager; popup footer links use the same text colour as buttons; the welcome-page artwork is explicitly non-interactive; radio rows got back spacing and hit-area padding; an unused copy key was removed (#115)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-2">
+      <h2 class="rel-h"><span class="rel-ver">0.6.2</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>删除确认框可能被跳过</strong>：弹窗里的删除失败过一次后，再按 Esc 关闭确认框会被当成「确认」，直接再次删除。现在与站点设置页同一口径，关闭即复位（#114）</li>
+        <li><strong>遮住功能可能在一个标签页里永久失效</strong>：极少数时序下（页面注入与启用站点赛跑），一次性脚本会静默退位却留下「初始化中」标记，之后这个标签页再也遮不上。修复退位路径，标记总会复位（#114）</li>
+        <li><strong>遮住/恢复的状态更可信</strong>：幕布遮住后注入不再假报成功（注入后回查一次）；弹窗的「恢复」不再拿打开时的旧状态比对（期间页面可能已被别处改过）（#114）</li>
+        <li><strong>列表「⋯」菜单快速点两行不再报错</strong>；弹窗底部两个入口变成真链接，中键 / Cmd+点击也能开新标签页（#114）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li>表单细节：标题输入框不再触发密码管理器（autocomplete=off，三处）；单选行点击区没有死区；返回链接与所有链接悬停有反馈；长域名标题换行不出孤行（#114）</li>
+        <li>真站冒烟脚本跟上 #98 的行为（只收起内容不改标签页标题），微信读书 / 得到 / 墨问重跑全绿（#114）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The delete confirmation could be skipped</strong>: after one failed delete in the popup, pressing Esc on the dialog was treated as confirmation and deleted again. It now resets on close, same as the site settings page (#114)</li>
+        <li><strong>Covering could permanently fail in a tab</strong>: in a rare race (one-shot injection vs. enabling the site), the one-shot script bowed out but left an "initializing" flag behind, after which that tab could never be covered. The bow-out path now always resets the flag (#114)</li>
+        <li><strong>Cover state is more trustworthy</strong>: injection now verifies the curtain is really up before reporting success; the popup's "Restore" no longer compares against a snapshot taken when the popup opened (the page may have changed meanwhile) (#114)</li>
+        <li><strong>Clicking "⋯" on two list rows quickly no longer errors</strong>; the two popup footer entries are real links now — middle-click / Cmd+click open them in a new tab (#114)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li>Form details: title inputs no longer trigger the password manager (autocomplete=off, three places); radio rows have no dead zones; the back link and all links show hover feedback; long hostnames don't leave orphan lines when wrapped (#114)</li>
+        <li>The real-site smoke script now matches #98 (content-only sites keep their tab title); re-run green on weread / dedao / mowen (#114)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-1">
+      <h2 class="rel-h"><span class="rel-ver">0.6.1</span><time class="rel-date" datetime="2026-11-06">2026-11-06</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>幕布三处入口（胶囊 / 弹窗 / 快捷键）现在互相认账</strong>：以前页面上可能同时有两套幕布控制器，「遮 → 撤 → 再遮」第三次会失灵。现在每个页面只有一个控制器，任何一处遮住、另外两处都能恢复；没添加过的网站也能反复遮 / 撤（#107）</li>
+        <li><strong>欢迎页在矮窗口里显示不全</strong>：窗口只有几百像素高时，底栏压住第 2 步卡片、切步也不滚动。现在滚动只发生在内容区，底栏固定在底部；切「下一步」自动把当前步骤带进视野，读屏同步播报当前步（#108）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>胶囊收到 WCAG 允许的最小尺寸</strong>：高 32 → 26，全功能宽 170 → 164、mini 宽约 80 → 74；可点区仍是 24×24，触屏仍 40×40。不做大小档——现在就是上限（#109）</li>
+        <li><strong>不透明度改成 10%–100% 的滑杆</strong>：原来的三档（100% / 85% / 70%）换成一档 10% 的滑杆，拖动即时预览、松手保存；鼠标移上去、键盘选中或拖动时立刻恢复全清楚。旧设置里的三档自动迁移（清晰 → 100%、淡一点 → 90%、很淡 → 70%）（#110）</li>
+      </ul>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>「右下角的小按钮」可以按网站关掉</strong>：插件弹窗里一个开关，关掉后这个网站不显示胶囊；再打开时胶囊回到右下角、完整形态。关掉不影响收起规则、标题和图标、遮住整页的快捷键（#111、#112）</li>
+        <li><strong>弹窗里能删除这个网站的设置</strong>：藏在弹窗最底部的红字入口，二次确认后删除配置、收回权限——胶囊被藏起来之后，删除从这里仍然够得着（#112）</li>
+        <li><strong>「全部网站设置」列表可以逐行删除</strong>：每行行尾一个「⋯」菜单，点开就是「删除这个网站的设置」；不用再先进详情页。确认框与详情页是同一个，不加编辑按钮、不做多选（#113）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The three curtain entries (capsule / popup / shortcut) now agree with each other</strong>: two curtain controllers could coexist on a page, so cover → restore → cover again failed on the third press. There is now exactly one controller per page; covering from any entry can be undone from any other, and unadded sites can be covered and restored repeatedly (#107)</li>
+        <li><strong>The welcome page was cut off in short windows</strong>: with a few hundred pixels of height the bottom bar covered step 2 and switching steps didn't scroll. Scrolling now happens only in the content area with a fixed bottom bar; moving to a step brings it into view and a screen-reader announcement follows (#108)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>The capsule shrunk to the smallest size WCAG allows</strong>: height 32 → 26, full width 170 → 164, mini width ~80 → 74; hit areas stay 24×24 (40×40 on touch). No size presets — this is the ceiling (#109)</li>
+        <li><strong>Opacity is now a 10%–100% slider</strong>: the three presets (100% / 85% / 70%) became a slider with 10% steps, previewing instantly and saving on release; it turns fully clear on hover, keyboard focus or drag. Old presets migrate automatically (Clear → 100%, Softer → 90%, Faintest → 70%) (#110)</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>The small button in the corner can be turned off per site</strong>: a switch in the popup hides the capsule on that site; turning it back on restores the capsule at the bottom-right corner in full form. Hiding doesn't affect hide rules, the title and icon, or the cover shortcut (#111, #112)</li>
+        <li><strong>The popup can now delete a site's settings</strong>: a red text entry at the very bottom with a confirmation — reachable even when the capsule is hidden (#112)</li>
+        <li><strong>The site list supports per-row deletion</strong>: each row ends with a "⋯" menu containing "Delete this site's settings" — no need to open the details page first. Same confirmation dialog as the details page; no edit button, no multi-select (#113)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-6-0">
+      <h2 class="rel-h"><span class="rel-ver">0.6.0</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>幕布快捷键</strong>：默认 Ctrl+Shift+X（Windows）/ ⌘+Shift+X（Mac），按一下遮住整页、再按一下恢复；没添加过的网站也能遮。全产品只有这一条快捷键（#101）</li>
+        <li><strong>胶囊不透明度三档</strong>：清晰 / 淡一点 / 很淡（0.6.1 起改为 10%–100% 滑杆），只调它闲着的时候有多淡，一碰就恢复清楚（#102）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>只改保存过「标题和图标」的网站</strong>：只收起内容的网站不再被顺手改掉标签页标题（#98）</li>
+        <li><strong>保存过标题的网站可以恢复原样</strong>：站点设置页里一键还原网站自己的标题和图标，收起的内容不动（#99）</li>
+        <li><strong>向导同类组统一用描边</strong>：删掉 1.1 / 1.2 子号牌，组与组的边界一眼可辨（#100）</li>
+        <li><strong>欢迎页改用真实组件</strong>：三步三功能，示意图就是真的弹窗与胶囊，不会再过期（#103）</li>
+        <li><strong>新插件图标</strong>：一副歪着放在纸上的面具，16px 起每一档都单独核对（#104）</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>Curtain keyboard shortcut</strong>: Ctrl+Shift+X (Windows) / ⌘+Shift+X (Mac) by default — press to cover the page, press again to restore; works on unadded sites too. This remains the product's only shortcut (#101)</li>
+        <li><strong>Capsule opacity presets</strong>: Clear / Softer / Faintest (replaced by the 10%–100% slider in 0.6.1) — only how faint it sits when idle, instantly clear on touch (#102)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Only sites with a saved title and icon get renamed</strong>: sites that only hide content no longer have their tab title changed as a side effect (#98)</li>
+        <li><strong>Saved titles can be restored</strong>: one click in the site settings puts back the site's own title and icon without touching hidden content (#99)</li>
+        <li><strong>Wizard groups share one outline</strong>: the 1.1 / 1.2 sub-badges are gone; group boundaries read at a glance (#100)</li>
+        <li><strong>The welcome page renders real components</strong>: three steps, three features — the artwork is the actual popup and capsule, so it can't go stale (#103)</li>
+        <li><strong>A new extension icon</strong>: a mask resting tilted on a page, verified at every size from 16px up (#104)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-5">
+      <h2 class="rel-h"><span class="rel-ver">0.5.5</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>密行里的号码牌归属不明</strong>：在 24 像素高的列表行上，号码牌浮在元素上方、视觉上落在上一行里——看着像上一行的编号，同组最后一行像漏了牌子。密行的号码牌现在放在该行<strong>左侧、与该行同高</strong>，归属一眼确定，也不遮行首文字；够高的卡片与横幅维持原样</li>
+        <li>测试脚本加固：真站冒烟/真机脚本在无头浏览器里动画帧不触发时不再整条崩掉</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Badges were ambiguous in dense rows</strong>: on a 24-pixel list row the badge floated above the element and visually landed in the previous row — it read as that row’s number, and the last member of a group looked like it had none. Dense-row badges now sit to the <strong>left of their row, aligned with it</strong>, so ownership is obvious and the row’s text stays clear; taller cards and banners are unchanged</li>
+        <li>Test scripts no longer crash when animation frames don’t fire in a headless browser</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-4">
+      <h2 class="rel-h"><span class="rel-ver">0.5.4</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>全功能胶囊拖动被钉在右缘</strong>：上一版重构位置逻辑时删掉了「拖动中跟手」分支——右半视口里拖动只能上下滑。现在拖动全程跟手，松手后仍按停靠边贴靠（往右收不变）（#94）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The capsule was pinned to the right edge while dragging</strong>: the position refactor dropped the follow-the-pointer branch — dragging in the right half only moved vertically. Dragging now follows the pointer the whole way; releasing still docks to the nearest edge (#94)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-3">
+      <h2 class="rel-h"><span class="rel-ver">0.5.3</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>引导页文字减负</strong>：四段长文各砍成一句具体动作；每步配一张小图——工具栏固定示意（SVG）、弹窗微缩模型（真实按钮名）、「点选 → 看效果 → 保存」流程、胶囊微缩模型</li>
+        <li>小提示压成一行；上一轮的贴底「下一步」保留</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Welcome page text diet</strong>: each of the four long paragraphs is now one concrete action, with a small illustration — toolbar pinning (SVG), a miniature popup (real button names), the pick → preview → save flow, and a miniature capsule</li>
+        <li>One-line tip; the bottom-docked “Next” from the previous release stays</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-2">
+      <h2 class="rel-h"><span class="rel-ver">0.5.2</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>站点设置页与插件设置页的「打开开关后」说法</strong>：站点页指名为「上面的『按你的设置显示』开关」；插件设置页那两处删掉开关说法——那页没有开关，条件本来就是「网站自己没设置时」</li>
+        <li><strong>首次引导页的主按钮不再压在折叠线下</strong>：整页内容超过一屏，底部「下一步」一栏滚动时贴着视口底走</li>
+        <li><strong>遮住整页后「恢复」二字常显</strong>：此前只有图标，右侧留空看着像没渲染完整；唯一的出路不该靠悬停才自我解释</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>“When the switch is on” copy</strong>: the site page now names the switch (“Shown your way” at the top); the two spots on the Settings page drop the switch wording — that page has no switch, the condition is simply “when a site has none of its own”</li>
+        <li><strong>The onboarding primary button no longer sits below the fold</strong>: the page is taller than one screen, so the bottom bar sticks to the viewport while scrolling</li>
+        <li><strong>“Restore” on the curtain button is always shown</strong>: icon-only with blank right half read as a rendering glitch; the only way back shouldn't need hover to explain itself</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-1">
+      <h2 class="rel-h"><span class="rel-ver">0.5.1</span><time class="rel-date" datetime="2026-11-05">2026-11-05</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>点选阶段页面滚不动</strong>：全屏捕获层吞掉了滚轮的默认滚动——信息流站（滚动放在内层容器上）完全滚不了。现在滚轮转交给指针下的滚动容器，边选边滚、随下随加载（#88）</li>
+        <li><strong>「另外 N 个一样的」不随懒加载更新</strong>：向导开着时页面变了就重算（事件驱动，不做轮询），新卡片加载进来计数与成员标记实时跟上（#88）</li>
+        <li><strong>看效果阶段没法确认同类勾得对不对</strong>：勾了同类的行新增「检查同类」，跳回点选亮出整组，看完回来草稿不丢（#88）</li>
+        <li><strong>遮住整页后的恢复按钮几乎看不见</strong>：常态半透明在白底幕布上对比度不足 3:1，而它是唯一的出路；改常态全不透明（#87）</li>
+        <li><strong>收起/展开按钮悬停底色溢出胶囊圆头</strong>：圆角跟着实际的端点元素走（#85）</li>
+        <li><strong>拖动把手两副样子</strong>：胶囊与向导工具条统一为同一枚六点 SVG（#83）</li>
+        <li><strong>全功能 ↔ mini 切换位置跳</strong>：改为按贴边侧锚定——右停靠往右收、左停靠往左收；幕布恢复按钮松手同规则贴最近边（顺带修掉「恢复按钮拖到中间、胶囊悬在半空」的潜伏 bug）（#84）</li>
+        <li><strong>收起/展开按钮悬停范围超出胶囊本体</strong>：同上圆角修正（#85）</li>
+      </ul>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>「网站设置」改名「全部网站设置」</strong>：弹窗里它会读成「这个网站的设置」；弹窗入口、列表页标题、返回链接、首次引导提及全部同步，英文 All site settings（#86）</li>
+        <li><strong>管理列表页加「插件设置」入口</strong>：插件设置页本有返回，两页从此互达（#87 审查）</li>
+        <li><strong>默认标签页标题跟随显式选择的界面语言</strong>：选了 English 就得到 "Reading"；「自动」档仍按浏览器语言（#89，推翻旧决策，理由见票）</li>
+        <li><strong>按钮在默认位时「⋯」菜单不再显示「按钮放回右下角」</strong>：不起作用的项不摆；拖过之后照常出现（#90）</li>
+        <li><strong>弹窗空状态提示与实物一致</strong>：不再说「两颗按钮」（漏了「遮住这一页」）（#87）</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The page couldn't scroll while picking</strong>: the full-screen capture layer swallowed wheel scrolling — sites that scroll in an inner container (infinite feeds) couldn't scroll at all. Wheel input is now routed to the scrollable container under the pointer, so you can pick and scroll as the feed loads (#88)</li>
+        <li><strong>“Also hide N alike” didn't follow lazy loading</strong>: with the wizard open, page changes now recompute counts and member badges (event-driven, no polling) (#88)</li>
+        <li><strong>No way to check a "similar" match in the preview</strong>: rows with the checkbox ticked get a “Check matches” button that jumps back to picking with the whole group lit; your draft is kept (#88)</li>
+        <li><strong>The restore button on the curtain was nearly invisible</strong>: its semi-transparent look fell below 3:1 contrast on white pages — and it is the only way back. Now fully opaque by default (#87)</li>
+        <li><strong>The fold/unfold button's hover background spilled outside the pill</strong>: cap radii now follow whichever element actually sits at each end (#85)</li>
+        <li><strong>Two different drag handles</strong>: the capsule and the wizard toolbar now share one six-dot SVG grip (#83)</li>
+        <li><strong>The button jumped when switching full ↔ mini</strong>: positions anchor to the docked edge — right-docked shrinks rightward, left-docked leftward; the curtain restore button snaps the same way on release (also fixes a latent bug where the capsule could end up mid-screen) (#84)</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>“网站设置” renamed “全部网站设置” (All site settings)</strong>: in the popup it read as "this site's settings"; popup entry, list title, browser tab title, back links and onboarding mentions all follow (#86)</li>
+        <li><strong>The site list page links to “插件设置” (Settings)</strong>: the two pages now reach each other (#87 review)</li>
+        <li><strong>The default tab title follows an explicitly chosen interface language</strong>: picking English yields "Reading"; “自动” still follows the browser language (#89, overturning the old decision — see the issue for why)</li>
+        <li><strong>The “⋯” menu hides “按钮放回右下角” while the button is at its default spot</strong>: a no-op item isn't shown; it returns once you drag (#90)</li>
+        <li><strong>The popup's empty-state hint now matches what's on screen</strong>: it no longer says “two buttons” and skip “Cover this page” (#87)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-5-0">
+      <h2 class="rel-h"><span class="rel-ver">0.5.0</span><time class="rel-date" datetime="2026-11-04">2026-11-04</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>改收起的内容只剩一条路</strong>：页面内那个独立的编辑面板删掉了。点「编辑收起的内容」直接进设置向导的「看效果」——页面按你的设置显示着，逐行改名、换收起方式、换范围、重新选这一项；「上一步」回到点选，可以再加新的。已经收起的项在页面上用虚线框加「之前收起了」标出来</li>
+        <li><strong>「只这一个 / 同类一起（N）」换成一道勾选框</strong>：「页面上另外 2 个一样的也一起收起」，回答一个是非题，不用先学会「同类」这个词。页面上没有第二个一样的，这道勾选框根本不出现；勾上或取消，页面当场变，工具条上说一句「另外 2 个也收起了」/「现在只收这一个」</li>
+        <li><strong>「收起更多内容」也标出已收起的</strong>：从这个入口进去，页面上已经收着的项同样画虚线框加「之前收起了」；再点其中一个是重复添加，会提示「这一项已经收起了」而不会新增一条</li>
+        <li><strong>「看效果」每行只放一件事</strong>：序号、名称、一句摘要（例如「消失 · 整个网站」）、「调整」、✕。收起方式、在哪些页面收起、重新选、高级（选择器原文）都折进「调整」</li>
+        <li><strong>页面右下角的小按钮</strong>：这个网站只要有设置就出现（只改过标题也算，以前不出现）；「⋯」菜单补上「收起更多内容」，按用途分三组——标题和图标 / 收起更多 / 编辑收起 ｜ 按钮放回右下角 ｜ 删除这个网站的设置（永远排在最后）</li>
+        <li><strong>「你添加的网站」改名「网站设置」</strong>：和「插件设置」配成一对。这个页面上那个「在页面上编辑」删掉了——它不知道该去哪个页面；改成一句说明：想到页面上改，就点工具栏图标再点「编辑收起的内容」</li>
+        <li><strong>按钮全项目一套</strong>：主操作（实心）/ 次操作（有底有边）/ 轻操作（无底无边）/ 危险（红字红边），五种状态齐全。一屏最多一个实心主按钮；能不禁用就不禁用</li>
+        <li><strong>删除只有两种</strong>：从清单里去掉一项，一律是行尾一个 ✕；删除整个网站的设置，才是红字按钮加二次确认</li>
+        <li><strong>向导底栏只放按钮</strong>：退出改成文字按钮「退出设置」；「上一步」带上目的地（「上一步：改标题」「上一步：重新选内容」）</li>
+        <li><strong>文案</strong>：「按你的设置显示 / 网站原样」缩成「按设置 / 原样」（开关的标签仍用全称）；「全部删掉」→「全部取消选择」；「N 项已收起」这类说法彻底不用</li>
+        <li><strong>扩展改名</strong>：<code>PageMask · 页面清爽模式</code> → <code>PageMask · 收起网页上不想看的部分</code>（英文 <code>PageMask — Hide the Parts You Don't Want</code>）</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>「盖住」的预览原来只盖住点中的那一个，保存后却盖住整组；现在预览与保存结果一致</li>
+        <li>保存中的按钮不显示「正在保存…」（状态没跟着变）</li>
+        <li>页面右下角三个小图标按钮的可点区域太小（16 / 22 像素），提到 24×24，触屏 40×40</li>
+        <li>界面里最后一处 10 像素的字没有了</li>
+        <li>弹窗底部「网站设置」「插件设置」原来是无框小字，看着像不能点；改成了普通按钮</li>
+        <li>标题小面板右上角的裸 ✕ 改成文字「关闭」（✕ 只留给「从清单里去掉一项」）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>One way to edit what's hidden</strong>: the separate in-page editor is gone. “Edit hidden items” now opens the setup wizard at its last step — the page is showing your settings, and you rename, change the hide method, change where it applies, or pick the element again, row by row. “Back” takes you to picking, to add more. Items you already hid are outlined with a dashed border and a “Hidden before” tag</li>
+        <li><strong>“Just this one / All N alike” is now a checkbox</strong>: “Also hide the other 2 like this one” — a yes-or-no question instead of a word to learn. When there's no second one on the page, the checkbox doesn't appear at all. Tick or untick and the page changes right away, with a line in the toolbar: “The other 2 are hidden too” / “Only this one is hidden now”</li>
+        <li><strong>One decision per row in the result step</strong>: number, name, a one-line summary (e.g. “Disappear · The whole site”), “Adjust”, ✕. Hide method, where it applies, pick again, and the advanced selector all live inside “Adjust”</li>
+        <li><strong>The small button in the corner</strong>: now appears whenever the site has any setting (a changed tab title counts; it used to stay hidden). Its “⋯” menu gained “Hide more” and is grouped by purpose — title and icon / hide more / edit hidden | put the button back | delete this site's settings (always last)</li>
+        <li><strong>The corner button has a mini form</strong>: just the state dot (click to switch “Your settings / As is”), Cover (one click when it matters), and Expand — no text, no menu, no grip; a pair of icons switches between mini and full, and each site remembers its own choice</li>
+        <li><strong>“Hide items” also marks what's already hidden</strong>: the wizard stops at picking, items already hidden get the same dashed outline and “Hidden before” tag; clicking one again replaces that rule in place instead of creating a second one</li>
+        <li><strong>“Your sites” renamed “Site settings”</strong>, pairing with “Settings”. The “Edit on the page” button there is gone — it couldn't know which page to open; a sentence now says: use the toolbar icon, then “Edit hidden items”</li>
+        <li><strong>One set of buttons everywhere</strong>: primary (solid) / secondary (filled, bordered) / quiet (no fill, no border) / danger (red text and border), with all five states. At most one solid primary button per screen; avoid disabling buttons where possible</li>
+        <li><strong>Only two kinds of removal</strong>: taking one item off a list is always a ✕ at the end of its row; deleting a whole site's settings is a red button plus a confirmation</li>
+        <li><strong>The wizard's bottom bar holds buttons only</strong>: exit is a text button “Exit setup”; “Back” names its destination (“Back: tab title”, “Back: pick again”)</li>
+        <li><strong>Wording</strong>: “Shown your way / As the site is” shortened to “Your settings / As is” (the switch keeps the full label); “Remove all” became “Deselect all”; “N items hidden” is no longer used anywhere</li>
+        <li><strong>Renamed</strong>: <code>PageMask — Clean &amp; Focused Pages</code> → <code>PageMask — Hide the Parts You Don't Want</code> (Chinese: <code>PageMask · 收起网页上不想看的部分</code>)</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>“Cover” used to preview only the element you clicked, but covered the whole group once saved; the preview now matches the result</li>
+        <li>Buttons didn't show “Saving…” while saving (the state wasn't reactive)</li>
+        <li>The three small icon buttons in the corner were too small to hit (16 / 22 px); they're 24×24 now, 40×40 on touch screens</li>
+        <li>The last 10 px text in the interface is gone</li>
+        <li>The two footer entries in the popup (“Site settings” / “Settings”) were borderless small text that didn't look clickable; they're regular buttons now</li>
+        <li>The bare ✕ atop the title panel became a text “Close” button (✕ is reserved for taking an item off a list)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-4-1">
+      <h2 class="rel-h"><span class="rel-ver">0.4.1</span><time class="rel-date" datetime="2026-11-02">2026-11-02</time></h2>
+      <h3 lang="zh-CN">变更</h3>
+      <ul lang="zh-CN">
+        <li><strong>按钮和菜单改成说人话</strong>：主按钮「为当前网站开启清爽模式」→「设置这个网站」；「编辑当前网站」→「编辑收起的内容」；底部入口「管理全部网站」→「你添加的网站」；「遮住本页 / 恢复本页」→「遮住这一页 / 恢复这一页」</li>
+        <li><strong>两个状态换了名字</strong>：「清爽 / 原样」→「按你的设置显示 / 网站原样」。开关标签、页面右下角小按钮的悬停提示、网站列表里的状态都跟着改，不用先猜「清爽」是什么意思</li>
+        <li><strong>技术词全部下架</strong>：「授权 / 待授权 / 授权并启用 / 一次授权全部」→「允许访问 / 需要允许访问 / 允许访问 / 全部允许」；「生效范围」统一成「在哪些页面收起」；「规则」→「收起设置 / 收起项」；「去处理」→「重新选一次」；「快捷填入」→「现成的标题」；「小胶囊」→「页面右下角的小按钮」</li>
+        <li><strong>同一件事全项目只留一个叫法</strong>：设置第 3 步和页面内编辑面板原来一个叫「在哪些页面收起」、一个叫「生效范围」，现在统一；「整站 / 仅 / 除外」这类缩写全部删掉</li>
+        <li><strong>说不清的地方补足</strong>：用不了的页面说清原因（「Chrome 自己的页面不让扩展改动，换一个普通网页再试」）；第一次打开时说清能做什么（改标签页标题和图标、点选页面内容收起来）；失效提醒改成「「顶部导航栏」最近找不到目标了，可能网站改版了。在哪些页面收起：整个网站」</li>
+        <li><strong>数量说法不再自相矛盾</strong>：网站显示原样时，「已收起 N 项」是句假话，改成中性的「N 项收起设置」</li>
+        <li><strong>扩展简介与工具栏提示</strong>：简介去掉「一键收起」，悬停提示从「让当前网站更清爽」改成「设置这个网站的标签页标题、收起内容」</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li>插件设置页的标签页标题现在跟随界面语言（原来固定是中文）</li>
+      </ul>
+      <h3 lang="en">Changed</h3>
+      <ul lang="en">
+        <li><strong>Buttons and menus now say what they do</strong>: the main button "Turn on clean mode for this site" → "Set up this site"; "Edit this site" → "Edit hidden items"; the bottom entry "Manage all sites" → "Your sites"; "Cover this page / Restore this page" stays, and the page-side wording matches</li>
+        <li><strong>The two states were renamed</strong>: "Clean / Original" → "Shown your way / As the site is". The switch label, the small button's tooltip and the site list follow, so nobody has to guess what "Clean" means</li>
+        <li><strong>Jargon is gone</strong>: "authorize / needs access / allow and turn on / allow all" → "allow access / needs access / allow access / allow all"; "where it applies" is one name everywhere; "rule" → "hidden item / items set to hide"; "fix it" → "pick again"; "quick fill" → "ready-made titles"; "the small capsule" → "the small button at the bottom-right"</li>
+        <li><strong>One name per thing</strong>: step 3 and the on-page editor used to call the same setting two different things; they now match, and abbreviations like "whole site / only / except" are gone</li>
+        <li><strong>Where it was vague, it now explains</strong>: unsupported pages say why ("Chrome's own pages don't let extensions change them. Try a normal web page"); the first-time hint says what you can do; broken items read "“Nav bar” can't be found any more — the site may have changed. Where it applies: the whole site"</li>
+        <li><strong>Counts no longer contradict the state</strong>: "N items hidden" was untrue while a site showed as-is; it is now the neutral "N items set to hide"</li>
+        <li><strong>Store blurb and toolbar tooltip</strong>: dropped "with a click" from the short description, and the tooltip now names the action instead of "make this site clean &amp; focused"</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li>The Settings page tab title now follows the interface language (it used to stay Chinese)</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-4-0">
+      <h2 class="rel-h"><span class="rel-ver">0.4.0</span><time class="rel-date" datetime="2026-10-30">2026-10-30</time></h2>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>面板只留三件事</strong>：主操作、编辑当前网站、还有一个能来回点的「遮住本页 / 恢复本页」；底部并排两个入口——「管理全部网站」与「插件设置」。原来的「设置标题和图标」从面板移除，改到页面右下角小胶囊的菜单里</li>
+        <li><strong>设置分成两个独立页面</strong>：「你添加的网站」是网站列表，点进去是一个网站的设置页；「插件设置」单独一页，放默认标题、默认图标、导出 / 导入、界面语言与版本信息，也注册成了扩展的「扩展程序选项」</li>
+        <li><strong>默认标签页图标</strong>：插件有一张自己的默认图标，生效顺序是网站自己设的 &gt; 插件默认 &gt; 透明（不显示）。改了默认图标，没单独设过图标的网站会一起变</li>
+        <li><strong>设置向导变成三步</strong>：标签页标题和图标 → 点选要收起的内容 → 看效果。选中的内容列成清单、可逐项删掉；生效范围也在「看效果」这一步定；点保存即完成</li>
+        <li><strong>页面右下角小胶囊的菜单变成四项</strong>：标签页标题和图标 / 编辑收起的内容 / 按钮放回右下角 / 删除这个网站的设置</li>
+        <li><strong>「一键清空」改叫「删除这个网站的设置」</strong>：确认框里写清删的是什么、影响哪些东西；网站的设置页和页面菜单里是同一个名字</li>
+        <li><strong>遮住整页后是一颗睁眼的小按钮</strong>：和平时那根小胶囊同一套长相，可以拖动、记住位置；鼠标移上去（或键盘聚焦）才显出「恢复」两个字</li>
+        <li><strong>导出文件更完整</strong>：除了全部网站的设置，还带上插件设置（默认标题、默认图标）与导出时的版本号；文件名形如 <code>pagemask-0.4.0-20261030120000.json</code></li>
+        <li><strong>全界面中英双语</strong>：面板、管理页、向导、页面内的按钮与提示都有中文和英文两套文案；「插件设置」里可以选界面语言（跟随浏览器 / 简体中文 / English），切换立即生效</li>
+      </ul>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>标签页标题不再和网站"对抢"</strong>：个别网站反复改写标签页标题时，插件补写频率受控；实在抢不过（网站用定时器死守）就彻底放手，浏览器保持流畅，不再卡顿</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>The popup keeps three things</strong>: the main action, "Edit this site", and a two-way "Cover this page / Restore this page" switch; two side-by-side entries at the bottom — "Manage all sites" and "Settings". The old "Set tab title &amp; icon" is gone from the popup; it moved into the menu of the small capsule at the bottom-right of the page</li>
+        <li><strong>Settings split into two pages</strong>: "Your sites" lists the sites you added; clicking one opens that site's settings page. "Settings" is its own page with the default title, default icon, export / import, interface language and version info, and it is registered as the extension's "Options" page</li>
+        <li><strong>Default tab icon</strong>: PageMask now has its own default icon; the order is the site's own icon &gt; the default icon &gt; transparent (nothing shown). Change the default and every site without its own icon follows</li>
+        <li><strong>The setup wizard is now three steps</strong>: tab title and icon → pick what to hide → check the result. Everything picked is listed and can be removed item by item; the scope is decided on the "check the result" step too; saving finishes it in one click</li>
+        <li><strong>The capsule's ⋯ menu now has four items</strong>: tab title and icon / edit what's hidden / put the button back at the bottom-right / delete this site's settings</li>
+        <li><strong>"Reset" is now "Delete this site's settings"</strong>: the confirmation spells out what is deleted and what it affects; the site's settings page and the on-page menu share the same name</li>
+        <li><strong>After covering the page there is a small open-eye button</strong>: same look as the capsule, draggable, remembers its position; hover (or keyboard focus) reveals the word "Restore"</li>
+        <li><strong>Export files are more complete</strong>: besides every site's settings they now include the plugin settings (default title, default icon) and the version at export time; the file name looks like <code>pagemask-0.4.0-20261030120000.json</code></li>
+        <li><strong>The whole interface is bilingual</strong>: the popup, management pages, wizard and on-page controls all have Chinese and English; pick the interface language ("follow the browser" / 简体中文 / English) in Settings and it takes effect immediately</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>The tab title is no longer fought over</strong>: on sites that rewrite their title in a loop, PageMask now writes back at a controlled rate; if the site simply won't yield (a timer keeps resetting it), PageMask lets go entirely — the browser stays smooth, no more freezing</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-3-0">
+      <h2 class="rel-h"><span class="rel-ver">0.3.0</span><time class="rel-date" datetime="2026-10-28">2026-10-28</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>新站点授权后直接进入设置向导</strong>：原来点「允许」之后什么都不发生，得再点一次扩展图标（权限确认框会关闭扩展弹窗，后面的步骤没能继续）。现在弹窗只发一条消息，由后台在用户手势里请求权限并接着完成注入与开向导，一次点击即可</li>
+        <li><strong>「已收起 0 项」这类写法</strong>：只想改标题的网站没有任何收起项，现在显示「没有收起任何内容」</li>
+      </ul>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li><strong>只想改标签页标题也可以</strong>：popup 新增「设置标题和图标」，直接进管理页把标题、图标填好保存，一个元素都不用收起</li>
+        <li><strong>管理页拆成「网站」与「设置」两个 tab</strong>：网站是已添加网站的列表，点进去是这个网站的设置页（开关、标签页标题、图标、已收起的项、一键清空）；设置里放全局默认标题与导出 / 导入</li>
+        <li><strong>站点设置页</strong>：已收起的项可以删除（5 秒内可撤销），换收起方式与重选元素仍然在页面上做（那里才有上下文）</li>
+        <li><strong>设置向导更顺手</strong>：点选阶段新增「清空」，一步清掉已选；「退出」改叫「取消」，确认框里危险按钮改成红色实底，安全按钮默认聚焦</li>
+        <li><strong>预览清单行内编辑</strong>：每一行直接换收起方式、改名、删除；范围标签显示「同类 3 处」这样的命中数，点一下只收起这一处</li>
+        <li><strong>三种收起方式的界面叫法改为「消失 / 留空 / 盖住」</strong>：消失 = 下面的内容往上补；留空 = 位置留着不动；盖住 = 盖一块和背景同色的板</li>
+        <li><strong>幕布</strong>：一键把整页连同标签页标题一起遮住，再一键回到点击前的样子（原来是什么状态就回什么状态）。没添加过的网站也能用：popup 点「遮住本页」，当场遮住，不留任何配置</li>
+      </ul>
+      <h3 lang="zh-CN">工程</h3>
+      <ul lang="zh-CN">
+        <li>元素命名改进：文字都在子元素里的容器不再叫「div 元素」</li>
+        <li>E2E 覆盖管理页三视图、预览清单、幕布（含未添加站点的一次性脚本）；测试收尾失败不再影响用例结论</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Adding a new site now opens the setup wizard right away</strong>: after clicking "Allow" nothing used to happen and you had to click the extension icon again (the permission prompt closes the popup, so the following steps never ran). The popup now only sends a message; the background asks for permission inside the user gesture and then injects and opens the wizard in one go</li>
+        <li><strong>Wording like "0 items hidden"</strong>: a site that only changes its tab title has nothing hidden — it now says "nothing hidden"</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li><strong>Tab title only is fine</strong>: the popup gains "Set tab title &amp; icon" — open the management page, fill in the title and icon, save, and not a single element is hidden</li>
+        <li><strong>The management page splits into "Sites" and "Settings" tabs</strong>: Sites lists the sites you added; clicking one opens its settings page (switch, tab title, icon, hidden items, reset). Settings holds the default title and export / import</li>
+        <li><strong>Site settings page</strong>: hidden items can be deleted (undo for 5 seconds); changing the hide method and re-picking an element still happen on the page itself, where the context is</li>
+        <li><strong>A smoother wizard</strong>: "Clear" empties your selection in one click; "Exit" is now "Cancel"; the destructive button in the confirmation is solid red and the safe button has focus</li>
+        <li><strong>Inline editing in the preview list</strong>: change the hide method, rename and delete right on each row; the scope label shows how many match ("3 alike"), and one click hides just this one</li>
+        <li><strong>Hide methods are now "Disappear / Keep space / Cover"</strong>: disappear pulls the following content up; keep space leaves the gap; cover puts a sticker the colour of the background over it</li>
+        <li><strong>Curtain</strong>: cover the whole page and the tab title in one click, and go back exactly to what it was before. It works on sites you have not added too — "Cover this page" in the popup covers it on the spot and leaves no configuration behind</li>
+      </ul>
+      <h3 lang="en">Engineering</h3>
+      <ul lang="en">
+        <li>Better element names: containers whose text lives in child elements no longer become "div element"</li>
+        <li>E2E now covers the three management views, the preview list, and the curtain (including the one-shot script for un-added sites); cleanup failures no longer affect the verdict</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-2-0">
+      <h2 class="rel-h"><span class="rel-ver">0.2.0</span><time class="rel-date" datetime="2026-10-27">2026-10-27</time></h2>
+      <h3 lang="zh-CN">修复</h3>
+      <ul lang="zh-CN">
+        <li><strong>遮罩覆盖</strong>：页面后加载的元素会被自动补上遮罩；遮罩颜色取自元素背后的真实底色（深色页面不再刺眼）；页面静止时不再逐帧运行；遮罩下的链接点不到</li>
+        <li><strong>设置向导</strong>：取消某个选择后序号重新编号；改一个元素的方案不会让其它预览标记坍缩；预览标记不再盖住重排上来的内容、也不拦截点击；Esc 分层处理（有浮层只关浮层、退出确认框上 Esc 等于继续编辑）；「继续选择」保留已改的方案；滚动后点击选中的是指针下的元素；工具条默认在底部、可拖动也可用方向键移动</li>
+        <li><strong>编辑规则</strong>：popup 增加「编辑当前网站」入口；「重选元素」取消后旧规则原样保留，保存时在同一次写入里替换；面板跟随存储变化，SPA 换页后规则列表随之更新；高级选择器逐行校验并指出第几行；删除后 5 秒内可撤销；失效规则给出可读说明与「去处理」按钮</li>
+        <li><strong>悬浮按钮</strong>：点菜单项不再误切开关；菜单自动避开视口边缘；按钮可用键盘操作（Tab 聚焦、回车切换）；拖动改用专用把手，触屏不再残留监听；位置贴边保存，窗口变化后仍够得着</li>
+        <li><strong>扩展页面</strong>：开关改为原生 switch 语义；弹窗、管理页、引导页的对比度与深色模式达标；确认框改为原生对话框，焦点进入框内</li>
+        <li><strong>存储</strong>：所有站点配置经统一校验 + 原子更新写入，避免并发覆盖；导入先校验后写入</li>
+      </ul>
+      <h3 lang="zh-CN">新增</h3>
+      <ul lang="zh-CN">
+        <li>新图标（16 / 32 / 48 / 128），悬浮按钮使用配套单色图标</li>
+        <li>默认标签页标题「阅读」/ "Reading"、默认透明图标；管理页提供常用标签页标题快捷选择</li>
+        <li>manifest 多语言（英文默认 + 简体中文），最低支持 Chrome 116</li>
+        <li>设计 tokens 与自动对比度测试；界面统一使用 tokens</li>
+        <li>内容脚本宿主隔离：页面样式（含 <code>!important</code>）压不到插件界面；扩展更新后新实例接管旧页面</li>
+        <li>站点生命周期对账：撤销授权后显示「待授权」并可重新授权；一键清空时已打开页面立即还原</li>
+        <li>首次安装的四步引导页</li>
+      </ul>
+      <h3 lang="zh-CN">工程</h3>
+      <ul lang="zh-CN">
+        <li>CI、打包门禁（<code>npm run check:package</code>）、第三方组件声明、SECURITY.md</li>
+        <li>依赖锁定精确版本；可移植 E2E（Chrome for Testing），覆盖主流程与各界面专项</li>
+      </ul>
+      <h3 lang="en">Fixed</h3>
+      <ul lang="en">
+        <li><strong>Cover</strong>: elements inserted after page load get covered automatically; the cover color is taken from the real background behind the element (no more glare on dark pages); nothing runs per frame while the page is still; links under a cover are not clickable</li>
+        <li><strong>Setup wizard</strong>: badge numbers renumber after unselecting; changing one element's method no longer collapses other preview markers; markers no longer cover reflowed content or block clicks; Esc is handled by layer (only the open overlay closes; Esc on the exit dialog means keep editing); "continue selecting" keeps your adjustments; after scrolling, a click selects the element under the pointer; the toolbar sits at the bottom by default, can be dragged or moved with arrow keys</li>
+        <li><strong>Edit rules</strong>: the popup gains an "Edit this site" entry; "re-pick element" keeps the old rule if you cancel, and replaces it in the same write when you save; the panel follows storage changes and updates its rule list after SPA navigation; the advanced selector backdoor validates line by line and names the failing line; deletions can be undone for 5 seconds; broken rules show a readable explanation with a "fix it" button</li>
+        <li><strong>Floating button</strong>: clicking a menu item no longer flips the switch; the menu stays inside the viewport; the button is keyboard operable (Tab to focus, Enter to toggle); dragging uses a dedicated handle and leaves no listeners behind on touch; the position is saved against the nearest edge and stays reachable after resizing</li>
+        <li><strong>Extension pages</strong>: the switch uses native switch semantics; contrast and dark mode meet the thresholds on the popup, management and onboarding pages; confirmations are native dialogs with focus moved inside</li>
+        <li><strong>Storage</strong>: every site profile is written through a single validator and atomic updates, avoiding lost updates; imports are validated before writing</li>
+      </ul>
+      <h3 lang="en">Added</h3>
+      <ul lang="en">
+        <li>New icons (16 / 32 / 48 / 128), with a matching monochrome icon for the floating button</li>
+        <li>Default tab title "Reading" (「阅读」) and a transparent default icon; quick title presets in the management page</li>
+        <li>Localized manifest (English default + Simplified Chinese), minimum Chrome 116</li>
+        <li>Design tokens with automated contrast tests; the UI uses tokens throughout</li>
+        <li>Host isolation: page styles (including <code>!important</code>) cannot reach PageMask UI; after an extension update a new instance takes over open pages</li>
+        <li>Site lifecycle reconciliation: a revoked site shows "pending" and can be re-authorized; resetting a site reverts open pages immediately</li>
+        <li>Four-step first-run onboarding</li>
+      </ul>
+      <h3 lang="en">Engineering</h3>
+      <ul lang="en">
+        <li>CI, a packaging gate (<code>npm run check:package</code>), third-party notices, SECURITY.md</li>
+        <li>Dependencies pinned to exact versions; portable E2E (Chrome for Testing) covering the main flow and each UI area</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v0-1-0">
+      <h2 class="rel-h"><span class="rel-ver">0.1.0</span><time class="rel-date" datetime="2026-10-26">2026-10-26</time></h2>
+      <ul lang="zh-CN">
+        <li>按网站生效：仅用户主动添加的网站生效，未配置网站零注入、零影响</li>
+        <li>点选向导：悬停高亮、连续多选、选大/选小调整层级、整页防呆提示、Esc 二次确认</li>
+        <li>三种收起方式：彻底移除 / 原地留白 / 遮罩覆盖，预览期可随时切换</li>
+        <li>收起规则：多候选选择器（语义属性优先，过滤构建工具生成的类名），生效范围零输入（整站 / 仅这类 / 排除这类）</li>
+        <li>标签页标题与图标：可设置自定义标题与图标，网站动态改写标题时自动改回</li>
+        <li>每网站开关：页面内悬浮按钮（可拖动、记住位置），同站多标签页联动，状态按网站记忆</li>
+        <li>页面内编辑面板：当前页面规则列表、换方案/改范围即时生效、删除、重选、高级选择器后门（保存前必须现场命中）</li>
+        <li>管理页：全站总览、标签页标题/图标设置、失效状态、一键清空（二次确认）、导出/导入（合并或整体替换）</li>
+        <li>失效体检：仅在清爽态采集，用人话提醒</li>
+        <li>首次安装引导</li>
+        <li>隐私：配置只存在本机，PageMask 自身不发起网络请求，权限最小化（按网站的可选主机权限）</li>
+      </ul>
+      <ul lang="en">
+        <li>Works per site: only user-added sites are affected; zero injection elsewhere</li>
+        <li>Pick wizard: hover highlight, multi-select, bigger/smaller level adjustment, whole-page guard, Esc double-confirm</li>
+        <li>Three hiding methods: remove / blank-in-place / cover, switchable during preview</li>
+        <li>Hide rules: multi-candidate selectors (semantic attributes first, build-tool generated class names filtered), zero-typing scope (whole site / only these pages / except these pages)</li>
+        <li>Tab title &amp; icon: custom title and icon per site; titles rewritten by the site are changed back automatically</li>
+        <li>Per-site switch: an on-page floating button (draggable, remembers its position); all tabs of a site switch together; state remembered per site</li>
+        <li>On-page editor panel: rule list for the current page, live method/scope changes, delete, re-pick, advanced raw-selector backdoor (must match live before saving)</li>
+        <li>Management page: all-sites overview, tab title/icon settings, health state, one-click reset with confirmation, export/import (merge or replace)</li>
+        <li>Rule health check: collected in clean mode only, plain-language notices</li>
+        <li>First-run onboarding</li>
+        <li>Privacy: settings stay on your device, PageMask itself makes no network requests, minimal permissions (per-site optional host permissions)</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <ul>
+      <li><a href="https://github.com/cherishfall/page-mask"><span lang="zh-CN">GitHub 仓库</span><span lang="en">GitHub repository</span></a></li>
+      <li><a href="https://github.com/cherishfall/page-mask/blob/master/LICENSE">MIT License</a></li>
+      <li><a href="privacy.html"><span lang="zh-CN">隐私政策</span><span lang="en">Privacy policy</span></a></li>
+      <li><a href="changelog.html"><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></a></li>
+    </ul>
+    <p>© 2026 cherishfall</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pagemask-landing-lang';
+  var root = document.documentElement;
+  var btnZh = document.getElementById('lang-zh');
+  var btnEn = document.getElementById('lang-en');
+  var group = document.getElementById('lang-group');
+  function stored() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+  function apply(lang, persist) {
+    var en = lang === 'en';
+    root.classList.toggle('lang-en', en);
+    root.lang = en ? 'en' : 'zh-CN';
+    btnZh.setAttribute('aria-pressed', en ? 'false' : 'true');
+    btnEn.setAttribute('aria-pressed', en ? 'true' : 'false');
+    document.title = en ? root.dataset.titleEn : root.dataset.titleZh;
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', en ? root.dataset.descEn : root.dataset.descZh);
+    if (group) group.setAttribute('aria-label', en ? 'Language' : '界面语言');
+    if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) {} }
+  }
+  btnZh.addEventListener('click', function () { apply('zh', true); });
+  btnEn.addEventListener('click', function () { apply('en', true); });
+  apply(stored() === 'en' ? 'en' : 'zh', false);
+})();
+</script>
+</body>
+</html>

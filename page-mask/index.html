@@ -385,7 +385,7 @@ a, button, summary {
   display: flex;
   align-items: flex-end;
   height: 42px;
-  padding: 0 14px;
+  padding: 8px 14px 0;
   background: var(--bg-subtle);
   border-bottom: 1px solid var(--border);
 }
@@ -649,7 +649,7 @@ a, button, summary {
   .card-grid, .point-grid, .steps { grid-template-columns: 1fr; }
   .faq-a { padding-left: 16px; }
   /* 手机上截图被缩得很小，箭头压上去会挡住内容：挪到图下两侧 */
-  .demo-frame { padding-bottom: 56px; }
+  .demo-frame { padding-bottom: 48px; }
   .demo-arrow { top: auto; bottom: 0; transform: none; }
   .demo-arrow[data-dir="-1"] { left: 0; }
   .demo-arrow[data-dir="1"] { right: 0; }
@@ -718,8 +718,8 @@ a, button, summary {
       </div>
       <h1>PageMask</h1>
       <p class="lede">
-        <span lang="zh-CN">在你添加的网站上，点选不想看的部分，它们就消失。标签页标题和图标也能变低调。</span>
-        <span lang="en">On sites you add, pick the parts you don't want and they're gone. The tab title and icon can go low-key too.</span>
+        <span lang="zh-CN">网页上不想看的，收起来。</span>
+        <span lang="en">Hide what you don't want to see.</span>
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#install"><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></a>
@@ -745,8 +745,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">收起内容</span><span lang="en">Hide items</span></h3>
           <p>
-            <span lang="zh-CN">点选推广位、侧栏或页脚，它们就从整个网站消失。收错了，5 秒内可撤销。</span>
-            <span lang="en">Pick promos, sidebars or footers and they disappear from the whole site. Picked the wrong thing? Undo within 5 seconds.</span>
+            <span lang="zh-CN">推广横幅、侧栏、页脚，点选一次，这个网站上就都不再出现。</span>
+            <span lang="en">Promos, sidebars, footers: pick once and they're gone from this site.</span>
           </p>
         </div>
 
@@ -759,8 +759,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">标题和图标</span><span lang="en">Title &amp; icon</span></h3>
           <p>
-            <span lang="zh-CN">把标签页标题改成「阅读」这类低调字样；图标可保留、隐藏或换掉。</span>
-            <span lang="en">Set the tab title to something low-key like “Reading”; keep the site’s icon, hide it or swap it.</span>
+            <span lang="zh-CN">标签页标题换成「阅读」这类低调字样；图标可换可藏。</span>
+            <span lang="en">A low-key tab title like “Reading”; keep, hide or swap the icon.</span>
           </p>
         </div>
 
@@ -771,8 +771,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">整页变灰</span><span lang="en">Turn the whole page gray</span></h3>
           <p>
-            <span lang="zh-CN">一键让整页变成黑白，文字、图片、视频和背景都算；位置、链接和音量都不变。</span>
-            <span lang="en">Turn the whole page black and white — text, images, video and backgrounds. Layout, links and sound stay unchanged.</span>
+            <span lang="zh-CN">一键黑白，文字照常读，布局不乱。</span>
+            <span lang="en">One click to black and white; text stays readable, layout stays put.</span>
           </p>
         </div>
 
@@ -785,8 +785,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">遮住这一页</span><span lang="en">Cover this page</span></h3>
           <p>
-            <span lang="zh-CN">临时遮住整页，连这个标签页的声音一起静音；刷新或离开就恢复。</span>
-            <span lang="en">Cover the whole page and mute the tab; reload or leave, and it’s back.</span>
+            <span lang="zh-CN">临时遮住整页，连声音一起静音；刷新或离开即恢复。</span>
+            <span lang="en">Cover the page and mute the tab; reload or leave and it’s back.</span>
           </p>
         </div>
 
@@ -870,13 +870,13 @@ a, button, summary {
             <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">Original</span>
           </button>
           <button type="button" class="demo-step" data-step="1">
-            <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">改标签页标题</span><span lang="en">Change tab title</span>
+            <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">设置标题和图标</span><span lang="en">Set title &amp; icon</span>
           </button>
           <button type="button" class="demo-step" data-step="2">
-            <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标题变成「阅读」</span><span lang="en">Tab title: “Reading”</span>
+            <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标签页显示「阅读」</span><span lang="en">Tab shows “Reading”</span>
           </button>
           <button type="button" class="demo-step" data-step="3">
-            <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span>
+            <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的部分</span><span lang="en">Pick parts to hide</span>
           </button>
           <button type="button" class="demo-step" data-step="4">
             <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items gone</span>
@@ -888,8 +888,8 @@ a, button, summary {
         <div class="demo-captions" aria-live="polite" aria-atomic="true">
           <p class="demo-caption" data-step="0">
             <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 6 步：</span><span lang="en">Step 1 of 6: </span></span>
-            <span lang="zh-CN">页面本来的样子：页头、推广横幅、本周推荐和页脚都在。</span>
-            <span lang="en">The page as it is: header, promo banner, recommendations and footer all in place.</span>
+            <span lang="zh-CN">页面本来的样子：页头、推广横幅、本周推荐，以及底部的页脚。</span>
+            <span lang="en">The page as it is: header, promo banner, recommendations and the footer at the bottom.</span>
           </p>
           <p class="demo-caption" data-step="1" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 6 步：</span><span lang="en">Step 2 of 6: </span></span>
@@ -898,8 +898,8 @@ a, button, summary {
           </p>
           <p class="demo-caption" data-step="2" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 6 步：</span><span lang="en">Step 3 of 6: </span></span>
-            <span lang="zh-CN">标签页变成「阅读」，网页本身没动。</span>
-            <span lang="en">The tab now reads “Reading”; the page itself is unchanged.</span>
+            <span lang="zh-CN">标签页显示「阅读」，网页本身没动。</span>
+            <span lang="en">The tab shows “Reading”; the page itself is unchanged.</span>
           </p>
           <p class="demo-caption" data-step="3" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 6 步：</span><span lang="en">Step 4 of 6: </span></span>

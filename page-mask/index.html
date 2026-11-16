@@ -410,8 +410,8 @@ a, button, summary {
   background: #0ea5e9;
 }
 .demo[data-step="0"] .demo-title-after,
-.demo:not([data-step="0"]) .demo-title-before { display: none; }
-.demo:not([data-step="0"]) .demo-favicon { visibility: hidden; }
+.demo[data-step="1"] .demo-title-after,
+.demo:not([data-step="0"]):not([data-step="1"]) .demo-title-before { display: none; }
 .demo-tab-title {
   min-width: 0;
   overflow: hidden;
@@ -434,7 +434,9 @@ a, button, summary {
 .demo[data-step="0"] .demo-img[data-step="0"],
 .demo[data-step="1"] .demo-img[data-step="1"],
 .demo[data-step="2"] .demo-img[data-step="2"],
-.demo[data-step="3"] .demo-img[data-step="3"] { display: block; }
+.demo[data-step="3"] .demo-img[data-step="3"],
+.demo[data-step="4"] .demo-img[data-step="4"],
+.demo[data-step="5"] .demo-img[data-step="5"] { display: block; }
 .demo-controls {
   display: flex;
   flex-wrap: wrap;
@@ -506,10 +508,10 @@ a, button, summary {
 .demo-arrow:hover:not(:disabled) { background: var(--control-hover); }
 .demo-arrow:disabled { opacity: 0.45; cursor: not-allowed; }
 .demo-count {
-  min-width: 52px;
   color: var(--muted);
   font-size: 13px;
   text-align: center;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 .demo-captions {
@@ -526,33 +528,7 @@ a, button, summary {
   font-size: 13px;
   line-height: 1.6;
 }
-.demo-note .text-link { margin-inline-start: 4px; }
-
-/* ── 真实截图：自带网页底色，统一加细边框融入页面；说明在图下 ── */
-figure.shot { margin: 0; }
-figure.shot img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: var(--bg);
-}
-.shot-link { display: block; cursor: zoom-in; border-radius: var(--radius-card); touch-action: manipulation; }
-.shot-link:focus-visible { border-radius: var(--radius-card); }
-figure.shot figcaption {
-  max-width: 76ch;
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 14px;
-}
-.effect-subtitle {
-  margin-top: 40px;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-.effect-picker { margin-top: 18px; }
+.demo-note .text-link { margin-inline-start: 4px; white-space: nowrap; }
 
 /* ── 卡片 ── */
 .card-grid {
@@ -676,7 +652,6 @@ figure.shot figcaption {
   .hero { padding-block: 56px 48px; }
   .card-grid, .point-grid, .steps { grid-template-columns: 1fr; }
   .faq-a { padding-left: 16px; }
-  .effect-subtitle { margin-top: 32px; }
 }
 @media (max-width: 479px) {
   .site-header .container { gap: 8px 16px; }
@@ -822,10 +797,10 @@ figure.shot figcaption {
     <div class="container">
       <h2><span lang="zh-CN">实际效果</span><span lang="en">What it looks like</span></h2>
       <p class="section-intro">
-        <span lang="zh-CN">同一页面，三项设置可以一层一层叠上去。点步骤或箭头，看每一步的变化。</span>
-        <span lang="en">One page, three settings layered on top of each other. Use the steps or arrows to see each change.</span>
+        <span lang="zh-CN">同一页面，标题、收起内容和整页变灰依次生效。这里先展示收起后的样子；点第 1 步，从原样开始看每一处变化。</span>
+        <span lang="en">On one page, the title, hidden items and grayscale take effect. This opens on the result; start at step 1 to see the original page.</span>
       </p>
-      <figure class="demo" data-step="2">
+      <figure class="demo" data-step="4">
         <div class="demo-stage">
           <div class="demo-tabbar" aria-hidden="true">
             <div class="demo-tab">
@@ -849,19 +824,31 @@ figure.shot figcaption {
                  data-alt-en="The demo site as it is: navigation and a promo bar at the top, recommendations on the right, a footer at the bottom."
                  alt="示例网站原样：顶部有导航和推广横幅，右侧是本周推荐，底部是页脚。"
                  width="1920" height="1200" decoding="async">
-            <img class="demo-img" data-step="1" src="screens/zh/before.webp"
-                 data-src-zh="screens/zh/before.webp" data-src-en="screens/en/before.webp"
-                 data-alt-zh="同一张原样网页截图：这一步只换标签页标题，网页本身没有变化。"
-                 data-alt-en="The same untouched page: this step only changes the tab title; the page itself does not change."
-                 alt="同一张原样网页截图：这一步只换标签页标题，网页本身没有变化。"
+            <img class="demo-img" data-step="1" src="screens/zh/title.webp"
+                 data-src-zh="screens/zh/title.webp" data-src-en="screens/en/title.webp"
+                 data-alt-zh="示例页面上的「标题和图标」表单：标签页标题已填成「阅读」，标签页图标仍选网站原来的。"
+                 data-alt-en="The “Title & icon” form on the demo page: the tab title is filled in as “Reading”, and the site’s own tab icon is still selected."
+                 alt="示例页面上的「标题和图标」表单：标签页标题已填成「阅读」，标签页图标仍选网站原来的。"
                  width="1920" height="1200" decoding="async">
-            <img class="demo-img" data-step="2" src="screens/zh/after.webp"
+            <img class="demo-img" data-step="2" src="screens/zh/before.webp"
+                 data-src-zh="screens/zh/before.webp" data-src-en="screens/en/before.webp"
+                 data-alt-zh="同一张原样网页截图：这一步只改标签页标题，网页本身没有变化。"
+                 data-alt-en="The same untouched page: this step only changes the tab title; the page itself does not change."
+                 alt="同一张原样网页截图：这一步只改标签页标题，网页本身没有变化。"
+                 width="1920" height="1200" decoding="async">
+            <img class="demo-img" data-step="3" src="screens/zh/pick.webp"
+                 data-src-zh="screens/zh/pick.webp" data-src-en="screens/en/pick.webp"
+                 data-alt-zh="点选界面：页面上有四个带橙色编号的待收起区域，右侧是「收起内容」面板。"
+                 data-alt-en="The picker: four parts of the page are marked with orange numbers, with the “Hide items” panel on the right."
+                 alt="点选界面：页面上有四个带橙色编号的待收起区域，右侧是「收起内容」面板。"
+                 width="1920" height="1200" decoding="async">
+            <img class="demo-img" data-step="4" src="screens/zh/after.webp"
                  data-src-zh="screens/zh/after.webp" data-src-en="screens/en/after.webp"
                  data-alt-zh="收起 4 项后的示例网站：页头导航、推广横幅、本周推荐和页脚都不见了，只剩正文。"
                  data-alt-en="The same page with four items hidden: the page header, promo banner, recommendations and footer are gone; only the article remains."
                  alt="收起 4 项后的示例网站：页头导航、推广横幅、本周推荐和页脚都不见了，只剩正文。"
                  width="1920" height="1200" decoding="async">
-            <img class="demo-img" data-step="3" src="screens/zh/gray-hidden.webp"
+            <img class="demo-img" data-step="5" src="screens/zh/gray-hidden.webp"
                  data-src-zh="screens/zh/gray-hidden.webp" data-src-en="screens/en/gray-hidden.webp"
                  data-alt-zh="收起 4 项并打开整页变灰：整页只剩黑白，文字、图片和链接都在原位。"
                  data-alt-en="Four items hidden and the whole page turned gray: black and white everywhere, with text, pictures and links in place."
@@ -874,16 +861,22 @@ figure.shot figcaption {
           <p class="visually-hidden" id="demo-steps-label"><span lang="zh-CN">效果预览步骤</span><span lang="en">Effect preview steps</span></p>
           <div class="demo-steps" role="group" aria-labelledby="demo-steps-label">
             <button type="button" class="demo-step" data-step="0">
-              <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">As is</span>
+              <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">Original</span>
             </button>
             <button type="button" class="demo-step" data-step="1">
-              <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">换成「阅读」</span><span lang="en">Title: “Reading”</span>
+              <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">设置标题和图标</span><span lang="en">Set title &amp; icon</span>
             </button>
-            <button type="button" class="demo-step" data-step="2" aria-current="step">
-              <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">再收起 4 项</span><span lang="en">Then hide 4 items</span>
+            <button type="button" class="demo-step" data-step="2">
+              <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标题改为「阅读」</span><span lang="en">Title: “Reading”</span>
             </button>
             <button type="button" class="demo-step" data-step="3">
-              <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">再整页变灰</span><span lang="en">Then gray the page</span>
+              <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span>
+            </button>
+            <button type="button" class="demo-step" data-step="4" aria-current="step">
+              <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items hidden</span>
+            </button>
+            <button type="button" class="demo-step" data-step="5">
+              <span class="demo-step-no" aria-hidden="true">6</span><span lang="zh-CN">整页变灰</span><span lang="en">Grayscale</span>
             </button>
           </div>
           <div class="demo-nav">
@@ -891,7 +884,10 @@ figure.shot figcaption {
               <span class="visually-hidden" lang="zh-CN">上一步</span><span class="visually-hidden" lang="en">Previous step</span>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
             </button>
-            <span class="demo-count" aria-hidden="true"><span data-demo-current>3</span> / 4</span>
+            <span class="demo-count" aria-hidden="true">
+              <span lang="zh-CN">第 <span data-demo-current>5</span> 步 / 共 6 步</span>
+              <span lang="en">Step <span data-demo-current>5</span> of 6</span>
+            </span>
             <button type="button" class="demo-arrow" data-dir="1">
               <span class="visually-hidden" lang="zh-CN">下一步</span><span class="visually-hidden" lang="en">Next step</span>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
@@ -900,46 +896,40 @@ figure.shot figcaption {
         </div>
         <div class="demo-captions" aria-live="polite" aria-atomic="true">
           <p class="demo-caption" data-step="0" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 4 步：</span><span lang="en">Step 1 of 4: </span></span>
+            <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 6 步：</span><span lang="en">Step 1 of 6: </span></span>
             <span lang="zh-CN">没使用 PageMask 的页面：页头导航、推广横幅、本周推荐和页脚都在，正文在中间。</span>
             <span lang="en">The page without PageMask: the page header, promo banner, recommendations and footer are all there, with the article in the middle.</span>
           </p>
           <p class="demo-caption" data-step="1" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 4 步：</span><span lang="en">Step 2 of 4: </span></span>
-            <span lang="zh-CN">标签页标题换成了「阅读」，图标不再显示；网页本身一点没动。</span>
-            <span lang="en">The tab title now says “Reading” and the icon is gone; the page itself is untouched.</span>
+            <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 6 步：</span><span lang="en">Step 2 of 6: </span></span>
+            <span lang="zh-CN">在「标题和图标」里把标签页标题填成「阅读」。这一步只改标签页上的名字，图标仍用网站原来的。</span>
+            <span lang="en">Enter “Reading” as the tab title in “Title &amp; icon”. Only the name on the tab changes; the site keeps its own icon.</span>
           </p>
-          <p class="demo-caption" data-step="2">
-            <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 4 步：</span><span lang="en">Step 3 of 4: </span></span>
-            <span lang="zh-CN">页头导航、推广横幅、本周推荐和页脚都不见了，正文还在，照常阅读。</span>
-            <span lang="en">The page header, promo banner, recommendations and footer are gone; the article stays and reads as usual.</span>
+          <p class="demo-caption" data-step="2" hidden>
+            <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 6 步：</span><span lang="en">Step 3 of 6: </span></span>
+            <span lang="zh-CN">看演示框顶部的标签页：保存后，标签页标题变成「阅读」，网页内容还是原样。</span>
+            <span lang="en">Look at the tab at the top of the demo: after saving, the tab title becomes “Reading”; the page itself stays as it was.</span>
           </p>
           <p class="demo-caption" data-step="3" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 4 步：</span><span lang="en">Step 4 of 4: </span></span>
-            <span lang="zh-CN">颜色全去掉了，整页只剩黑白；文字、图片和链接都在原位。</span>
-            <span lang="en">The color is gone and the page is black and white; text, pictures and links stay in place.</span>
+            <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 6 步：</span><span lang="en">Step 4 of 6: </span></span>
+            <span lang="zh-CN">在「收起内容」里点页面上不想要的部分。橙色编号和边框只在点选时出现，保存后不会留在页面上；这里点了 4 处：页头导航、推广横幅、本周推荐和页脚。</span>
+            <span lang="en">In “Hide items”, click the parts you don’t want. The orange numbers and outlines only appear while you pick and are gone after saving. Four spots are picked here: the header navigation, promo banner, recommendations and footer.</span>
+          </p>
+          <p class="demo-caption" data-step="4">
+            <span class="visually-hidden"><span lang="zh-CN">第 5 步，共 6 步：</span><span lang="en">Step 5 of 6: </span></span>
+            <span lang="zh-CN">保存后，点过的 4 项都不见了，正文还在，照常阅读。标签页仍然叫「阅读」。</span>
+            <span lang="en">After saving, all four picked items are gone; the article stays and reads as before. The tab is still called “Reading”.</span>
+          </p>
+          <p class="demo-caption" data-step="5" hidden>
+            <span class="visually-hidden"><span lang="zh-CN">第 6 步，共 6 步：</span><span lang="en">Step 6 of 6: </span></span>
+            <span lang="zh-CN">这时整页只剩黑白，颜色全去掉了；文字、图片和链接都在原位。</span>
+            <span lang="en">The whole page is now black and white; the color is gone, and text, pictures and links stay in place.</span>
           </p>
         </div>
         <figcaption class="demo-note">
-          <span lang="zh-CN">页面截图来自扩展在虚构示例网站（Acme 书房）上的真实运行；上方的标签页是示意图，不是截图，用来看标题和图标的变化。</span>
-          <span lang="en">Page screenshots come from the extension running on a fictional demo site (Acme Library); the tab above is an illustration, not a screenshot, showing the title and icon change.</span>
+          <span lang="zh-CN">页面截图和设置表单都来自扩展在虚构示例网站（Acme 书房）上的真实运行；上方的标签页是示意图，不是截图，用来看标签页标题的变化。</span>
+          <span lang="en">The page screenshots and settings form come from the extension running on a fictional demo site (Acme Library); the tab above is an illustration, not a screenshot, showing the tab title change.</span>
           <a class="text-link" id="demo-zoom" href="screens/zh/after.webp" target="_blank" rel="noopener"><span lang="zh-CN">看大图</span><span lang="en">Open full size</span></a>
-        </figcaption>
-      </figure>
-      <h3 class="effect-subtitle"><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span></h3>
-      <figure class="shot effect-picker">
-        <a class="shot-link" href="screens/zh/pick.webp" target="_blank" rel="noopener">
-          <span class="visually-hidden" lang="zh-CN">看大图</span><span class="visually-hidden" lang="en">Open full size</span>
-          <img src="screens/zh/pick.webp"
-               data-src-zh="screens/zh/pick.webp" data-src-en="screens/en/pick.webp"
-               data-alt-zh="点选界面：页面上有四个带橙色编号的待收起区域，右侧面板列出这四项。"
-               data-alt-en="The picker: four parts of the page are marked with orange numbers; the side panel lists them."
-               alt="点选界面：页面上有四个带橙色编号的待收起区域，右侧面板列出这四项。"
-               width="1920" height="1200" loading="lazy" decoding="async">
-        </a>
-        <figcaption>
-          <span lang="zh-CN">点选界面（虚构示例网站）：橙色编号和边框只在点选时出现，保存后不会留在页面上。点图片看大图。</span>
-          <span lang="en">The picker (fictional demo site): the orange numbers and outlines appear only while you pick; saving leaves nothing behind. Click the image to open it full size.</span>
         </figcaption>
       </figure>
     </div>
@@ -1167,13 +1157,14 @@ figure.shot figcaption {
   var steps = demo.querySelectorAll('.demo-step');
   var arrows = demo.querySelectorAll('.demo-arrow');
   var captions = demo.querySelectorAll('.demo-caption');
-  var counter = demo.querySelector('[data-demo-current]');
+  var counters = demo.querySelectorAll('[data-demo-current]');
   var zoom = document.getElementById('demo-zoom');
   var imgLink = document.getElementById('demo-img-link');
   var SRC = {
-    zh: ['screens/zh/before.webp', 'screens/zh/before.webp', 'screens/zh/after.webp', 'screens/zh/gray-hidden.webp'],
-    en: ['screens/en/before.webp', 'screens/en/before.webp', 'screens/en/after.webp', 'screens/en/gray-hidden.webp']
+    zh: ['screens/zh/before.webp', 'screens/zh/title.webp', 'screens/zh/before.webp', 'screens/zh/pick.webp', 'screens/zh/after.webp', 'screens/zh/gray-hidden.webp'],
+    en: ['screens/en/before.webp', 'screens/en/title.webp', 'screens/en/before.webp', 'screens/en/pick.webp', 'screens/en/after.webp', 'screens/en/gray-hidden.webp']
   };
+  var LAST = steps.length - 1;
   var current = Number(demo.getAttribute('data-step'));
   if (isNaN(current)) current = 0;
   function lang() { return document.documentElement.classList.contains('lang-en') ? 'en' : 'zh'; }
@@ -1186,16 +1177,16 @@ figure.shot figcaption {
     for (var j = 0; j < captions.length; j++) {
       captions[j].hidden = Number(captions[j].getAttribute('data-step')) !== current;
     }
-    if (counter) counter.textContent = String(current + 1);
+    for (var c = 0; c < counters.length; c++) counters[c].textContent = String(current + 1);
     for (var k = 0; k < arrows.length; k++) {
       var dir = Number(arrows[k].getAttribute('data-dir'));
-      arrows[k].disabled = (dir < 0 && current === 0) || (dir > 0 && current === 3);
+      arrows[k].disabled = (dir < 0 && current === 0) || (dir > 0 && current === LAST);
     }
     if (zoom) zoom.setAttribute('href', SRC[lang()][current]);
     if (imgLink) imgLink.setAttribute('href', SRC[lang()][current]);
   }
   function go(n) {
-    current = Math.max(0, Math.min(3, n));
+    current = Math.max(0, Math.min(LAST, n));
     render();
   }
   for (var i = 0; i < steps.length; i++) {
@@ -1240,8 +1231,6 @@ figure.shot figcaption {
       var alt = shots[i].getAttribute(en ? 'data-alt-en' : 'data-alt-zh');
       if (src && shots[i].getAttribute('src') !== src) shots[i].setAttribute('src', src);
       if (alt) shots[i].setAttribute('alt', alt);
-      var link = shots[i].parentNode;
-      if (src && link && link.classList && link.classList.contains('shot-link')) link.setAttribute('href', src);
     }
     if (window.pmDemoSetLang) window.pmDemoSetLang();
     if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) {} }

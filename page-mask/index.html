@@ -354,6 +354,7 @@ a, button, summary {
   margin: 18px auto 0;
   font-size: 18px;
   line-height: 1.6;
+  text-wrap: balance;
 }
 .hero-actions {
   display: flex;
@@ -371,6 +372,7 @@ a, button, summary {
 
 /* ── 实际效果：同一页面逐层叠加三项设置 ── */
 .demo { margin: 28px 0 0; }
+.demo-frame { position: relative; }
 .demo-stage {
   overflow: hidden;
   border: 1px solid var(--border);
@@ -420,6 +422,7 @@ a, button, summary {
   color: var(--fg);
 }
 .demo-title-after { font-weight: 600; }
+.demo-images { position: relative; }
 .demo-img-link {
   display: block;
   cursor: zoom-in;
@@ -437,26 +440,19 @@ a, button, summary {
 .demo[data-step="3"] .demo-img[data-step="3"],
 .demo[data-step="4"] .demo-img[data-step="4"],
 .demo[data-step="5"] .demo-img[data-step="5"] { display: block; }
-.demo-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px 20px;
-  margin-top: 16px;
-}
 .demo-steps {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 4px;
+  margin-top: 16px;
 }
 .demo-step {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-height: 40px;
-  padding: 7px 14px;
+  padding: 7px 10px;
   border: 1px solid var(--border-control);
   border-radius: 999px;
   background: var(--bg);
@@ -488,45 +484,45 @@ a, button, summary {
   background: var(--accent);
   color: var(--on-accent);
 }
-.demo-nav {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
+/* 箭头叠在截图上（modern-web-guidance：控件放在轨道两侧边缘，始终可见、可聚焦）。
+   截图始终是浅色，按钮也用固定的浅色，不随页面深色模式变暗。 */
 .demo-arrow {
-  display: inline-grid;
+  position: absolute;
+  top: calc(50% + 21px);
+  z-index: 2;
+  display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border-control);
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
+  border: 1px solid #8a8f98;
   border-radius: 50%;
-  background: var(--bg);
-  color: var(--fg);
+  background: rgba(255, 255, 255, 0.94);
+  color: #1f2329;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
   cursor: pointer;
   touch-action: manipulation;
 }
-.demo-arrow:hover:not(:disabled) { background: var(--control-hover); }
+.demo-arrow[data-dir="-1"] { left: -16px; }
+.demo-arrow[data-dir="1"] { right: -16px; }
+.demo-arrow:hover:not(:disabled) { background: #ffffff; border-color: #1f2329; }
+.demo-arrow:active:not(:disabled) { background: #eef0f3; }
 .demo-arrow:disabled { opacity: 0.45; cursor: not-allowed; }
-.demo-count {
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
 .demo-captions {
-  max-width: 70ch;
-  margin: 14px 0 0;
+  max-width: 62ch;
+  margin: 12px 0 0;
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.6;
 }
+.demo-caption { text-wrap: pretty; }
 .demo-caption[hidden] { display: none; }
 .demo-note {
-  max-width: 76ch;
-  margin: 8px 0 0;
+  max-width: 88ch;
+  margin: 6px 0 0;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 .demo-note .text-link { margin-inline-start: 4px; white-space: nowrap; }
 
@@ -652,6 +648,11 @@ a, button, summary {
   .hero { padding-block: 56px 48px; }
   .card-grid, .point-grid, .steps { grid-template-columns: 1fr; }
   .faq-a { padding-left: 16px; }
+  /* 手机上截图被缩得很小，箭头压上去会挡住内容：挪到图下两侧 */
+  .demo-frame { padding-bottom: 56px; }
+  .demo-arrow { top: auto; bottom: 0; transform: none; }
+  .demo-arrow[data-dir="-1"] { left: 0; }
+  .demo-arrow[data-dir="1"] { right: 0; }
 }
 @media (max-width: 479px) {
   .site-header .container { gap: 8px 16px; }
@@ -717,16 +718,16 @@ a, button, summary {
       </div>
       <h1>PageMask</h1>
       <p class="lede">
-        <span lang="zh-CN">收起网页上不想看的部分——在你主动添加的网站上，点选元素把它们收起来；<span class="nowrap">标签页</span>的标题和图标也能一起变低调。不用学任何代码，鼠标点选就行。</span>
-        <span lang="en">Hide the parts of a page you don't want. On sites you add yourself, click the elements and they're gone — and the tab title and icon go low-key too. Nothing to learn: point, click, done.</span>
+        <span lang="zh-CN">在你添加的网站上，点选不想看的部分，它们就消失。标签页标题和图标也能变低调。</span>
+        <span lang="en">On sites you add, pick the parts you don't want and they're gone. The tab title and icon can go low-key too.</span>
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://github.com/cherishfall/page-mask/releases/latest"><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></a>
+        <a class="btn btn-primary" href="#install"><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></a>
         <a class="btn btn-secondary" href="https://github.com/cherishfall/page-mask"><span lang="zh-CN">GitHub 仓库</span><span lang="en">View on GitHub</span></a>
       </div>
       <p class="trust">
-        <span lang="zh-CN">数据只存在你的浏览器里：没有账号、没有遥测、不上传任何东西。</span>
-        <span lang="en">Your data stays in your browser: no account, no telemetry, nothing gets uploaded.</span>
+        <span lang="zh-CN">数据只留在你的浏览器里：没有账号，没有统计，不上传。</span>
+        <span lang="en">Your data stays in your browser: no account, no analytics, nothing uploaded.</span>
       </p>
     </div>
   </section>
@@ -744,8 +745,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">收起内容</span><span lang="en">Hide items</span></h3>
           <p>
-            <span lang="zh-CN">在网页上点选不想看的部分——推广位、推荐流、侧栏、页脚都可以。三种收起方式：「消失」让下面的内容往上顶，「留空」看不见但位置还占着，「盖住」不改动网站自身的样式，任何网站都可用。选中一次，整个网站都照它办；可以逐条删除，删错 5 秒内可撤销。</span>
-            <span lang="en">Pick the parts of a page you don't want — promos, feeds, sidebars, footers. Three ways to hide: "Disappear" moves the content below up, "Keep space" leaves the slot empty, "Cover" works on any site without touching the site's own styles. One pick covers the whole site; delete items one by one, and a deletion can be undone within 5 seconds.</span>
+            <span lang="zh-CN">点选推广位、侧栏或页脚，它们就从整个网站消失。收错了，5 秒内可撤销。</span>
+            <span lang="en">Pick promos, sidebars or footers and they disappear from the whole site. Picked the wrong thing? Undo within 5 seconds.</span>
           </p>
         </div>
 
@@ -756,10 +757,10 @@ a, button, summary {
             <circle cx="6.4" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
             <path d="M9.8 6.8h6.4"/>
           </svg>
-          <h3><span lang="zh-CN">标签页标题和图标</span><span lang="en">Tab title &amp; icon</span></h3>
+          <h3><span lang="zh-CN">标题和图标</span><span lang="en">Title &amp; icon</span></h3>
           <p>
-            <span lang="zh-CN">把标签页标题换成「阅读」这样的低调字样；图标可以保留网站原来的、也可以不显示，或者换成内置的十种图标之一。网站自己改标题时，会被自动改回来。</span>
-            <span lang="en">Turn the tab title into something low-key like "Reading". Keep the site's own icon, show no icon at all, or pick one of the ten built-in icons. If the site rewrites its title, PageMask changes it back automatically.</span>
+            <span lang="zh-CN">把标签页标题改成「阅读」这类低调字样；图标可保留、隐藏或换掉。</span>
+            <span lang="en">Set the tab title to something low-key like “Reading”; keep the site’s icon, hide it or swap it.</span>
           </p>
         </div>
 
@@ -770,8 +771,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">整页变灰</span><span lang="en">Turn the whole page gray</span></h3>
           <p>
-            <span lang="zh-CN">一个开关，让整个页面变成黑白——文字、图片、视频、背景图全都一样，位置不变、链接照常点、文字照样读。声音完全不参与，音量仍在播放器自己的按钮里。</span>
-            <span lang="en">One switch turns the entire page black &amp; white — text, pictures, videos and background images alike. Everything keeps its place, links still work and text stays readable. Sound is not touched: volume stays with the player's own button.</span>
+            <span lang="zh-CN">一键让整页变成黑白，文字、图片、视频和背景都算；位置、链接和音量都不变。</span>
+            <span lang="en">Turn the whole page black and white — text, images, video and backgrounds. Layout, links and sound stay unchanged.</span>
           </p>
         </div>
 
@@ -784,8 +785,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">遮住这一页</span><span lang="en">Cover this page</span></h3>
           <p>
-            <span lang="zh-CN">一键遮住整页，连这个标签页的声音一起按住；刷新或离开页面就自动还原。遮住后页面上只剩一颗「恢复」小按钮，点一下就回到刚才的样子。</span>
-            <span lang="en">One click covers the whole page and holds that tab's sound as well; reloading or leaving the page restores everything. A small "Restore" button stays on the page — click it to go back to what you were doing.</span>
+            <span lang="zh-CN">临时遮住整页，连这个标签页的声音一起静音；刷新或离开就恢复。</span>
+            <span lang="en">Cover the whole page and mute the tab; reload or leave, and it’s back.</span>
           </p>
         </div>
 
@@ -796,27 +797,32 @@ a, button, summary {
   <section id="effect" class="section">
     <div class="container">
       <h2><span lang="zh-CN">实际效果</span><span lang="en">What it looks like</span></h2>
-      <p class="section-intro">
-        <span lang="zh-CN">同一页面，标题、收起内容和整页变灰依次生效。这里先展示收起后的样子；点第 1 步，从原样开始看每一处变化。</span>
-        <span lang="en">On one page, the title, hidden items and grayscale take effect. This opens on the result; start at step 1 to see the original page.</span>
-      </p>
-      <figure class="demo" data-step="4">
-        <div class="demo-stage">
-          <div class="demo-tabbar" aria-hidden="true">
-            <div class="demo-tab">
-              <span class="demo-favicon"></span>
-              <span class="demo-tab-title demo-title-before">
-                <span lang="zh-CN">星海旅人 · Acme 书房</span>
-                <span lang="en">The Star Wanderer · Acme Library</span>
-              </span>
-              <span class="demo-tab-title demo-title-after">
-                <span lang="zh-CN">阅读</span>
-                <span lang="en">Reading</span>
-              </span>
+      <figure class="demo" data-step="0">
+        <div class="demo-frame">
+          <button type="button" class="demo-arrow" data-dir="-1" disabled>
+            <span class="visually-hidden" lang="zh-CN">上一步</span><span class="visually-hidden" lang="en">Previous step</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+          </button>
+          <button type="button" class="demo-arrow" data-dir="1">
+            <span class="visually-hidden" lang="zh-CN">下一步</span><span class="visually-hidden" lang="en">Next step</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+          </button>
+          <div class="demo-stage">
+            <div class="demo-tabbar" aria-hidden="true">
+              <div class="demo-tab">
+                <span class="demo-favicon"></span>
+                <span class="demo-tab-title demo-title-before">
+                  <span lang="zh-CN">星海旅人 · Acme 书房</span>
+                  <span lang="en">The Star Wanderer · Acme Library</span>
+                </span>
+                <span class="demo-tab-title demo-title-after">
+                  <span lang="zh-CN">阅读</span>
+                  <span lang="en">Reading</span>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="demo-images">
-            <a class="demo-img-link" id="demo-img-link" href="screens/zh/after.webp" target="_blank" rel="noopener">
+            <div class="demo-images">
+              <a class="demo-img-link" id="demo-img-link" href="screens/zh/before.webp" target="_blank" rel="noopener">
               <span class="visually-hidden" lang="zh-CN">看大图</span><span class="visually-hidden" lang="en">Open full size</span>
             <img class="demo-img" data-step="0" src="screens/zh/before.webp"
                  data-src-zh="screens/zh/before.webp" data-src-en="screens/en/before.webp"
@@ -855,81 +861,66 @@ a, button, summary {
                  alt="收起 4 项并打开整页变灰：整页只剩黑白，文字、图片和链接都在原位。"
                  width="1920" height="1200" decoding="async">
             </a>
+            </div>
           </div>
         </div>
-        <div class="demo-controls">
-          <p class="visually-hidden" id="demo-steps-label"><span lang="zh-CN">效果预览步骤</span><span lang="en">Effect preview steps</span></p>
-          <div class="demo-steps" role="group" aria-labelledby="demo-steps-label">
-            <button type="button" class="demo-step" data-step="0">
-              <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">Original</span>
-            </button>
-            <button type="button" class="demo-step" data-step="1">
-              <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">设置标题和图标</span><span lang="en">Set title &amp; icon</span>
-            </button>
-            <button type="button" class="demo-step" data-step="2">
-              <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标题改为「阅读」</span><span lang="en">Title: “Reading”</span>
-            </button>
-            <button type="button" class="demo-step" data-step="3">
-              <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span>
-            </button>
-            <button type="button" class="demo-step" data-step="4" aria-current="step">
-              <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items hidden</span>
-            </button>
-            <button type="button" class="demo-step" data-step="5">
-              <span class="demo-step-no" aria-hidden="true">6</span><span lang="zh-CN">整页变灰</span><span lang="en">Grayscale</span>
-            </button>
-          </div>
-          <div class="demo-nav">
-            <button type="button" class="demo-arrow" data-dir="-1">
-              <span class="visually-hidden" lang="zh-CN">上一步</span><span class="visually-hidden" lang="en">Previous step</span>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
-            </button>
-            <span class="demo-count" aria-hidden="true">
-              <span lang="zh-CN">第 <span data-demo-current>5</span> 步 / 共 6 步</span>
-              <span lang="en">Step <span data-demo-current>5</span> of 6</span>
-            </span>
-            <button type="button" class="demo-arrow" data-dir="1">
-              <span class="visually-hidden" lang="zh-CN">下一步</span><span class="visually-hidden" lang="en">Next step</span>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
-            </button>
-          </div>
+        <p class="visually-hidden" id="demo-steps-label"><span lang="zh-CN">效果预览步骤</span><span lang="en">Effect preview steps</span></p>
+        <div class="demo-steps" role="group" aria-labelledby="demo-steps-label">
+          <button type="button" class="demo-step" data-step="0" aria-current="step">
+            <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">Original</span>
+          </button>
+          <button type="button" class="demo-step" data-step="1">
+            <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">改标签页标题</span><span lang="en">Change tab title</span>
+          </button>
+          <button type="button" class="demo-step" data-step="2">
+            <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标题变成「阅读」</span><span lang="en">Tab title: “Reading”</span>
+          </button>
+          <button type="button" class="demo-step" data-step="3">
+            <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span>
+          </button>
+          <button type="button" class="demo-step" data-step="4">
+            <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items gone</span>
+          </button>
+          <button type="button" class="demo-step" data-step="5">
+            <span class="demo-step-no" aria-hidden="true">6</span><span lang="zh-CN">整页变灰</span><span lang="en">Whole page gray</span>
+          </button>
         </div>
         <div class="demo-captions" aria-live="polite" aria-atomic="true">
-          <p class="demo-caption" data-step="0" hidden>
+          <p class="demo-caption" data-step="0">
             <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 6 步：</span><span lang="en">Step 1 of 6: </span></span>
-            <span lang="zh-CN">没使用 PageMask 的页面：页头导航、推广横幅、本周推荐和页脚都在，正文在中间。</span>
-            <span lang="en">The page without PageMask: the page header, promo banner, recommendations and footer are all there, with the article in the middle.</span>
+            <span lang="zh-CN">页面本来的样子：页头、推广横幅、本周推荐和页脚都在。</span>
+            <span lang="en">The page as it is: header, promo banner, recommendations and footer all in place.</span>
           </p>
           <p class="demo-caption" data-step="1" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 6 步：</span><span lang="en">Step 2 of 6: </span></span>
-            <span lang="zh-CN">在「标题和图标」里把标签页标题填成「阅读」。这一步只改标签页上的名字，图标仍用网站原来的。</span>
-            <span lang="en">Enter “Reading” as the tab title in “Title &amp; icon”. Only the name on the tab changes; the site keeps its own icon.</span>
+            <span lang="zh-CN">在「标题和图标」里填「阅读」，图标保留网站原来的。</span>
+            <span lang="en">Enter “Reading” in “Title &amp; icon”; keep the site’s own icon.</span>
           </p>
           <p class="demo-caption" data-step="2" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 6 步：</span><span lang="en">Step 3 of 6: </span></span>
-            <span lang="zh-CN">看演示框顶部的标签页：保存后，标签页标题变成「阅读」，网页内容还是原样。</span>
-            <span lang="en">Look at the tab at the top of the demo: after saving, the tab title becomes “Reading”; the page itself stays as it was.</span>
+            <span lang="zh-CN">标签页变成「阅读」，网页本身没动。</span>
+            <span lang="en">The tab now reads “Reading”; the page itself is unchanged.</span>
           </p>
           <p class="demo-caption" data-step="3" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 6 步：</span><span lang="en">Step 4 of 6: </span></span>
-            <span lang="zh-CN">在「收起内容」里点页面上不想要的部分。橙色编号和边框只在点选时出现，保存后不会留在页面上；这里点了 4 处：页头导航、推广横幅、本周推荐和页脚。</span>
-            <span lang="en">In “Hide items”, click the parts you don’t want. The orange numbers and outlines only appear while you pick and are gone after saving. Four spots are picked here: the header navigation, promo banner, recommendations and footer.</span>
+            <span lang="zh-CN">点选不想要的部分。橙色编号和边框只在点选时出现。</span>
+            <span lang="en">Pick the parts you don’t want. Orange numbers and outlines show only while picking.</span>
           </p>
-          <p class="demo-caption" data-step="4">
+          <p class="demo-caption" data-step="4" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 5 步，共 6 步：</span><span lang="en">Step 5 of 6: </span></span>
-            <span lang="zh-CN">保存后，点过的 4 项都不见了，正文还在，照常阅读。标签页仍然叫「阅读」。</span>
-            <span lang="en">After saving, all four picked items are gone; the article stays and reads as before. The tab is still called “Reading”.</span>
+            <span lang="zh-CN">保存后，点过的 4 项都不见了，正文还在。</span>
+            <span lang="en">After saving, all four picked items are gone; the article stays.</span>
           </p>
           <p class="demo-caption" data-step="5" hidden>
             <span class="visually-hidden"><span lang="zh-CN">第 6 步，共 6 步：</span><span lang="en">Step 6 of 6: </span></span>
-            <span lang="zh-CN">这时整页只剩黑白，颜色全去掉了；文字、图片和链接都在原位。</span>
-            <span lang="en">The whole page is now black and white; the color is gone, and text, pictures and links stay in place.</span>
+            <span lang="zh-CN">整页只剩黑白，文字、图片和链接都在原位。</span>
+            <span lang="en">Now black and white; text, images and links stay in place.</span>
           </p>
         </div>
         <figcaption class="demo-note">
-          <span lang="zh-CN">页面截图和设置表单都来自扩展在虚构示例网站（Acme 书房）上的真实运行；上方的标签页是示意图，不是截图，用来看标签页标题的变化。</span>
-          <span lang="en">The page screenshots and settings form come from the extension running on a fictional demo site (Acme Library); the tab above is an illustration, not a screenshot, showing the tab title change.</span>
-          <a class="text-link" id="demo-zoom" href="screens/zh/after.webp" target="_blank" rel="noopener"><span lang="zh-CN">看大图</span><span lang="en">Open full size</span></a>
+          <span lang="zh-CN">演示截图来自虚构的示例网站 Acme 书房；顶部标签页是示意图。</span>
+          <span lang="en">Demo screenshots come from a fictional site, Acme Library; the tab above is an illustration.</span>
+          <a class="text-link" id="demo-zoom" href="screens/zh/before.webp" target="_blank" rel="noopener"><span lang="zh-CN">看大图</span><span lang="en">Open full size</span></a>
         </figcaption>
       </figure>
     </div>
@@ -942,22 +933,22 @@ a, button, summary {
         <li>
           <span class="step-no" aria-hidden="true">1</span>
           <p>
-            <span lang="zh-CN">把 PageMask 固定到工具栏：点浏览器右上角的拼图图标，再点 PageMask 旁边的图钉。</span>
-            <span lang="en">Pin PageMask to the toolbar: click the puzzle-piece icon at the top of Chrome, then the pin next to PageMask.</span>
+            <span lang="zh-CN">点浏览器右上角的拼图图标，再点 PageMask 旁边的图钉，把它固定到工具栏。</span>
+            <span lang="en">Click the puzzle-piece icon in Chrome, then the pin next to PageMask to keep it on the toolbar.</span>
           </p>
         </li>
         <li>
           <span class="step-no" aria-hidden="true">2</span>
           <p>
-            <span lang="zh-CN">在要设置的网站上打开 PageMask 弹窗。第一次会先请你「允许访问」这个网站——这是 Chrome 在问，只问这一次。</span>
-            <span lang="en">Open the PageMask popup on the site you want to set up. The first time, Chrome asks you to "Allow access" for that site — it asks only once.</span>
+            <span lang="zh-CN">在要设置的网站上打开 PageMask 弹窗。第一次点「允许访问」——Chrome 只问这一次。</span>
+            <span lang="en">Open the PageMask popup on the site you want. The first time, click “Allow access” — Chrome asks only once.</span>
           </p>
         </li>
         <li>
           <span class="step-no" aria-hidden="true">3</span>
           <p>
-            <span lang="zh-CN">点「收起内容」，在页面上点选要收起的元素，看一眼效果再保存。之后这个网站的页面上会有一颗悬浮按钮：点一下按你的设置显示，再点一下回到原样。</span>
-            <span lang="en">Click "Hide items", pick the elements on the page, check the result and save. From then on the page has a floating button: one click shows your settings, another click goes back to the site as it is.</span>
+            <span lang="zh-CN">点「收起内容」，在页面上点选要收起的部分，看一眼效果再保存。之后用页面上的悬浮按钮，在原样和你的设置之间切换。</span>
+            <span lang="en">Click “Hide items”, pick the parts you want gone, check the result and save. After that, the floating button switches between your settings and the original page.</span>
           </p>
         </li>
       </ol>
@@ -968,8 +959,8 @@ a, button, summary {
     <div class="container">
       <h2><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></h2>
       <p class="section-intro">
-        <span lang="zh-CN">PageMask 正在申请上架 Chrome 应用商店，审核通过后这里会换成商店安装链接。当前可以先从 GitHub Releases 下载 zip 手动安装，需要 Chrome 116 或更高版本。</span>
-        <span lang="en">PageMask is under review for the Chrome Web Store; once it is listed, this section will link to the store. For now, download the zip from GitHub Releases and install it manually — Chrome 116 or later is required.</span>
+        <span lang="zh-CN">正在申请上架 Chrome 应用商店。现在先从 GitHub Releases 下载 zip 手动安装，需要 Chrome 116 或更高。</span>
+        <span lang="en">Under review for the Chrome Web Store. For now, install it manually from GitHub Releases — Chrome 116 or later.</span>
       </p>
       <ol class="install-list">
         <li>
@@ -986,8 +977,8 @@ a, button, summary {
         </li>
       </ol>
       <p class="note">
-        <span lang="zh-CN">以后换新版本时，把新文件覆盖到同一个文件夹，再在 chrome://extensions 点这个扩展卡片上的刷新按钮——不要点「移除」，也不要换文件夹，否则已有的设置会清空。这是 Chrome 对所有未打包扩展的行为，不是 PageMask 的毛病。</span>
-        <span lang="en">When a new version comes out, overwrite the same folder and click the reload button on the extension card in chrome://extensions. Don't click "Remove" and don't switch folders — either wipes your settings. This is how Chrome treats every unpacked extension, not something specific to PageMask.</span>
+        <span lang="zh-CN">换新版本时，用新文件覆盖同一个文件夹，再在 chrome://extensions 点刷新。别点「移除」，也别换文件夹，否则设置会清空——Chrome 对未打包扩展都这样。</span>
+        <span lang="en">To update, overwrite the same folder and click reload in chrome://extensions. Don’t click “Remove” or switch folders — either wipes your settings. Chrome does this to every unpacked extension.</span>
       </p>
       <p class="install-cta">
         <a class="btn btn-secondary" href="https://github.com/cherishfall/page-mask/releases/latest">
@@ -1002,8 +993,8 @@ a, button, summary {
     <div class="container">
       <h2><span lang="zh-CN">隐私</span><span lang="en">Privacy</span></h2>
       <p class="section-intro">
-        <span lang="zh-CN">PageMask 没有服务器，也没有账号。下面四条是它的工作方式，完整说明见隐私政策。</span>
-        <span lang="en">PageMask has no server and no account. These four points are how it works; the full policy has the details.</span>
+        <span lang="zh-CN">没有服务器，没有账号。四条原则，完整说明见隐私政策。</span>
+        <span lang="en">No server, no account. Four rules; the full policy has the details.</span>
       </p>
       <div class="card-grid">
 
@@ -1041,8 +1032,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">按站点逐个允许访问</span><span lang="en">Access, one site at a time</span></h3>
           <p>
-            <span lang="zh-CN">安装时不请求任何网站的权限。只有你在某个网站上点了「允许访问」，PageMask 才会在那个网站上工作；临时功能（如「遮住这一页」）只在你点开的那一刻起作用，不留权限。没添加的网站什么都不做。</span>
-            <span lang="en">No site permissions are requested at install time. PageMask works on a site only after you click "Allow access" there; temporary actions (like "Cover this page") apply only at the moment you use them and leave no permission behind. Nothing is done on sites you haven't added.</span>
+            <span lang="zh-CN">安装时不请求任何网站权限。你在哪个网站点「允许访问」，它才在哪个网站工作。</span>
+            <span lang="en">No site access at install. PageMask works only where you click “Allow access”.</span>
           </p>
         </div>
 
@@ -1083,8 +1074,8 @@ a, button, summary {
           </summary>
           <div class="faq-a">
             <p>
-              <span lang="zh-CN">不会。不添加任何网站，PageMask 不会向任何页面注入脚本、样式或界面。「遮住这一页」「整页变灰」这类按钮也一样：在你主动点下并允许之前，它对页面什么都不做。</span>
-              <span lang="en">No. Until you add a site, PageMask injects no script, no style and no UI into any page. Buttons like "Cover this page" and "Whole-page gray" work the same way: nothing happens to a page until you click and allow it.</span>
+              <span lang="zh-CN">不会。没添加网站时，PageMask 不向任何页面注入脚本、样式或界面；临时功能也要你先点一下才出现。</span>
+              <span lang="en">No. Until you add a site, PageMask adds no script, style or UI to any page. Temporary actions appear only after you click them.</span>
             </p>
           </div>
         </details>
@@ -1126,7 +1117,7 @@ a, button, summary {
           <div class="faq-a">
             <p>
               <span lang="zh-CN">可以。在设置里逐条删除，删错 5 秒内可撤销；也可以用「恢复网站原来的内容」一次全恢复。</span>
-              <span lang="en">Yes. Delete items one by one in the settings — a deletion can be undone within 5 seconds — or use "Use the site's own content" to restore everything at once.</span>
+              <span lang="en">Yes. Delete items one by one in the settings — a deletion can be undone within 5 seconds — or use “Use the site’s own content” to restore everything at once.</span>
             </p>
           </div>
         </details>
@@ -1157,7 +1148,6 @@ a, button, summary {
   var steps = demo.querySelectorAll('.demo-step');
   var arrows = demo.querySelectorAll('.demo-arrow');
   var captions = demo.querySelectorAll('.demo-caption');
-  var counters = demo.querySelectorAll('[data-demo-current]');
   var zoom = document.getElementById('demo-zoom');
   var imgLink = document.getElementById('demo-img-link');
   var SRC = {
@@ -1177,7 +1167,6 @@ a, button, summary {
     for (var j = 0; j < captions.length; j++) {
       captions[j].hidden = Number(captions[j].getAttribute('data-step')) !== current;
     }
-    for (var c = 0; c < counters.length; c++) counters[c].textContent = String(current + 1);
     for (var k = 0; k < arrows.length; k++) {
       var dir = Number(arrows[k].getAttribute('data-dir'));
       arrows[k].disabled = (dir < 0 && current === 0) || (dir > 0 && current === LAST);
@@ -1195,10 +1184,6 @@ a, button, summary {
   for (var k = 0; k < arrows.length; k++) {
     arrows[k].addEventListener('click', function () { go(current + Number(this.getAttribute('data-dir'))); });
   }
-  demo.querySelector('.demo-controls').addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
-  });
   window.pmDemoSetLang = render;
   render();
 })();

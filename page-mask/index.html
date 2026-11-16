@@ -356,6 +356,62 @@ a, button, summary {
   font-size: 14px;
 }
 
+/* ── 真实界面截图：截图自带网页底色，统一加细边框融入页面；标签压在图上，说明在图下 ── */
+.shot-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.shot-item { position: relative; }
+.shot-item img,
+figure.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+}
+.shot-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 10px;
+  border: 1px solid var(--border-control);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.shot-label-accent { border-color: var(--accent); color: var(--accent); }
+.shot-link { display: block; cursor: zoom-in; border-radius: var(--radius-card); }
+.shot-link:focus-visible { border-radius: var(--radius-card); }
+.hero-shot { margin: 44px 0 0; }
+.hero-shot figcaption {
+  margin-top: 14px;
+  color: var(--fg);
+  opacity: 0.72;
+  font-size: 14px;
+}
+.screens { display: grid; gap: 32px; margin-top: 28px; }
+figure.shot { margin: 0; }
+figure.shot figcaption {
+  max-width: 76ch;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.screen-row {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.shot-popup { max-width: 320px; }
+.shot-menu { justify-self: end; width: 100%; max-width: 440px; }
+
 /* ── 卡片 ── */
 .card-grid {
   display: grid;
@@ -476,8 +532,11 @@ a, button, summary {
 @media (max-width: 719px) {
   .section { padding-block: 48px; }
   .hero { padding-block: 56px 48px; }
-  .card-grid, .point-grid, .steps { grid-template-columns: 1fr; }
+  .card-grid, .point-grid, .steps, .shot-pair, .screen-row { grid-template-columns: 1fr; }
   .faq-a { padding-left: 16px; }
+  .screens { gap: 28px; }
+  .hero-shot { margin-top: 36px; }
+  .shot-menu { justify-self: stretch; max-width: none; }
 }
 @media (max-width: 479px) {
   .site-header .container { gap: 8px 16px; }
@@ -554,6 +613,131 @@ a, button, summary {
         <span lang="zh-CN">数据只存在你的浏览器里：没有账号、没有遥测、不上传任何东西。</span>
         <span lang="en">Your data stays in your browser: no account, no telemetry, nothing gets uploaded.</span>
       </p>
+      <figure class="hero-shot">
+        <div class="shot-pair">
+          <div class="shot-item">
+            <a class="shot-link" href="screens/zh/before.webp" target="_blank" rel="noopener">
+              <img src="screens/zh/before.webp"
+                   data-src-zh="screens/zh/before.webp" data-src-en="screens/en/before.webp"
+                   data-alt-zh="示例网站原样：顶部有导航和推广横幅，右侧是本周推荐，底部是页脚。"
+                   data-alt-en="The demo site as it is: navigation and a promo bar at the top, recommendations on the right, a footer at the bottom."
+                   alt="示例网站原样：顶部有导航和推广横幅，右侧是本周推荐，底部是页脚。"
+                   width="1920" height="1200" decoding="async">
+            </a>
+            <span class="shot-label" aria-hidden="true"><span lang="zh-CN">原样</span><span lang="en">As is</span></span>
+          </div>
+          <div class="shot-item">
+            <a class="shot-link" href="screens/zh/after.webp" target="_blank" rel="noopener">
+              <img src="screens/zh/after.webp"
+                   data-src-zh="screens/zh/after.webp" data-src-en="screens/en/after.webp"
+                   data-alt-zh="同一页面收起四项后：页头、推广横幅、推荐列表和页脚都不见了，只剩正文。"
+                   data-alt-en="The same page with four items hidden: the header, promo bar, recommendations and footer are gone; only the article remains."
+                   alt="同一页面收起四项后：页头、推广横幅、推荐列表和页脚都不见了，只剩正文。"
+                   width="1920" height="1200" decoding="async">
+            </a>
+            <span class="shot-label shot-label-accent" aria-hidden="true"><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items hidden</span></span>
+          </div>
+        </div>
+        <figcaption>
+          <span lang="zh-CN">同一个虚构示例网站（Acme 书房），原样和收起页头、推广条、推荐、页脚之后——只少了点选的部分，其余版式不动。</span>
+          <span lang="en">The same fictional demo site (Acme Library), as it is and after hiding the header, promo bar, recommendations and footer — only the picked parts are gone; the rest of the layout stays put.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="look" class="section">
+    <div class="container">
+      <h2><span lang="zh-CN">实际界面</span><span lang="en">The actual interface</span></h2>
+      <p class="section-intro">
+        <span lang="zh-CN">下面是扩展在一个虚构示例网站上的真实截图，不是效果图：点选、弹窗、悬浮按钮和整页变灰。点开任意一张，可以在新标签页看大图。</span>
+        <span lang="en">Real screenshots — not mockups — from the extension on a fictional demo site: picking, the popup, the floating button and turning the whole page gray. Click any of them to open the full-size image in a new tab.</span>
+      </p>
+
+      <div class="screens">
+
+        <figure class="shot">
+          <a class="shot-link" href="screens/zh/pick.webp" target="_blank" rel="noopener">
+            <img src="screens/zh/pick.webp"
+                 data-src-zh="screens/zh/pick.webp" data-src-en="screens/en/pick.webp"
+                 data-alt-zh="点选界面：页面上有四个带橙色编号的待收起区域，右侧面板列出这四项。"
+                 data-alt-en="The picker: four parts of the page are marked with orange numbers; the side panel lists them."
+                 alt="点选界面：页面上有四个带橙色编号的待收起区域，右侧面板列出这四项。"
+                 width="1920" height="1200" loading="lazy" decoding="async">
+          </a>
+          <figcaption>
+            <span lang="zh-CN">点「收起内容」后的点选界面：直接点页面上要收起的部分，橙色编号和边框是 PageMask 临时加的。右侧面板列出已选的四项，点「下一步」先看效果、再保存。</span>
+            <span lang="en">The picker after you click “Hide items”: click the parts you don't want; the orange numbers and outlines are added by PageMask while you pick. The panel lists the four picks — check the result with “Next” before saving.</span>
+          </figcaption>
+        </figure>
+
+        <div class="screen-row">
+
+          <figure class="shot shot-popup">
+            <a class="shot-link" href="screens/zh/popup.webp" target="_blank" rel="noopener">
+              <img src="screens/zh/popup.webp"
+                   data-src-zh="screens/zh/popup.webp" data-src-en="screens/en/popup.webp"
+                   data-alt-zh="PageMask 弹窗，列出当前网站的四项收起设置和各个开关。"
+                   data-alt-en="The PageMask popup listing four hidden items for this site along with its switches."
+                   data-h-zh="481" data-h-en="515"
+                   alt="PageMask 弹窗，列出当前网站的四项收起设置和各个开关。"
+                   width="320" height="481" loading="lazy" decoding="async">
+            </a>
+            <figcaption>
+              <span lang="zh-CN">工具栏里的弹窗：这个网站的 4 项收起设置、整页变灰、遮住这一页和悬浮按钮，开关都在这里。</span>
+              <span lang="en">The toolbar popup: this site's 4 items set to hide, the “Turn the whole page gray” switch, cover this page and the floating button — all in one place.</span>
+            </figcaption>
+          </figure>
+
+          <figure class="shot shot-menu">
+            <a class="shot-link" href="screens/zh/menu.webp" target="_blank" rel="noopener">
+              <img src="screens/zh/menu.webp"
+                   data-src-zh="screens/zh/menu.webp" data-src-en="screens/en/menu.webp"
+                   data-alt-zh="页面右下角悬浮按钮的「⋯」菜单，包含标题和图标、收起内容、调整不透明度和删除这个网站的设置。"
+                   data-alt-en="The “⋯” menu of the floating button at the bottom-right of a page: “Title &amp; icon”, “Hide items”, “Adjust opacity” and “Delete this site's settings”."
+                   alt="页面右下角悬浮按钮的「⋯」菜单，包含标题和图标、收起内容、调整不透明度和删除这个网站的设置。"
+                   width="440" height="480" loading="lazy" decoding="async">
+            </a>
+            <figcaption>
+              <span lang="zh-CN">页面右下角的悬浮按钮。点「⋯」展开常用操作：标题和图标、收起内容、调整不透明度、删除这个网站的设置。</span>
+              <span lang="en">The floating button at the bottom-right of a page. Click “⋯” for the common actions: “Title &amp; icon”, “Hide items”, “Adjust opacity” and “Delete this site's settings”.</span>
+            </figcaption>
+          </figure>
+
+        </div>
+
+        <figure class="shot">
+          <div class="shot-pair">
+            <div class="shot-item">
+              <a class="shot-link" href="screens/zh/before.webp" target="_blank" rel="noopener">
+                <img src="screens/zh/before.webp"
+                     data-src-zh="screens/zh/before.webp" data-src-en="screens/en/before.webp"
+                     data-alt-zh="示例网站的彩色页面，首页的整页变灰开关没有打开。"
+                     data-alt-en="The demo site in full color, with the whole-page gray switch off."
+                     alt="示例网站的彩色页面，首页的整页变灰开关没有打开。"
+                     width="1920" height="1200" loading="lazy" decoding="async">
+              </a>
+              <span class="shot-label" aria-hidden="true"><span lang="zh-CN">没开变灰</span><span lang="en">Gray off</span></span>
+            </div>
+            <div class="shot-item">
+              <a class="shot-link" href="screens/zh/gray-after.webp" target="_blank" rel="noopener">
+                <img src="screens/zh/gray-after.webp"
+                     data-src-zh="screens/zh/gray-after.webp" data-src-en="screens/en/gray-after.webp"
+                     data-alt-zh="同一页面打开整页变灰：整页只剩黑白，布局不变。"
+                     data-alt-en="The same page with “Turn the whole page gray” on: black and white everywhere, same layout."
+                     alt="同一页面打开整页变灰：整页只剩黑白，布局不变。"
+                     width="1920" height="1200" loading="lazy" decoding="async">
+              </a>
+              <span class="shot-label shot-label-accent" aria-hidden="true"><span lang="zh-CN">开了变灰</span><span lang="en">Gray on</span></span>
+            </div>
+          </div>
+          <figcaption>
+            <span lang="zh-CN">同一个页面打开「整页变灰」：颜色没了，文字、图片、链接和播放器都在原位。</span>
+            <span lang="en">The same page with “Turn the whole page gray” on: the color is gone; text, pictures, links and the player stay where they were.</span>
+          </figcaption>
+        </figure>
+
+      </div>
     </div>
   </section>
 
@@ -841,6 +1025,7 @@ a, button, summary {
   var btnZh = document.getElementById('lang-zh');
   var btnEn = document.getElementById('lang-en');
   var group = document.getElementById('lang-group');
+  var shots = document.querySelectorAll('img[data-src-zh]');
   function stored() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }
   }
@@ -854,6 +1039,16 @@ a, button, summary {
     var desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute('content', en ? root.dataset.descEn : root.dataset.descZh);
     if (group) group.setAttribute('aria-label', en ? 'Language' : '界面语言');
+    for (var i = 0; i < shots.length; i++) {
+      var src = shots[i].getAttribute(en ? 'data-src-en' : 'data-src-zh');
+      var alt = shots[i].getAttribute(en ? 'data-alt-en' : 'data-alt-zh');
+      var h = shots[i].getAttribute(en ? 'data-h-en' : 'data-h-zh');
+      if (src && shots[i].getAttribute('src') !== src) shots[i].setAttribute('src', src);
+      if (alt) shots[i].setAttribute('alt', alt);
+      if (h) shots[i].setAttribute('height', h);
+      var link = shots[i].parentNode;
+      if (src && link && link.classList && link.classList.contains('shot-link')) link.setAttribute('href', src);
+    }
     if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) {} }
   }
   btnZh.addEventListener('click', function () { apply('zh', true); });

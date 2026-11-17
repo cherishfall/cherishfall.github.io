@@ -392,9 +392,103 @@ a, button, summary {
     <div class="page-head">
     <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
     <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
-    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.6 · 2026-11-18 · 共 57 个版本</span><span lang="en">Latest version 1.0.6 · 2026-11-18 · 57 versions</span></p>
+    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.9 · 2026-11-18 · 共 60 个版本</span><span lang="en">Latest version 1.0.9 · 2026-11-18 · 60 versions</span></p>
     <p class="policy-note"><span lang="zh-CN">本页由仓库里的 <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> 生成，内容逐条一致；每个版本下中文与英文逐条对应。</span><span lang="en">This page is generated from <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the repository and matches it item by item; under each version, the Chinese and English texts correspond item by item.</span></p>
     </div>
+
+    <section class="rel" id="v1-0-9">
+      <h2 class="rel-h"><span class="rel-ver">1.0.9</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>草稿残留清扫只留在浏览器启动时（#249，收紧 1.0.8 的 #247）</strong>：清扫原本也挂在扩展更新上，且抢在「重新注入后的孤儿清理」前面执行——「向导开着过夜」（预览 24 小时没动）的文档遇上后台更新，残留记录会被先删掉，孤儿预览又没人能撤了。现在清扫只在浏览器启动时做：重启后旧的文档标识必不可能复活，全量清扫安全；更新场景的记录跨更新保留，孤儿清理一定读得到</li>
+        <li><strong>一处注释改为如实表述（#250）</strong>：「删除后残留的授权下次对账 / 管理页可收」不成立——对账从不收权、管理页列表来自站点配置（删除后站点已不在列表里）；残留授权只能由用户在 Chrome 的站点权限设置里手动撤。罕见且无害不可见，注释如实记录</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>功能与权限集合与 1.0.8 完全一致（<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + 按站点可选主机权限）；两处都是后台侧的时序与注释，界面零变化</li>
+        <li>门禁：编译、单测 881 项（57 文件）、E2E 十二脚本全绿（1.0.9 构建实测）、<code>check:docs</code> / <code>check:package</code> 通过</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>Draft-record sweeping now happens only at browser startup (#249, tightening 1.0.8's #247)</strong>: sweeping also ran on extension update, ahead of the orphan cleanup that follows script re-injection — for a document whose wizard sat open overnight (preview untouched for 24h), a background update would sweep the record first and the orphan preview would again be unremovable. Sweeping at startup only is safe: after a restart the old tab/document identifiers can never come back; on update the record survives and the orphan cleanup always finds it</li>
+        <li><strong>One comment corrected to state what actually happens (#250)</strong>: "the leftover grant can be collected at the next reconcile / in the management page" is wrong — the reconcile never revokes and the management list comes from site configs (the deleted site is gone); a leftover grant can only be revoked by hand in Chrome's site permission settings. Rare, harmless, and invisible; the comment now says so</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Features and the permission set are identical to 1.0.8 (<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + optional per-site host permissions); both changes are background-side timing and comments; the UI is untouched</li>
+        <li>Gates: compile, 881 unit tests (57 files), all twelve E2E scripts green (measured on the 1.0.9 build), <code>check:docs</code> / <code>check:package</code> pass</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v1-0-8">
+      <h2 class="rel-h"><span class="rel-ver">1.0.8</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>向导预览的恢复副本改记 <code>storage.local</code>（#247，修正 1.0.7 的 #239 修复）</strong>：1.0.7 把副本记在 <code>storage.session</code>——但 session 区随扩展更新 / 重载被清空（官方文档原句），而「扩展更新时开着的向导」恰是孤儿预览的目标场景，副本在更新瞬间就没了，撤不掉。改记 <code>storage.local</code>（跨更新持久，扩展卸载才清），值带写入时间，<code>onInstalled</code> / <code>onStartup</code> 清扫超 24 小时的残留键防累积</li>
+        <li><strong>一键清空的删除先于收权（#248，补全 #243）</strong>：1.0.7 的「删除失败叫醒页面」发生在收回权限之后——叫醒后悬浮按钮和自定义标题回来了，但隐藏样式重新插入因无权限必败，页面停在半截态。顺序改为：还原已打开页面 → 删配置 → 收回权限 → 注销；删除失败就不收权限，叫醒后的页面可完整恢复</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>功能与权限集合与 1.0.7 完全一致（<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + 按站点可选主机权限），安装时不授予任何站点；两处改动都在后台与消息顺序，界面零变化</li>
+        <li>门禁：编译、单测 880 项（57 文件）、E2E 十二脚本全绿（1.0.8 构建实测）、<code>check:docs</code> / <code>check:package</code> 通过</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>The wizard-preview recovery copy now lives in <code>storage.local</code> (#247, correcting 1.0.7's #239 fix)</strong>: 1.0.7 kept the copy in <code>storage.session</code> — but the session area is cleared when the extension is disabled, reloaded, or updated (per the official docs), and "wizard open during an extension update" is exactly the orphan-preview scenario: the copy vanished at the moment it was needed. It now lives in <code>storage.local</code> (persists across updates, cleared on uninstall), values carry a timestamp, and <code>onInstalled</code> / <code>onStartup</code> sweep leftovers older than 24 hours</li>
+        <li><strong>Reset deletes the profile before revoking the permission (#248, completing #243)</strong>: 1.0.7's "wake the page up on delete failure" ran after <code>permissions.remove</code> — the wake-up brought the floating button and title back, but re-inserting the hidden-item CSS then failed for lack of permission, leaving a half state. The order is now: restore open tabs → delete profile → revoke permission → unregister. If the delete fails, the permission stays and the woken page recovers fully</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Features and the permission set are identical to 1.0.7 (<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + optional per-site host permissions); nothing is granted at install time. Both changes are background-side logic and message ordering; the UI is untouched</li>
+        <li>Gates: compile, 880 unit tests (57 files), all twelve E2E scripts green (measured on the 1.0.8 build), <code>check:docs</code> / <code>check:package</code> pass</li>
+      </ul>
+    </section>
+
+    <section class="rel" id="v1-0-7">
+      <h2 class="rel-h"><span class="rel-ver">1.0.7</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>扩展更新 / 重载时开着的向导，预览样式不再永久残留</strong>（#239）：旧实例冻结交接后撤预览的请求发不出去，草稿文本又不可由配置重算——预览残留成「免保存临时隐藏」，只有刷新页面能除掉。现在后台把每份文档实际插入的草稿文本记入会话存储（SW 回收不丢、浏览器重启即清），孤儿清理时一并撤掉；新实例首次换草稿也先撤残留再插入</li>
+        <li><strong>「界面语言」的说明与兜底标题展示对齐实际行为</strong>（#240）：说明原写「默认标题仍跟随浏览器语言」——那是旧决策的残留，实际显式选了语言就跟所选语言走，仅「自动」跟浏览器；「留空就用「阅读」」的展示值原来取浏览器语言且创建后不随设置重算（浏览器中文 + 界面锁英文时页面写「阅读」、标签页实际显示 "Reading"），改为与标题生效逻辑同一份口径</li>
+        <li><strong>产品内直述数据去向</strong>（#241，2026-07 商店政策更新要求披露写在产品界面里、商店描述不算数）：插件设置「关于」卡与首次引导各加一句「你的设置和点选记录只保存在这台电脑的浏览器里，PageMask 不上传任何数据」；同类清扫修掉「没添加的网站完全不碰 / never touches」两处绝对化表述（「遮住这一页」在那类网站可用）</li>
+        <li><strong>「清成完全空白再保存，Chrome 会显示网址」的过时警告删掉</strong>（#246，交接关目检新眼睛发现）：标题兜底自「永不返回空白」起，清空保存显示的是兜底标题——这句警告与前半句「留空就用「阅读」」自相矛盾且陈述了不存在的后果，三处常驻脚注一并收短</li>
+        <li><strong>一键清空删配置失败不再把页面留在「像被删光」的假象</strong>（#243）：存储异常时配置还在、页面却已清空且从此不再恢复。现在后台删除失败会叫醒已清空的页面恢复界面，并把失败如实报给入口（弹窗 / 管理页显示既有的失败提示）</li>
+        <li><strong>导入路径收口</strong>（#242）：规则 id 超长按码点截到 100（与标题同口径）；候选 8 条 / 范围行 20 条 / 规则 500 条上限，超量规则如实计入「跳过」计数</li>
+        <li><strong>样式档位收口</strong>（#245）：图标格圆角 6px 并入控件档 8px；两处共用行距 10px 收进 <code>--pm-space-2</code>（8px）；组件内微间距在设计规范登记为允许值</li>
+      </ul>
+      <h3 lang="zh-CN">文档与商店材料</h3>
+      <ul lang="zh-CN">
+        <li>对外材料去掉「未添加的网站不运行任何内容」类绝对化表述（幕布正是用一次性脚本在那类网站上运行的）：商店详细描述中英、单一用途、§10 答问、README 中英标语六处一次改齐（#238）</li>
+        <li>商店材料与历史记录一致性六项：CHANGELOG 两处 404 版本链接改指实际提交；「全量发版史」措辞自洽；编辑入口列举顺序对齐实际界面（「标题和图标」在前）；两处逐字引用的弯引号对齐 <code>_locales</code>；历史审查记录一条「已修」更正（随机 id 未落地且不该落地）；API 版本核实表补 commands 两行（#244）</li>
+        <li>商店截图：设置页 / 列表页那张（截图 5）按 1.0.7 构建重拍入库；其余五张无内容变化沿用 1.0.0 重拍的版本</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>功能与权限集合与 1.0.6 完全一致（<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + 按站点可选主机权限），安装时不授予任何站点</li>
+        <li>门禁：编译、单测 878 项（57 文件）、E2E 十二脚本全绿（1.0.7 构建实测）、<code>check:docs</code> / <code>check:package</code> 通过</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>No more leftover wizard-preview styles after an extension update or reload</strong> (#239): the old instance's teardown freezes its style record, so the request that removes the preview never goes out, and preview text cannot be recomputed from settings — the preview stayed as unsaved hiding until a manual refresh. The background now keeps each document's last-applied preview text in session storage (survives service-worker restarts, cleared on browser restart), removes it along with the other orphan styles, and clears a leftover before inserting a new draft in a fresh instance</li>
+        <li><strong>The interface-language copy and the fallback-title display now match actual behavior</strong> (#240): the description still said the default tab title follows the browser language — the old decision's leftover; it follows the language picked here, and only Automatic follows the browser. The “leave it empty to use 「阅读」” display value was taken from the browser language and never recomputed (a Chinese browser with the interface locked to English showed 阅读 while the tab actually said "Reading"); it now shares one code path with the actual title logic</li>
+        <li><strong>A plain-language data disclosure inside the product</strong> (#241, the 2026-07 store policy update requires prominent disclosure in the product UI; the listing doesn't count): Settings → About and onboarding each say "Your settings and the items you pick are stored only in this browser on this computer — PageMask uploads nothing". Same-class sweep also fixed two "never touches sites you didn't add" absolutes (Cover this page works on those sites)</li>
+        <li><strong>The stale “clear it completely and Chrome shows the address” warning is gone</strong> (#246, caught by a fresh-eyes visual review): the title fallback has guaranteed a non-blank result for a long time, so clearing and saving shows the fallback title — the warning contradicted its own first half and described behavior that no longer exists; all three footnotes got shorter</li>
+        <li><strong>A failed reset no longer leaves the page looking deleted</strong> (#243): when the final delete step fails (storage error), the settings remain but the page had already cleared itself and never recovered. The background now wakes those pages back up and reports the failure honestly to the entry point</li>
+        <li><strong>Import-path hardening</strong> (#242): rule ids are truncated to 100 code points (same as titles); caps of 8 candidates / 20 scope rows / 500 rules per site, with overflow rules counted honestly in the import result</li>
+        <li><strong>Style tokens consolidated</strong> (#245): the icon tile's fourth radius literal 6px joined the control tier at 8px; two shared row gaps of 10px became <code>--pm-space-2</code> (8px); component-internal micro-spacing is now a registered exception in the design spec</li>
+      </ul>
+      <h3 lang="en">Docs &amp; store materials</h3>
+      <ul lang="en">
+        <li>The absolute claims "on every other site PageMask runs nothing" are gone (the cover is exactly a one-shot script running on those sites): six places aligned at once — the zh/en detailed descriptions, the single purpose, a §10 answer, and the README taglines (both languages) (#238)</li>
+        <li>Six store-material/records consistency fixes: two 404 version links in CHANGELOG now point at real commits; the "full release history" wording is self-consistent; the edit-entry order matches the actual UI (Title &amp; icon first); two verbatim quotes now use the same curly apostrophes as <code>_locales</code>; one "fixed" claim in the historical review record corrected; two commands-API rows added to the API-version table (#244)</li>
+        <li>Store screenshots: the settings/management shot (screenshot 5) was re-shot on the 1.0.7 build; the other five carry no content change and are kept</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Features and the permission set are identical to 1.0.6 (<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + optional per-site host permissions); nothing is granted at install time</li>
+        <li>Gates: compile, 878 unit tests (57 files), all twelve E2E scripts green (measured on the 1.0.7 build), <code>check:docs</code> / <code>check:package</code> pass</li>
+      </ul>
+    </section>
 
     <section class="rel" id="v1-0-6">
       <h2 class="rel-h"><span class="rel-ver">1.0.6</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>

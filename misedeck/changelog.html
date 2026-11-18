@@ -58,7 +58,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.3">v1.0.3</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.4">v1.0.4</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -73,11 +73,45 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.3 · 2026-11-18 · 共 19 个版本</span>
-            <span lang="en">Latest version 1.0.3 · 2026-11-18 · 19 releases</span>
+            <span lang="zh-CN">最新版本 1.0.4 · 2026-11-18 · 共 20 个版本</span>
+            <span lang="en">Latest version 1.0.4 · 2026-11-18 · 20 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-0-4">
+  <h2 class="rel-h"><span class="rel-ver">1.0.4</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+
+<p lang="en">A patch release that closes the post-release review of 1.0.3.</p>
+<p lang="en"><strong>Fixed</strong></p>
+<ul lang="en">
+  <li>The public site's changelog no longer labels a bilingual release as English-only: the language split now finds its marker wherever the body puts it, so v1.0.1's h1-style bilingual notes split correctly.</li>
+  <li>The historical <code>brew install --cask cherishfall/tap/misedeck</code> line is gone from the changelog — v1 ships no tap, so the page no longer offers a command that cannot work. The generator now refuses to emit one.</li>
+  <li>The site's version chip and install file names follow the latest release instead of being typed by hand, so they cannot go stale.</li>
+  <li>The pre-release badge on the changelog renders as a badge, the navigation's accessible name follows the language, and the social preview image resolves.</li>
+  <li>The task editor's error card names the object it acted on — the task's file or the config file — instead of always claiming a config file.</li>
+  <li>The captured-read size cap reads &quot;2 MiB&quot; instead of a raw byte count.</li>
+  <li>The documented count of backend commands is 23, and it names the one command that has never run on real Windows hardware.</li>
+</ul>
+<p lang="en"><strong>Docs</strong></p>
+<ul lang="en">
+  <li>The release-notes template is documented as the default path for routine releases, with the site rules that follow from it.</li>
+</ul>
+<p lang="zh-CN">一个收尾 1.0.3 发版后复审的补丁版本。</p>
+<p lang="zh-CN"><strong>修复</strong></p>
+<ul lang="zh-CN">
+  <li>公开站点的更新日志不再把双语发布误标为「只有英文」：语言切分现在按正文实际出现的位置识别标记，v1.0.1 那种 h1 标题的双语说明能正确切分。</li>
+  <li>更新日志里指向从未存在的 tap 的历史 <code>brew install --cask cherishfall/tap/misedeck</code> 已移除——v1 不提供 tap，站点不会再给出跑不通的命令；生成器也会拒绝输出这类命令。</li>
+  <li>站点的版本号与安装包文件名跟随最新发布，不再手写，因此不会变旧。</li>
+  <li>更新日志的预发布徽章恢复为徽章样式，导航的无障碍名称跟随语言，社交预览图片可以正常解析。</li>
+  <li>任务编辑器的报错会指明它实际操作的对象——任务文件或配置文件——不再一律说是配置文件。</li>
+  <li>捕获读取的大小上限改为「2 MiB」，不再显示原始字节数。</li>
+  <li>文档中的后端命令数量改为 23，并注明其中哪一条从未在真实 Windows 硬件上跑过。</li>
+</ul>
+<p lang="zh-CN"><strong>文档</strong></p>
+<ul lang="zh-CN">
+  <li>发布说明模板被记录为常规发布的默认路径，以及由此产生的站点规则。</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-3">
   <h2 class="rel-h"><span class="rel-ver">1.0.3</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 

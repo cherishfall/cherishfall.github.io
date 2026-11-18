@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN" data-title-zh="PageMask · 收起网页上不想看的部分" data-title-en="PageMask · Hide the parts of a page you don't want" data-desc-zh="PageMask 是一个 Chrome 扩展：在你主动添加的网站上，点选不想看的部分，保存后它们就不再出现；标签页标题和图标也可以改得低调些。数据只存在你的浏览器里。" data-desc-en="PageMask is a Chrome extension: on sites you add yourself, click the parts of a page you don't want and they're gone after you save — the tab title and icon can go low-key too. Your data stays in your browser.">
+<html lang="zh-CN" data-title-zh="PageMask · 收起网页上不想看的部分" data-title-en="PageMask · Hide the parts of a page you don't want" data-desc-zh="PageMask 是一个 Chrome 扩展：在你添加的网站上收起不想看的内容，把整页变灰或遮住，标签页标题和图标也能改。不联网，数据只留在浏览器里。" data-desc-en="A Chrome extension for sites you add: hide parts you don't want, turn a page gray or cover it, and change the tab title and icon. No network; your data stays in your browser.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="PageMask 是一个 Chrome 扩展：在你主动添加的网站上，点选不想看的部分，保存后它们就不再出现；标签页标题和图标也可以改得低调些。数据只存在你的浏览器里。">
+<meta name="description" content="PageMask 是一个 Chrome 扩展：在你添加的网站上收起不想看的内容，把整页变灰或遮住，标签页标题和图标也能改。不联网，数据只留在浏览器里。">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
 <title>PageMask · 收起网页上不想看的部分</title>
@@ -439,7 +439,8 @@ a, button, summary {
 .demo[data-step="2"] .demo-img[data-step="2"],
 .demo[data-step="3"] .demo-img[data-step="3"],
 .demo[data-step="4"] .demo-img[data-step="4"],
-.demo[data-step="5"] .demo-img[data-step="5"] { display: block; }
+.demo[data-step="5"] .demo-img[data-step="5"],
+.demo[data-step="6"] .demo-img[data-step="6"] { display: block; }
 .demo-steps {
   display: flex;
   flex-wrap: wrap;
@@ -745,8 +746,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">收起内容</span><span lang="en">Hide items</span></h3>
           <p>
-            <span lang="zh-CN">点一下页面上的推广横幅、侧栏或页脚，保存后，以后打开这个网站它就不再出现。</span>
-            <span lang="en">Click a promo, sidebar or footer, save, and it’s gone from this site.</span>
+            <span lang="zh-CN">点选推广横幅、侧栏或页脚，保存后从网站消失。</span>
+            <span lang="en">Pick a promo, sidebar or footer; once saved, it stays hidden on that site.</span>
           </p>
         </div>
 
@@ -759,8 +760,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">标题和图标</span><span lang="en">Title &amp; icon</span></h3>
           <p>
-            <span lang="zh-CN">标签页标题可以填「阅读」这样的低调字样；图标三选一——网站原来的图标、不显示图标、或换成别的图标（内置 10 个可选）；保存后生效。</span>
-            <span lang="en">The tab title can be something low-key like “Reading”; the icon has three choices — the site’s own, no icon, or a different built-in one (10 to pick from). Save to apply.</span>
+            <span lang="zh-CN">标签页标题自己写（如「阅读」），图标可换掉或隐藏。</span>
+            <span lang="en">Write your own tab title (say “Reading”); swap or hide the tab icon.</span>
           </p>
         </div>
 
@@ -771,8 +772,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">整页变灰</span><span lang="en">Turn the whole page gray</span></h3>
           <p>
-            <span lang="zh-CN">点一下，整页变黑白；再点一下变回彩色。文字照常读，布局不乱。</span>
-            <span lang="en">One click turns the page black &amp; white; another click brings the colors back. Text stays readable, layout stays put.</span>
+            <span lang="zh-CN">整页一键变黑白，再点变回彩色；文字和布局不乱。</span>
+            <span lang="en">One click: black and white. Another: color back. Text and layout stay as they are.</span>
           </p>
         </div>
 
@@ -785,8 +786,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">遮住这一页</span><span lang="en">Cover this page</span></h3>
           <p>
-            <span lang="zh-CN">临时遮住整页、标签页标题和图标，连声音一起静音；刷新或离开这个页面就恢复。</span>
-            <span lang="en">Cover the page, its tab title and icon, and mute the tab; reload or leave the page and it’s back.</span>
+            <span lang="zh-CN">临时遮住整页：标题和图标换掉；点「恢复」回来。</span>
+            <span lang="en">Cover the whole page: tab title and icon change; “Restore” brings it back.</span>
           </p>
         </div>
 
@@ -860,6 +861,12 @@ a, button, summary {
                  data-alt-en="Four items hidden and the whole page turned gray: black and white everywhere, with text, cover and links in place."
                  alt="收起 4 项并打开整页变灰：整页只剩黑白，文字、封面和链接都在原位。"
                  width="1920" height="1200" decoding="async">
+            <img class="demo-img" data-step="6" src="screens/zh/curtain.webp"
+                 data-src-zh="screens/zh/curtain.webp" data-src-en="screens/en/curtain.webp"
+                 data-alt-zh="遮住整页后的示例网站：页面被整片盖住，只剩右下角的「恢复」按钮。"
+                 data-alt-en="The demo site with the page covered: the page is fully masked, leaving only the “Restore” button at the bottom right."
+                 alt="遮住整页后的示例网站：页面被整片盖住，只剩右下角的「恢复」按钮。"
+                 width="1920" height="1200" decoding="async">
             </a>
             </div>
           </div>
@@ -870,51 +877,59 @@ a, button, summary {
             <span class="demo-step-no" aria-hidden="true">1</span><span lang="zh-CN">原样</span><span lang="en">As is</span>
           </button>
           <button type="button" class="demo-step" data-step="1">
-            <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">设置标题和图标</span><span lang="en">Set title &amp; icon</span>
+            <span class="demo-step-no" aria-hidden="true">2</span><span lang="zh-CN">标题和图标</span><span lang="en">Title &amp; icon</span>
           </button>
           <button type="button" class="demo-step" data-step="2">
-            <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标签页标题变成「阅读」</span><span lang="en">Tab now reads “Reading”</span>
+            <span class="demo-step-no" aria-hidden="true">3</span><span lang="zh-CN">标题变「阅读」</span><span lang="en">New tab title</span>
           </button>
           <button type="button" class="demo-step" data-step="3">
-            <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选要收起的内容</span><span lang="en">Pick what to hide</span>
+            <span class="demo-step-no" aria-hidden="true">4</span><span lang="zh-CN">点选收起内容</span><span lang="en">Pick items</span>
           </button>
           <button type="button" class="demo-step" data-step="4">
-            <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项后</span><span lang="en">4 items gone</span>
+            <span class="demo-step-no" aria-hidden="true">5</span><span lang="zh-CN">收起 4 项</span><span lang="en">4 items gone</span>
           </button>
           <button type="button" class="demo-step" data-step="5">
             <span class="demo-step-no" aria-hidden="true">6</span><span lang="zh-CN">整页变灰</span><span lang="en">Whole page gray</span>
           </button>
+          <button type="button" class="demo-step" data-step="6">
+            <span class="demo-step-no" aria-hidden="true">7</span><span lang="zh-CN">遮住这一页</span><span lang="en">Cover this page</span>
+          </button>
         </div>
         <div class="demo-captions" aria-live="polite" aria-atomic="true">
           <p class="demo-caption" data-step="0">
-            <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 6 步：</span><span lang="en">Step 1 of 6: </span></span>
-            <span lang="zh-CN">页面本来的样子：页头、推广横幅、本周推荐，以及底部的页脚。</span>
-            <span lang="en">The page as it is: header, promo banner, recommendations and the footer at the bottom.</span>
+            <span class="visually-hidden"><span lang="zh-CN">第 1 步，共 7 步：</span><span lang="en">Step 1 of 7: </span></span>
+            <span lang="zh-CN">页面本来的样子：页头、推广横幅、本周推荐和页脚。</span>
+            <span lang="en">The page as it is: header, promo banner, recommendations and the footer.</span>
           </p>
           <p class="demo-caption" data-step="1" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 6 步：</span><span lang="en">Step 2 of 6: </span></span>
+            <span class="visually-hidden"><span lang="zh-CN">第 2 步，共 7 步：</span><span lang="en">Step 2 of 7: </span></span>
             <span lang="zh-CN">在「标题和图标」里填「阅读」，图标保留网站原来的，点「保存」。</span>
             <span lang="en">Enter “Reading” in “Title &amp; icon”, keep the site’s own icon, then click “Save”.</span>
           </p>
           <p class="demo-caption" data-step="2" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 6 步：</span><span lang="en">Step 3 of 6: </span></span>
-            <span lang="zh-CN">标签页标题从「星海旅人 · Acme 书房」变成「阅读」，网页本身没动。</span>
-            <span lang="en">The tab title goes from “The Star Wanderer · Acme Library” to “Reading”; the page itself is unchanged.</span>
+            <span class="visually-hidden"><span lang="zh-CN">第 3 步，共 7 步：</span><span lang="en">Step 3 of 7: </span></span>
+            <span lang="zh-CN">标签页标题变成「阅读」，网页本身没动。</span>
+            <span lang="en">The tab title becomes “Reading”; the page itself is unchanged.</span>
           </p>
           <p class="demo-caption" data-step="3" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 6 步：</span><span lang="en">Step 4 of 6: </span></span>
+            <span class="visually-hidden"><span lang="zh-CN">第 4 步，共 7 步：</span><span lang="en">Step 4 of 7: </span></span>
             <span lang="zh-CN">点选要收起的内容。橙色编号和边框只在点选时出现。</span>
             <span lang="en">Pick what you want to hide. Orange numbers and outlines show only while picking.</span>
           </p>
           <p class="demo-caption" data-step="4" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 5 步，共 6 步：</span><span lang="en">Step 5 of 6: </span></span>
+            <span class="visually-hidden"><span lang="zh-CN">第 5 步，共 7 步：</span><span lang="en">Step 5 of 7: </span></span>
             <span lang="zh-CN">保存后，点过的 4 项都不见了，正文还在。</span>
             <span lang="en">After saving, all four picked items are gone; the article stays.</span>
           </p>
           <p class="demo-caption" data-step="5" hidden>
-            <span class="visually-hidden"><span lang="zh-CN">第 6 步，共 6 步：</span><span lang="en">Step 6 of 6: </span></span>
+            <span class="visually-hidden"><span lang="zh-CN">第 6 步，共 7 步：</span><span lang="en">Step 6 of 7: </span></span>
             <span lang="zh-CN">整页只剩黑白，文字、封面和链接都在原位。</span>
             <span lang="en">Now black and white; text, cover and links stay in place.</span>
+          </p>
+          <p class="demo-caption" data-step="6" hidden>
+            <span class="visually-hidden"><span lang="zh-CN">第 7 步，共 7 步：</span><span lang="en">Step 7 of 7: </span></span>
+            <span lang="zh-CN">整页空白是正常效果；点右下角「恢复」、刷新或离开就回来。</span>
+            <span lang="en">A blank page is normal here; click “Restore” at the bottom right, reload, or leave to come back.</span>
           </p>
         </div>
         <figcaption class="demo-note">
@@ -933,25 +948,29 @@ a, button, summary {
         <li>
           <span class="step-no" aria-hidden="true">1</span>
           <p>
-            <span lang="zh-CN">点浏览器右上角的拼图图标，再点 PageMask 旁边的图钉，把它固定到工具栏。</span>
-            <span lang="en">Click the puzzle-piece icon in Chrome, then the pin next to PageMask to keep it on the toolbar.</span>
+            <span lang="zh-CN">点 Chrome 右上角的拼图图标，把 PageMask 固定到工具栏。</span>
+            <span lang="en">Click the puzzle-piece icon in Chrome and pin PageMask to the toolbar.</span>
           </p>
         </li>
         <li>
           <span class="step-no" aria-hidden="true">2</span>
           <p>
-            <span lang="zh-CN">在要设置的网站上打开 PageMask 弹窗。第一次点「收起内容」或「标题和图标」时，Chrome 会问一次要不要允许访问这个网站；选「允许」之后，这个网站就不用再问。</span>
-            <span lang="en">Open the PageMask popup on the site you want to set up. The first time you click “Hide items” or “Title &amp; icon”, Chrome asks once whether to allow access to this site; choose “Allow” and it won’t ask again for this site.</span>
+            <span lang="zh-CN">打开 PageMask 弹窗。第一次点「收起内容」时，选「允许」访问这个网站。</span>
+            <span lang="en">Open the PageMask popup. The first time you click “Hide items”, choose “Allow” to give access.</span>
           </p>
         </li>
         <li>
           <span class="step-no" aria-hidden="true">3</span>
           <p>
-            <span lang="zh-CN">点「收起内容」，在页面上点选要收起的内容，点「下一步：看效果」确认，再点「保存」。之后用页面上的悬浮按钮，在「按设置」和「原样」之间切换。</span>
-            <span lang="en">Click “Hide items”, pick what you want gone, click “Next: check the result”, then “Save”. After that, the floating button switches between “Your settings” and “As is”.</span>
+            <span lang="zh-CN">点「收起内容」，在页面上点选要去掉的内容，点「下一步：看效果」，再点「保存」。</span>
+            <span lang="en">Click “Hide items”, pick what you want gone, click “Next: check the result”, then “Save”.</span>
           </p>
         </li>
       </ol>
+      <p class="note">
+        <span lang="zh-CN">之后用页面上的悬浮按钮，在「按设置」和「原样」之间切换。</span>
+        <span lang="en">After that, the on-page floating button switches between “Your settings” and “As is”.</span>
+      </p>
     </div>
   </section>
 
@@ -959,26 +978,26 @@ a, button, summary {
     <div class="container">
       <h2><span lang="zh-CN">安装 PageMask</span><span lang="en">Install PageMask</span></h2>
       <p class="section-intro">
-        <span lang="zh-CN">Chrome 应用商店版本还没上架。现在可以先用 GitHub Releases 的 zip 手动安装，需要 Chrome 116 或更高。</span>
-        <span lang="en">The Chrome Web Store version isn't live yet. For now, install it manually from the zip on GitHub Releases — Chrome 116 or later.</span>
+        <span lang="zh-CN">还没上架 Chrome 应用商店。先用 GitHub Releases 的 zip 安装。</span>
+        <span lang="en">Not on the Chrome Web Store yet. For now, install from the GitHub Releases zip.</span>
       </p>
       <ol class="install-list">
         <li>
-          <span lang="zh-CN">在 GitHub Releases 页面下载最新的 zip，解压到一个你会一直保留的文件夹。</span>
-          <span lang="en">On GitHub Releases, download the latest zip and unzip it into a folder you will keep.</span>
+          <span lang="zh-CN">下载最新的 zip，解压到一个长期保留的文件夹。</span>
+          <span lang="en">Download the latest zip and unzip it into a folder you will keep.</span>
         </li>
         <li>
-          <span lang="zh-CN">打开 Chrome，在地址栏输入 chrome://extensions，打开右上角的「开发者模式」。</span>
-          <span lang="en">Open chrome://extensions in Chrome and turn on Developer mode (top right).</span>
+          <span lang="zh-CN">在 Chrome 116 以上的地址栏打开 chrome://extensions，打开右上角的「开发者模式」。</span>
+          <span lang="en">In Chrome 116 or later, open chrome://extensions and turn on Developer mode (top right).</span>
         </li>
         <li>
-          <span lang="zh-CN">点「加载已解压的扩展程序」，选择刚解压出来的文件夹。</span>
-          <span lang="en">Click Load unpacked and select the unzipped folder.</span>
+          <span lang="zh-CN">点「加载已解压的扩展程序」，选中刚解压的文件夹。</span>
+          <span lang="en">Click Load unpacked and choose that folder.</span>
         </li>
       </ol>
       <p class="note">
-        <span lang="zh-CN">换新版本时，用新文件覆盖同一个文件夹，再在 chrome://extensions 点刷新。别点「移除」，也别换文件夹，否则设置会清空——Chrome 对手动加载的扩展都这样。</span>
-        <span lang="en">To update, overwrite the same folder and click reload in chrome://extensions. Don’t click “Remove” or switch folders — either wipes your settings. Chrome does this to every manually loaded extension.</span>
+        <span lang="zh-CN">更新时覆盖同一个文件夹并点刷新。别点「移除」或换文件夹，设置会清空——Chrome 对手动加载的扩展都这样。</span>
+        <span lang="en">To update, overwrite the same folder and click reload. Don’t click “Remove” or switch folders — either wipes your settings (Chrome does this to every manually loaded extension).</span>
       </p>
       <p class="install-cta">
         <a class="btn btn-secondary" href="https://github.com/cherishfall/page-mask/releases/latest">
@@ -1007,8 +1026,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">不联网</span><span lang="en">No network</span></h3>
           <p>
-            <span lang="zh-CN">PageMask 自身不发起任何网络请求：没有统计，没有广告，也不加载外部脚本。</span>
-            <span lang="en">PageMask makes no network requests of its own — no analytics, no ads, and no external scripts loaded.</span>
+            <span lang="zh-CN">不发起任何网络请求：没有统计、广告和外部脚本。</span>
+            <span lang="en">Makes no network requests: no analytics, ads or external scripts.</span>
           </p>
         </div>
 
@@ -1019,8 +1038,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">数据只在本机</span><span lang="en">Data stays on this device</span></h3>
           <p>
-            <span lang="zh-CN">设置只存在浏览器的本地存储（chrome.storage.local）里，卸载 PageMask 就全部消失。</span>
-            <span lang="en">Settings live only in your browser's local storage (chrome.storage.local); uninstalling PageMask removes all of them.</span>
+            <span lang="zh-CN">设置只存在这台电脑的浏览器里；卸载就全部消失。</span>
+            <span lang="en">Settings live only in this browser on this computer; uninstalling removes them all.</span>
           </p>
         </div>
 
@@ -1032,8 +1051,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">按站点逐个允许访问</span><span lang="en">Access, one site at a time</span></h3>
           <p>
-            <span lang="zh-CN">安装时不请求任何网站权限。要在这个网站收起内容、改标题和图标或整页变灰，得先允许访问；没允许访问的网站，PageMask 不会自行运行。</span>
-            <span lang="en">No site access at install. To hide items, change the title and icon, or turn a site gray, you first allow access to that site. PageMask never runs on a site by itself.</span>
+            <span lang="zh-CN">安装时不请求网站权限；用哪个才允许哪个。</span>
+            <span lang="en">No site access at install; allow one site at a time.</span>
           </p>
         </div>
 
@@ -1046,8 +1065,8 @@ a, button, summary {
           </svg>
           <h3><span lang="zh-CN">导出 / 导入</span><span lang="en">Export / Import</span></h3>
           <p>
-            <span lang="zh-CN">把全部网站的设置和插件设置存成一个文件；换电脑后导入，设置就能恢复。网站访问权限还要在 Chrome 里重新允许。</span>
-            <span lang="en">Every site’s settings and the plugin settings go into one file. Import it on another computer to restore them; you’ll still need to allow access to those sites in Chrome.</span>
+            <span lang="zh-CN">设置可导出，换电脑再导入；访问权限要重新允许。</span>
+            <span lang="en">Export settings, import on another computer; re-allow site access in Chrome.</span>
           </p>
         </div>
 
@@ -1074,8 +1093,8 @@ a, button, summary {
           </summary>
           <div class="faq-a">
             <p>
-              <span lang="zh-CN">不会。PageMask 不会自动在任何网站上运行：没添加的网站，它不会自动注入脚本、样式或界面。遮住这一页这类临时功能，也要你先点一下才会出现。</span>
-              <span lang="en">No. PageMask doesn’t run on any site by itself: on sites you haven’t added, it never injects script, style or UI automatically. Temporary actions like covering a page appear only after you click them.</span>
+              <span lang="zh-CN">不会。没添加的网站不注入任何脚本、样式或界面；遮住这一页也要你先点。</span>
+              <span lang="en">No. On sites you haven’t added, PageMask injects no script, style or UI; covering a page also takes a click from you.</span>
             </p>
           </div>
         </details>
@@ -1088,7 +1107,7 @@ a, button, summary {
           </summary>
           <div class="faq-a">
             <p>
-              <span lang="zh-CN">不需要。没有账号，也没有登录；设置就保存在你这台电脑的浏览器里。</span>
+              <span lang="zh-CN">不需要。没有账号也没有登录，设置只存在这台电脑的浏览器里。</span>
               <span lang="en">No. There is no account and no sign-in. Your settings live in the browser on this computer.</span>
             </p>
           </div>
@@ -1102,8 +1121,8 @@ a, button, summary {
           </summary>
           <div class="faq-a">
             <p>
-              <span lang="zh-CN">可以。把全部网站的设置和插件设置导出成一个文件，在另一台电脑上导入；导入后，网站访问权限还要在 Chrome 里重新允许。</span>
-              <span lang="en">Yes. Export every site’s settings and the plugin settings as one file, then import it on the other computer. After importing, allow access to those sites in Chrome again.</span>
+              <span lang="zh-CN">可以。导出设置，在另一台电脑导入；访问权限要在 Chrome 里重新允许。</span>
+              <span lang="en">Yes. Export settings, import on the other computer, then allow site access in Chrome again.</span>
             </p>
           </div>
         </details>
@@ -1116,8 +1135,8 @@ a, button, summary {
           </summary>
           <div class="faq-a">
             <p>
-              <span lang="zh-CN">可以。在「全部网站设置」里点进那个网站，在「收起的内容」里逐条删除；删错 5 秒内可撤销。也可以用「恢复网站原来的内容」把收起的内容一次全恢复，标题和图标不受影响。</span>
-              <span lang="en">Yes. In “All site settings”, open the site and delete items one by one under “Hidden items”; a deletion can be undone within 5 seconds. Or use “Use the site’s own content” to restore all hidden items at once — the title and icon stay as they are.</span>
+              <span lang="zh-CN">可以。在「全部网站设置」里逐条删除，删错 5 秒内可撤销；点「恢复网站原来的内容」可一次全恢复，标题和图标不变。</span>
+              <span lang="en">Yes. Delete them in “All site settings”; a deletion can be undone within 5 seconds. “Use the site’s own content” restores them all at once — the title and icon stay.</span>
             </p>
           </div>
         </details>
@@ -1151,8 +1170,8 @@ a, button, summary {
   var zoom = document.getElementById('demo-zoom');
   var imgLink = document.getElementById('demo-img-link');
   var SRC = {
-    zh: ['screens/zh/before.webp', 'screens/zh/title.webp', 'screens/zh/before.webp', 'screens/zh/pick.webp', 'screens/zh/after.webp', 'screens/zh/gray-hidden.webp'],
-    en: ['screens/en/before.webp', 'screens/en/title.webp', 'screens/en/before.webp', 'screens/en/pick.webp', 'screens/en/after.webp', 'screens/en/gray-hidden.webp']
+    zh: ['screens/zh/before.webp', 'screens/zh/title.webp', 'screens/zh/before.webp', 'screens/zh/pick.webp', 'screens/zh/after.webp', 'screens/zh/gray-hidden.webp', 'screens/zh/curtain.webp'],
+    en: ['screens/en/before.webp', 'screens/en/title.webp', 'screens/en/before.webp', 'screens/en/pick.webp', 'screens/en/after.webp', 'screens/en/gray-hidden.webp', 'screens/en/curtain.webp']
   };
   var LAST = steps.length - 1;
   var current = Number(demo.getAttribute('data-step'));

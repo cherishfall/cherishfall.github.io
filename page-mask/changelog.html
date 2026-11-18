@@ -266,6 +266,9 @@ a, button, summary {
 
 /* ── 政策正文 ── */
 .policy { padding-block: 40px 64px; }
+/* 正文行宽（1.0.11）：960 宽下一行 55 个以上汉字，长句容易串行。
+   收到 760（约 40–45 字），与 GOV.UK / USWDS 的正文行宽纪律一致 */
+.policy > * { max-width: 760px; margin-inline: auto; }
 .back { font-size: 15px; }
 .policy h1 {
   margin-top: 14px;
@@ -392,9 +395,45 @@ a, button, summary {
     <div class="page-head">
     <p class="back"><a class="text-link link-standalone" href="index.html"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a></p>
     <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
-    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.10 · 2026-11-18 · 共 61 个版本</span><span lang="en">Latest version 1.0.10 · 2026-11-18 · 61 versions</span></p>
+    <p class="policy-meta"><span lang="zh-CN">最新版本 1.0.11 · 2026-11-18 · 共 62 个版本</span><span lang="en">Latest version 1.0.11 · 2026-11-18 · 62 versions</span></p>
     <p class="policy-note"><span lang="zh-CN">本页由仓库里的 <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> 生成，内容逐条一致；每个版本下中文与英文逐条对应。</span><span lang="en">This page is generated from <a class="text-link" href="https://github.com/cherishfall/page-mask/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the repository and matches it item by item; under each version, the Chinese and English texts correspond item by item.</span></p>
     </div>
+
+    <section class="rel" id="v1-0-11">
+      <h2 class="rel-h"><span class="rel-ver">1.0.11</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+      <h3 lang="zh-CN">改动</h3>
+      <ul lang="zh-CN">
+        <li><strong>空设置时关闭胶囊主开关不再弹说明框（#255）</strong>：没有标题、图标和收起内容时，从「按设置」切回「原样」不再弹「打开后页面不变」——关掉就是恢复正常显示，弹框与刚做的动作矛盾。说明框现在只在打开开关时出现</li>
+        <li><strong>首次引导第 3 步与图里的控件一一对应（#254）</strong>：原三条要点与图里从左到右的面具、圆圈、闭眼、⋯ 对不上，「点它」没有指代对象；现在一颗控件一条、同序四条，拖动说明并入首句</li>
+      </ul>
+      <h3 lang="zh-CN">文档与商店材料</h3>
+      <ul lang="zh-CN">
+        <li><strong>落地页全页文案压缩</strong>：功能卡、怎么用、安装、隐私卡、FAQ 每段只说一件事；演示新增第 7 步「遮住这一页」，写明整页空白是正常效果、点「恢复」回来</li>
+        <li><strong>隐私政策页</strong>：正文行宽收到 760px；「不收集」与本地保存的矛盾改为「不上传、不出售、不分享」；CSS 选择器、读屏名称、标签页静音补一句白话；权限按 storage / activeTab / scripting / 按网站主机权限拆条</li>
+        <li><strong>README / 商店材料</strong>：标题和图标描述同步压缩；版本口径与版本历史同步 1.0.11</li>
+      </ul>
+      <h3 lang="zh-CN">面向审阅者</h3>
+      <ul lang="zh-CN">
+        <li>功能与权限集合与 1.0.10 完全一致（<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + 按站点可选主机权限）；本轮只改两处交互文案与对外文档，界面视觉无变化，商店截图沿用</li>
+        <li>门禁：编译、单测 897 项（58 文件）、E2E 十二脚本全绿（1.0.11 构建实测）、<code>check:docs</code> / <code>check:package</code> 通过</li>
+      </ul>
+      <h3 lang="en">Changes</h3>
+      <ul lang="en">
+        <li><strong>Turning the floating switch off on an empty site no longer opens the explanation box (#255)</strong>: when no title, icon or hidden items are set, switching from "Your settings" back to "As is" no longer shows "the page stays as it is" — turning it off is simply a return to normal, so the box contradicted the action. It now appears only when the switch is turned on</li>
+        <li><strong>Onboarding step 3 now matches the controls in the picture (#254)</strong>: the old three bullets did not line up with the mask, circle, closed eye and ⋯ shown left to right, and "click it" had no clear referent. There is now one bullet per control, in the same order, with dragging folded into the opening sentence</li>
+      </ul>
+      <h3 lang="en">Docs and store listing</h3>
+      <ul lang="en">
+        <li><strong>Landing page copy tightened across the whole page</strong>: feature cards, how-to, install, privacy cards and FAQ now say one thing per paragraph; the demo adds a seventh step, "Cover this page", stating that a blank page is the intended effect and that "Restore" brings it back</li>
+        <li><strong>Privacy policy page</strong>: body text is capped at 760px; the contradiction between "collects nothing" and local storage is replaced by "we don't upload, sell or share"; CSS selectors, screen-reader names and tab muting each get a plain-language gloss; permissions are listed one by one</li>
+        <li><strong>README / store listing</strong>: the title-and-icon description is shortened to match; version references and history are on 1.0.11</li>
+      </ul>
+      <h3 lang="en">For reviewers</h3>
+      <ul lang="en">
+        <li>Features and the permission set are identical to 1.0.10 (<code>storage</code> / <code>scripting</code> / <code>activeTab</code> + optional per-site host permissions); this round changes two interaction messages and outside documentation only, so the interface looks the same and the store screenshots are unchanged</li>
+        <li>Gates: compile, 897 unit tests (58 files), all twelve E2E scripts green (measured on the 1.0.11 build), <code>check:docs</code> / <code>check:package</code> pass</li>
+      </ul>
+    </section>
 
     <section class="rel" id="v1-0-10">
       <h2 class="rel-h"><span class="rel-ver">1.0.10</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>

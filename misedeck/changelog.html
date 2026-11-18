@@ -58,7 +58,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.5">v1.0.5</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.6">v1.0.6</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -73,11 +73,45 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.5 · 2026-11-18 · 共 21 个发布</span>
-            <span lang="en">Latest version 1.0.5 · 2026-11-18 · 21 releases</span>
+            <span lang="zh-CN">最新版本 1.0.6 · 2026-11-18 · 共 22 个发布</span>
+            <span lang="en">Latest version 1.0.6 · 2026-11-18 · 22 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-0-6">
+  <h2 class="rel-h"><span class="rel-ver">1.0.6</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+
+<p lang="en">A patch release that closes the last review round.</p>
+<p lang="en"><strong>Fixed</strong></p>
+<ul lang="en">
+  <li>A cancelled run is now reported as cancelled on every path. The install runner had its own cancellation message, so the panel settled it as a failure whose body said the installer was cancelled — a card that contradicted itself.</li>
+  <li>A failure with no output says what went wrong instead of showing an empty log: the panel now renders the failure detail it was already carrying.</li>
+  <li>The release feed's size limit reads &quot;1 MiB&quot; rather than a raw byte count.</li>
+  <li>The Chinese sentences no longer carry a stray space between two Han characters, and a lint keeps them that way.</li>
+  <li>The Home page shows the parse-failure detail it knows — the command and the shape it expected — instead of speculating that you might be running a forked build.</li>
+</ul>
+<p lang="en"><strong>For maintainers</strong></p>
+<ul lang="en">
+  <li>Clippy runs on the Windows and macOS legs too, and macOS runs the Rust test suite: the polished platform now has runtime assertions of its own. Both new legs earned their place immediately — they caught a lint that only exists on the Windows path and a macOS test that assumed a terminal can launch without a GUI session.</li>
+  <li>The site's changelog generator splits on every language marker, renders tables and shell snippets as code, and refuses to publish a commit message or a dead Homebrew command as release notes.</li>
+  <li>The thirteen releases whose published notes were raw commit messages now carry proper bilingual notes.</li>
+</ul>
+<p lang="zh-CN">一个收尾最后一轮复审的补丁版本。</p>
+<p lang="zh-CN"><strong>修复</strong></p>
+<ul lang="zh-CN">
+  <li>被取消的运行现在在所有路径上都判定为已取消。安装 runner 原先有自己的取消信息，于是面板把它判成失败，正文却写着安装程序已取消——一张自相矛盾的卡片。</li>
+  <li>没有输出的失败会说明发生了什么，而不是留一段空日志：面板现在会渲染它本就持有的失败详情。</li>
+  <li>发布源的大小上限读作「1 MiB」，而不是原始字节数。</li>
+  <li>中文句子不再在两个汉字之间留下多余空格，并有守卫守着。</li>
+  <li>首页会显示它确实知道的解析失败详情——执行过的命令与预期的结构——而不是猜测你可能跑的是某个分支版本。</li>
+</ul>
+<p lang="zh-CN"><strong>给维护者</strong></p>
+<ul lang="zh-CN">
+  <li>clippy 现在也在 Windows 与 macOS 腿上跑，macOS 腿会跑 Rust 测试套件：打磨目标平台第一次有了自己的运行时断言。两条新腿立刻证明了自己的价值——它们抓到一条只在 Windows 路径存在的 lint，以及一个假定无 GUI 会话也能启动终端的 macOS 测试。</li>
+  <li>站点的更新日志生成器按每一个语言标记切分，把表格与 shell 片段按代码块渲染，并拒绝把提交信息或失效的 Homebrew 命令当发布说明发布。</li>
+  <li>十三个曾以原始提交信息作为发布说明的版本，现在都带上了真正的双语说明。</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-5">
   <h2 class="rel-h"><span class="rel-ver">1.0.5</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 

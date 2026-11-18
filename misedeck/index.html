@@ -22,10 +22,8 @@
     <meta property="og:image:height" content="1292" />
     <link rel="canonical" href="https://cherishfall.github.io/misedeck/" />
     <link rel="stylesheet" href="site.css" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238B2252'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' fill='%23FDF8F3' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/png" sizes="256x256" href="icon.png" />
+    <link rel="apple-touch-icon" href="icon.png" />
     <script>
       /* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文）。 */
       (function () {
@@ -45,7 +43,7 @@
     <header class="site-head">
       <div class="container inner">
         <a class="brand" href="./">
-          <img src="icon.svg" alt="" width="26" height="26" />
+          <img src="icon.png" alt="" width="26" height="26" />
           MiseDeck
         </a>
         <nav aria-label="主导航" data-aria-zh="主导航" data-aria-en="Main navigation">
@@ -71,7 +69,7 @@
       <!-- ------------------------------------------------------------ hero -->
       <section class="hero">
         <div class="container">
-          <img class="app-icon" src="icon.svg" alt="" width="72" height="72" />
+          <img class="app-icon" src="icon.png" alt="" width="72" height="72" />
           <h1>MiseDeck</h1>
           <p class="slogan">
             <span lang="zh-CN">mise 的命令行，长成一个桌面应用。</span>
@@ -225,65 +223,46 @@
               <span lang="en">This is what it actually looks like.</span>
             </h2>
             <p>
-              <span lang="zh-CN">英文与简体中文界面，浅色主题。</span>
-              <span lang="en">English and Simplified Chinese, light theme.</span>
+              <span lang="zh-CN">英文与简体中文界面，浅色主题。点击任意截图可放大查看。</span>
+              <span lang="en">English and Simplified Chinese, light theme. Click a screenshot to view it full size.</span>
             </p>
           </div>
           <div class="shot-grid">
             <figure class="shot">
-              <div class="shot-frame">
+              <button class="shot-frame" type="button" data-shot>
                 <img
-                  src="screens/en/tools.webp"
-                  data-src-en="screens/en/tools.webp"
-                  data-src-zh="screens/zh/tools.webp"
-                  data-alt-en="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
-                  data-alt-zh="工具页：已安装的工具、版本、请求的版本与来源，以及「版本管理」入口。"
-                  alt="The Tools page"
+                  src="screens/zh/home.webp"
+                  data-src-en="screens/en/home.webp"
+                  data-src-zh="screens/zh/home.webp"
+                  data-alt-en="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
+                  data-alt-zh="首页页：mise 的版本门禁，mise 缺失时的引导安装，以及更新检查。"
+                  alt="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
                   width="1920"
                   height="1292"
-                  decoding="async"
+                                    decoding="async"
                 />
-              </div>
+              </button>
               <figcaption>
-                <span class="name"><span lang="zh-CN">工具</span><span lang="en">Tools</span></span>
-                <span lang="zh-CN">— 已安装与已激活的工具，一行看清来源。</span>
-                <span lang="en">— installed and active tools, each row with its source.</span>
+                <span class="name"><span lang="zh-CN">首页</span><span lang="en">Home</span></span>
+                <span lang="zh-CN">— 版本门禁、引导安装、一键自更新。</span>
+                <span lang="en">— the version gate, a guided install, one-click self-update.</span>
               </figcaption>
             </figure>
             <figure class="shot">
-              <div class="shot-frame">
+              <button class="shot-frame" type="button" data-shot>
                 <img
-                  src="screens/en/env.webp"
-                  data-src-en="screens/en/env.webp"
-                  data-src-zh="screens/zh/env.webp"
-                  data-alt-en="The Env page: resolved environment variables with value, source badge, and actions."
-                  data-alt-zh="环境变量页：解析出的环境变量、取值、来源徽标与操作。"
-                  alt="The Env page"
-                  width="1920"
-                  height="1292"
-                  decoding="async"
-                />
-              </div>
-              <figcaption>
-                <span class="name"><span lang="zh-CN">环境变量</span><span lang="en">Env</span></span>
-                <span lang="zh-CN">— 解析结果带来源徽标，写入范围外会先提醒。</span>
-                <span lang="en">— resolved values with source badges; out-of-scope writes warn first.</span>
-              </figcaption>
-            </figure>
-            <figure class="shot">
-              <div class="shot-frame">
-                <img
-                  src="screens/en/overview.webp"
+                  src="screens/zh/overview.webp"
                   data-src-en="screens/en/overview.webp"
                   data-src-zh="screens/zh/overview.webp"
-                  data-alt-en="The Overview page: resolved env vars, config files in precedence order, and the lockfile."
-                  data-alt-zh="概览页：解析出的环境变量、按优先级排列的配置文件，以及锁文件。"
-                  alt="The Overview page"
+                  data-alt-en="The Overview page: resolved tools and env vars, config files in precedence order, and the lockfile."
+                  data-alt-zh="概览页：解析出的工具与环境变量、按优先级排列的配置文件，以及锁文件。"
+                  alt="The Overview page: resolved tools and env vars, config files in precedence order, and the lockfile."
                   width="1920"
                   height="1292"
+                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </button>
               <figcaption>
                 <span class="name"><span lang="zh-CN">概览</span><span lang="en">Overview</span></span>
                 <span lang="zh-CN">— 当前目录解析出的环境与配置文件。</span>
@@ -291,39 +270,83 @@
               </figcaption>
             </figure>
             <figure class="shot">
-              <div class="shot-frame">
+              <button class="shot-frame" type="button" data-shot>
                 <img
-                  src="screens/en/doctor.webp"
-                  data-src-en="screens/en/doctor.webp"
-                  data-src-zh="screens/zh/doctor.webp"
-                  data-alt-en="The Doctor page: health status, shell activation, and warnings from mise doctor."
-                  data-alt-zh="诊断页：健康状态、shell 激活状态，以及 mise doctor 给出的警告。"
-                  alt="The Doctor page"
+                  src="screens/zh/tools.webp"
+                  data-src-en="screens/en/tools.webp"
+                  data-src-zh="screens/zh/tools.webp"
+                  data-alt-en="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
+                  data-alt-zh="工具页：已安装的工具、版本、请求的版本与来源，以及「版本管理」入口。"
+                  alt="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
                   width="1920"
                   height="1292"
+                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </button>
               <figcaption>
-                <span class="name"><span lang="zh-CN">诊断</span><span lang="en">Doctor</span></span>
-                <span lang="zh-CN">— mise doctor 的结果，报告可直接复制。</span>
-                <span lang="en">— mise doctor's report, copyable as is.</span>
+                <span class="name"><span lang="zh-CN">工具</span><span lang="en">Tools</span></span>
+                <span lang="zh-CN">— 已安装与已激活的工具，一行看清来源。</span>
+                <span lang="en">— installed and active tools, each row with its source.</span>
               </figcaption>
             </figure>
             <figure class="shot">
-              <div class="shot-frame">
+              <button class="shot-frame" type="button" data-shot>
                 <img
-                  src="screens/en/tasks.webp"
+                  src="screens/zh/tools-versions.webp"
+                  data-src-en="screens/en/tools-versions.webp"
+                  data-src-zh="screens/zh/tools-versions.webp"
+                  data-alt-en="The Tools page's version-management view for one tool: its active, installed, and not-installed versions, each row with its actions."
+                  data-alt-zh="工具页的版本管理视图：一个工具的已激活、已安装与未安装版本，每行带操作。"
+                  alt="The Tools page's version-management view for one tool: its active, installed, and not-installed versions, each row with its actions."
+                  width="1920"
+                  height="1292"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">工具 · 版本管理</span><span lang="en">Tools · Manage versions</span></span>
+                <span lang="zh-CN">— 按版本安装、切换、升级：已激活、已安装、未安装，一屏看清。</span>
+                <span lang="en">— install, switch, and upgrade per version: active, installed, and not installed in one view.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/env.webp"
+                  data-src-en="screens/en/env.webp"
+                  data-src-zh="screens/zh/env.webp"
+                  data-alt-en="The Env page: resolved environment variables with value, source badge, and actions."
+                  data-alt-zh="环境变量页：解析出的环境变量、取值、来源徽标与操作。"
+                  alt="The Env page: resolved environment variables with value, source badge, and actions."
+                  width="1920"
+                  height="1292"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">环境变量</span><span lang="en">Env</span></span>
+                <span lang="zh-CN">— 解析结果带来源徽标，写入范围外会先提醒。</span>
+                <span lang="en">— resolved values with source badges; out-of-scope writes warn first.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/tasks.webp"
                   data-src-en="screens/en/tasks.webp"
                   data-src-zh="screens/zh/tasks.webp"
                   data-alt-en="The Tasks page: the task list with Run, Edit, and Open in editor actions."
                   data-alt-zh="任务页：任务列表，以及运行、编辑、在编辑器中打开三个操作。"
-                  alt="The Tasks page"
+                  alt="The Tasks page: the task list with Run, Edit, and Open in editor actions."
                   width="1920"
                   height="1292"
+                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </button>
               <figcaption>
                 <span class="name"><span lang="zh-CN">任务</span><span lang="en">Tasks</span></span>
                 <span lang="zh-CN">— 任务的列表、运行与编辑。</span>
@@ -331,19 +354,62 @@
               </figcaption>
             </figure>
             <figure class="shot">
-              <div class="shot-frame">
+              <button class="shot-frame" type="button" data-shot>
                 <img
-                  src="screens/en/settings.webp"
+                  src="screens/zh/plugins.webp"
+                  data-src-en="screens/en/plugins.webp"
+                  data-src-zh="screens/zh/plugins.webp"
+                  data-alt-en="The Plugins page: installed plugins, with install from a git URL and uninstall actions."
+                  data-alt-zh="插件页：已安装插件，以及从 git 地址安装与卸载的操作。"
+                  alt="The Plugins page: installed plugins, with install from a git URL and uninstall actions."
+                  width="1920"
+                  height="1292"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">插件</span><span lang="en">Plugins</span></span>
+                <span lang="zh-CN">— 已安装插件，可从 git 地址安装或卸载。</span>
+                <span lang="en">— installed plugins; install from a git URL, uninstall.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/doctor.webp"
+                  data-src-en="screens/en/doctor.webp"
+                  data-src-zh="screens/zh/doctor.webp"
+                  data-alt-en="The Doctor page: health status, shell activation, and warnings from mise doctor."
+                  data-alt-zh="诊断页：健康状态、shell 激活状态，以及 mise doctor 给出的警告。"
+                  alt="The Doctor page: health status, shell activation, and warnings from mise doctor."
+                  width="1920"
+                  height="1292"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">诊断</span><span lang="en">Doctor</span></span>
+                <span lang="zh-CN">— mise doctor 的结果，报告可直接复制。</span>
+                <span lang="en">— mise doctor's report, copyable as is.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/settings.webp"
                   data-src-en="screens/en/settings.webp"
                   data-src-zh="screens/zh/settings.webp"
                   data-alt-en="The Settings page: mise settings with type badges, source, and edit actions."
                   data-alt-zh="设置页：mise 设置、类型徽标、来源与编辑操作。"
-                  alt="The Settings page"
+                  alt="The Settings page: mise settings with type badges, source, and edit actions."
                   width="1920"
                   height="1292"
+                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </button>
               <figcaption>
                 <span class="name"><span lang="zh-CN">设置</span><span lang="en">Settings</span></span>
                 <span lang="zh-CN">— mise 的设置项与来源。</span>
@@ -351,6 +417,20 @@
               </figcaption>
             </figure>
           </div>
+
+          <dialog id="shot-lightbox" closedby="any" aria-labelledby="lightbox-title">
+            <p class="visually-hidden" id="lightbox-title">
+              <span lang="zh-CN">MiseDeck 截图，放大查看</span>
+              <span lang="en">MiseDeck screenshot, full size</span>
+            </p>
+            <img id="lightbox-img" alt="" />
+            <div id="lightbox-cap"></div>
+            <form method="dialog">
+              <button type="submit" autofocus>
+                <span lang="zh-CN">关闭</span><span lang="en">Close</span>
+              </button>
+            </form>
+          </dialog>
         </div>
       </section>
 
@@ -470,8 +550,8 @@
                 <span lang="en">Does any of my data leave the machine?</span>
               </summary>
               <p>
-                <span lang="zh-CN">不会。MiseDeck 没有账号、没有遥测，所有读取与写入都发生在本机，通过 mise 命令完成。MiseDeck 的对外请求只有版本检查，一共两次：手动触发的「检查 MiseDeck 更新」，以及启动十秒后静默进行的那次——最多一天一次。两者读的是同一份 release feed：MiseDeck 不会下载或安装任何构建，发现新版本时也只会指向它的「发布页」。</span>
-                <span lang="en">No. MiseDeck has no account and no telemetry; every read and write happens locally through mise. MiseDeck makes two outbound requests, and both are version checks: the one behind Check for MiseDeck updates, and a silent check ten seconds after launch, at most once a day. Both read the same releases feed — MiseDeck never downloads or installs a build, and a newer version only ever points at its Release page.</span>
+                <span lang="zh-CN">不会。MiseDeck 没有账号、没有遥测，所有读取与写入都发生在本机，通过 mise 命令完成。对外请求只有两个，都是版本检查：手动触发的「检查 MiseDeck 更新」，以及启动十秒后的静默检查（最多一天一次）。两者读的是同一份 release feed——MiseDeck 不会下载或安装任何构建，发现新版本时只会指向它的发布页。</span>
+                <span lang="en">No. MiseDeck has no account and no telemetry; every read and write happens locally, through mise. Two outbound requests exist, and both are version checks: the manual Check for MiseDeck updates, and a silent check ten seconds after launch (at most once a day). Both read the same releases feed — MiseDeck never downloads or installs a build; a newer version only ever points at its Release page.</span>
               </p>
             </details>
             <details>
@@ -480,7 +560,7 @@
                 <span lang="en">Can I keep using the mise CLI alongside it?</span>
               </summary>
               <p>
-                <span lang="zh-CN">可以，两者操作的是同一份配置。你在终端里 mise use过的版本，MiseDeck 里立刻能看到；反过来也一样。</span>
+                <span lang="zh-CN">可以，两者操作的是同一份配置。你在终端里 mise use 过的版本，MiseDeck 里立刻能看到；反过来也一样。</span>
                 <span lang="en">Yes — both act on the same configuration files. A version you use in the terminal shows up in MiseDeck immediately, and the other way round works too.</span>
               </p>
             </details>
@@ -556,6 +636,42 @@
         // language the head script already applied (the default is Chinese).
         var saved = stored();
         apply(saved === "en" ? "en" : saved === "zh" ? "zh" : root.lang === "en" ? "en" : "zh", false);
+
+        // The screenshot lightbox: one native dialog reused by every frame.
+        // The dialog carries the image and caption at open time, so the
+        // language switch never needs to know about it.
+        var lightbox = document.getElementById("shot-lightbox");
+        var lightboxImg = document.getElementById("lightbox-img");
+        var lightboxCap = document.getElementById("lightbox-cap");
+        var frames = document.querySelectorAll("button[data-shot]");
+        for (var i = 0; i < frames.length; i++) {
+          frames[i].addEventListener("click", function () {
+            var img = this.querySelector("img");
+            lightboxImg.src = img.currentSrc || img.src;
+            lightboxImg.alt = img.alt;
+            var cap = this.closest("figure").querySelector("figcaption");
+            if (cap) lightboxCap.innerHTML = cap.innerHTML;
+            lightbox.showModal();
+          });
+        }
+        // Light dismiss where `closedby` is unsupported (Safari): close only
+        // when the press starts and ends outside the dialog's content box.
+        if (!("closedBy" in HTMLDialogElement.prototype)) {
+          var outside = function (e) {
+            var r = lightbox.getBoundingClientRect();
+            return (
+              e.clientX < r.left || e.clientX > r.right ||
+              e.clientY < r.top || e.clientY > r.bottom
+            );
+          };
+          var pressedOutside = false;
+          lightbox.addEventListener("pointerdown", function (e) {
+            pressedOutside = outside(e);
+          });
+          lightbox.addEventListener("pointerup", function (e) {
+            if (pressedOutside && outside(e)) lightbox.close();
+          });
+        }
       })();
     </script>
   </body>

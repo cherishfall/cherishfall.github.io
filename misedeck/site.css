@@ -650,6 +650,85 @@ html[lang="zh-CN"] .terminal-bar {
   font-weight: 600;
 }
 
+/* The shot frame is a button (it opens the lightbox): keep the frame's
+   look and reset the button chrome around it. */
+button.shot-frame {
+  appearance: none;
+  display: block;
+  width: 100%;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: zoom-in;
+}
+
+/* Nine shots in a two-column grid: the trailing odd one spans both
+   columns so the grid never ends on a hole. */
+.shot-grid .shot:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+/* The lightbox: one native dialog reused by every frame. The 1920 px webp
+   is the same file the grid shows, so "full size" costs nothing extra. */
+#shot-lightbox {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(96vw, 1600px);
+  max-height: 96vh;
+}
+
+#shot-lightbox:modal {
+  overscroll-behavior: contain;
+}
+
+#shot-lightbox::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(20, 16, 16, 0.66);
+}
+
+#shot-lightbox img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(96vh - 64px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+#shot-lightbox #lightbox-cap {
+  font-size: 14px;
+  color: var(--dim);
+  padding: 10px 2px 0;
+}
+
+#shot-lightbox #lightbox-cap .name {
+  color: var(--text);
+  font-weight: 600;
+}
+
+#shot-lightbox form {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#shot-lightbox form button {
+  appearance: none;
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 /* --------------------------------------------------------------- install */
 .install-grid {
   display: grid;

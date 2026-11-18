@@ -58,7 +58,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.4">v1.0.4</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.5">v1.0.5</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -73,11 +73,41 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.4 · 2026-11-18 · 共 20 个发布</span>
-            <span lang="en">Latest version 1.0.4 · 2026-11-18 · 20 releases</span>
+            <span lang="zh-CN">最新版本 1.0.5 · 2026-11-18 · 共 21 个发布</span>
+            <span lang="en">Latest version 1.0.5 · 2026-11-18 · 21 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-0-5">
+  <h2 class="rel-h"><span class="rel-ver">1.0.5</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+
+<p lang="en">A patch release that closes the last review round.</p>
+<p lang="en"><strong>Fixed</strong></p>
+<ul lang="en">
+  <li>MiseDeck's own error messages are localized: a payload MiseDeck could not parse, or a command that failed, no longer shows an English sentence in the Chinese UI. Every message MiseDeck authors now carries a key, the command it ran, and the shape it expected. mise's own output still appears exactly as the CLI printed it.</li>
+  <li>The message the runner reports when a run is cancelled is now the same shared, key-shaped value on both sides of the boundary, so the two can no longer drift apart.</li>
+  <li>Parameters in a message are percent-encoded, so a path or an argument can no longer split a message into parts that were never meant to be read separately.</li>
+</ul>
+<p lang="en"><strong>Site</strong></p>
+<ul lang="en">
+  <li>The release history no longer republishes a Homebrew command that cannot work, and it refuses to publish one.</li>
+  <li>Shell snippets in the release notes render as code blocks, not as headings that were only comments.</li>
+  <li>The FAQ names both of the app's outbound requests: the manual check, and the silent one that runs at most once a day.</li>
+</ul>
+<p lang="zh-CN">一个收尾最后一轮复审的补丁版本。</p>
+<p lang="zh-CN"><strong>修复</strong></p>
+<ul lang="zh-CN">
+  <li>MiseDeck 自己的错误信息已本地化：解析不了的内容、或执行失败的命令，不再在中文界面上显示英文句子。MiseDeck 自己写的每条信息现在都带一个键、它执行过的命令，以及它预期的结构；mise 自己的输出仍按 CLI 打印的原样呈现。</li>
+  <li>运行被取消时上报的信息，现在在边界两侧共用同一个带键的值，两边不会再各说各话。</li>
+  <li>信息中的参数做了百分号编码，路径或参数不再能把一条信息拆成本不该被拆开的几段。</li>
+</ul>
+<p lang="zh-CN"><strong>站点</strong></p>
+<ul lang="zh-CN">
+  <li>发布历史不再复现跑不通的 Homebrew 命令，并且拒绝发布这类命令。</li>
+  <li>发布说明里的 shell 片段按代码块渲染，不再变成只是注释的标题。</li>
+  <li>常见问题里如实说明应用仅有的两个对外请求：手动检查，以及每天至多一次的静默检查。</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-4">
   <h2 class="rel-h"><span class="rel-ver">1.0.4</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 

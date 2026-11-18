@@ -696,13 +696,20 @@ button.shot-frame {
   max-width: 100%;
   max-height: calc(96vh - 64px);
   border: 1px solid var(--line);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 
+/* Opaque caption strip (#321): --dim directly on the dark backdrop
+   computes to 1.29:1 in light theme — the strip gives both the caption
+   and its .name their token background back. */
 #shot-lightbox #lightbox-cap {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  padding: 10px 14px 12px;
   font-size: 14px;
   color: var(--dim);
-  padding: 10px 2px 0;
 }
 
 #shot-lightbox #lightbox-cap .name {
@@ -722,7 +729,7 @@ button.shot-frame {
   padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background: var(--bg);
   color: var(--text);
   font: inherit;
   font-size: 13px;

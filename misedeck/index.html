@@ -19,7 +19,7 @@
     />
     <meta property="og:image" content="https://cherishfall.github.io/misedeck/screens/en/tools.webp" />
     <meta property="og:image:width" content="1920" />
-    <meta property="og:image:height" content="1292" />
+    <meta property="og:image:height" content="1289" />
     <link rel="canonical" href="https://cherishfall.github.io/misedeck/" />
     <link rel="stylesheet" href="site.css" />
     <link rel="icon" type="image/png" sizes="256x256" href="icon.png" />
@@ -132,7 +132,7 @@
               </p>
             </article>
             <article class="card">
-              <span class="cmd">mise ls · mise env · mise config ls</span>
+              <span class="cmd">mise trust · mise ls · mise env · mise config ls</span>
               <h3><span lang="zh-CN">概览</span><span lang="en">Overview</span></h3>
               <p>
                 <span lang="zh-CN">解析出的工具与环境变量、配置文件优先级、mise.lock，每行都标注来源。</span>
@@ -148,7 +148,7 @@
               </p>
             </article>
             <article class="card" data-accent="tasks">
-              <span class="cmd">mise tasks ls · mise run · mise tasks add · mise tasks edit</span>
+              <span class="cmd">mise tasks ls · mise run · mise tasks add · mise tasks edit · mise config ls</span>
               <h3><span lang="zh-CN">任务</span><span lang="en">Tasks</span></h3>
               <p>
                 <span lang="zh-CN">列出、实时运行、创建与编辑 mise 任务。</span>
@@ -203,11 +203,11 @@
             </div>
             <div class="terminal-lines">
               <div><span class="prompt">$</span> <span class="cmd">mise use node@lts</span></div>
-              <div><span class="ok">✔</span> <span class="cmd">node@lts</span> <span class="dim">· 24.22.3 · installed</span></div>
-              <div><span class="dim">Resolved from</span> <span class="cmd">./mise.toml</span></div>
+              <div><span class="ok">✔</span> <span class="cmd">node@lts</span> <span class="dim"><span lang="zh-CN">· 24.22.3 · 已安装</span><span lang="en">· 24.22.3 · installed</span></span></div>
+              <div><span class="dim"><span lang="zh-CN">解析自</span><span lang="en">Resolved from</span></span> <span class="cmd">./mise.toml</span></div>
               <div><span class="prompt">$</span> <span class="cmd">mise env --json-extended</span></div>
               <div><span class="dim">NODE_HOME</span> <span class="cmd">/Users/you/.local/share/mise/installs/node/24.22.3</span></div>
-              <div><span class="warn">exit 0</span> <span class="dim">· 0.4s · copy command</span></div>
+              <div><span class="warn">exit 0</span> <span class="dim"><span lang="zh-CN">· 0.4s · 复制命令</span><span lang="en">· 0.4s · copy command</span></span></div>
             </div>
           </div>
         </div>
@@ -235,10 +235,10 @@
                   data-src-en="screens/en/home.webp"
                   data-src-zh="screens/zh/home.webp"
                   data-alt-en="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
-                  data-alt-zh="首页页：mise 的版本门禁，mise 缺失时的引导安装，以及更新检查。"
+                  data-alt-zh="首页：mise 的版本门禁，mise 缺失时的引导安装，以及更新检查。"
                   alt="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
                   width="1920"
-                  height="1292"
+                  height="1289"
                                     decoding="async"
                 />
               </button>
@@ -258,7 +258,7 @@
                   data-alt-zh="概览页：解析出的工具与环境变量、按优先级排列的配置文件，以及锁文件。"
                   alt="The Overview page: resolved tools and env vars, config files in precedence order, and the lockfile."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -279,7 +279,7 @@
                   data-alt-zh="工具页：已安装的工具、版本、请求的版本与来源，以及「版本管理」入口。"
                   alt="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -300,7 +300,7 @@
                   data-alt-zh="工具页的版本管理视图：一个工具的已激活、已安装与未安装版本，每行带操作。"
                   alt="The Tools page's version-management view for one tool: its active, installed, and not-installed versions, each row with its actions."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -321,7 +321,7 @@
                   data-alt-zh="环境变量页：解析出的环境变量、取值、来源徽标与操作。"
                   alt="The Env page: resolved environment variables with value, source badge, and actions."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -342,7 +342,7 @@
                   data-alt-zh="任务页：任务列表，以及运行、编辑、在编辑器中打开三个操作。"
                   alt="The Tasks page: the task list with Run, Edit, and Open in editor actions."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -363,7 +363,7 @@
                   data-alt-zh="插件页：已安装插件，以及从 git 地址安装与卸载的操作。"
                   alt="The Plugins page: installed plugins, with install from a git URL and uninstall actions."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -384,7 +384,7 @@
                   data-alt-zh="诊断页：健康状态、shell 激活状态，以及 mise doctor 给出的警告。"
                   alt="The Doctor page: health status, shell activation, and warnings from mise doctor."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />
@@ -405,7 +405,7 @@
                   data-alt-zh="设置页：mise 设置、类型徽标、来源与编辑操作。"
                   alt="The Settings page: mise settings with type badges, source, and edit actions."
                   width="1920"
-                  height="1292"
+                  height="1289"
                    loading="lazy"
                   decoding="async"
                 />

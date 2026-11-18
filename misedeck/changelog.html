@@ -56,7 +56,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.6">v1.0.6</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.7">v1.0.7</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -71,11 +71,115 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.6 · 2026-11-18 · 共 22 个发布</span>
-            <span lang="en">Latest version 1.0.6 · 2026-11-18 · 22 releases</span>
+            <span lang="zh-CN">最新版本 1.0.7 · 2026-11-18 · 共 23 个发布</span>
+            <span lang="en">Latest version 1.0.7 · 2026-11-18 · 23 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-0-7">
+  <h2 class="rel-h"><span class="rel-ver">1.0.7</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
+<h3 lang="en">MiseDeck v1.0.7</h3>
+<p lang="en"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en">A stable release of MiseDeck, a faithful desktop GUI for <a href="https://mise.jdx.dev" rel="noopener">mise</a>. Cross-platform (macOS polished, Windows / Linux beta).</p>
+<h3 lang="en">What's in this release</h3>
+<p lang="en">Eight pages, each one a part of the mise CLI:</p>
+<ul lang="en">
+  <li><strong>Home</strong>: version gate, guided install when mise is missing, one-click self-update.</li>
+  <li><strong>Tools</strong>: install, uninstall, switch, upgrade, and outdated badges in one table.</li>
+  <li><strong>Overview</strong>: resolved tools, env vars, config files in precedence order, and <code>mise.lock</code> — each row labeled with its source.</li>
+  <li><strong>Env</strong>: add, edit, rename, and unset environment variables, with source badges.</li>
+  <li><strong>Tasks</strong>: list, run with live output, create and edit.</li>
+  <li><strong>Settings</strong>: view, filter, edit, and unset settings, including <code>--all</code>.</li>
+  <li><strong>Doctor</strong>: status, shell activation, warnings, config files, and resolved toolset.</li>
+  <li><strong>Plugins</strong>: installed plugins, install from a git URL, uninstall.</li>
+</ul>
+<p lang="en">Beyond the pages: the execution panel (exact command, live logs, exit code, copy-command, cancel), read-only untrusted directories with one-click <code>mise trust</code>, terminal and activation helpers, light/dark themes, and an English / Simplified Chinese UI.</p>
+<h3 lang="en">Install</h3>
+<p lang="en">GitHub Releases is the only distribution channel — v1 ships no Homebrew formula or cask (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
+<h3 lang="en">macOS</h3>
+<p lang="en">Download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
+<p lang="en"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>MiseDeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<pre lang="en"><code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code></pre>
+<p lang="en">Then launch normally. Subsequent launches work without extra steps.</p>
+<h3 lang="en">Windows (beta)</h3>
+<p lang="en">Download the <code>.exe</code> installer and run it.</p>
+<p lang="en"><strong>SmartScreen (unsigned)</strong>: the binary is <strong>not code-signed</strong>. Windows SmartScreen will show &quot;Windows protected your PC&quot; — click <strong>More info</strong> → <strong>Run anyway</strong>.</p>
+<h3 lang="en">Linux (beta)</h3>
+<p lang="en">Pick the package that matches your distro:</p>
+<ul lang="en">
+  <li><code>.deb</code> — Debian / Ubuntu</li>
+  <li><code>.rpm</code> — Fedora / RHEL</li>
+  <li><code>.AppImage</code> — portable, no install</li>
+</ul>
+<h3 lang="en">Verify</h3>
+<p lang="en"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset in this release — run it from the folder you downloaded into.</p>
+<pre lang="en"><code># macOS
+shasum -a 256 -c SHA256SUMS
+
+# Linux
+sha256sum -c SHA256SUMS
+
+# Windows (PowerShell) — one file at a time
+Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.7_x64-setup.exe</code></pre>
+<p lang="en">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned (see Notes).</p>
+<h3 lang="en">Notes</h3>
+<ul lang="en">
+  <li>MiseDeck v1 is distributed <strong>unsigned</strong> on every platform, by design. Code signing and Apple notarization are out of scope for v1.</li>
+  <li>Windows and Linux builds are labeled <strong>beta</strong> in this release.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">MiseDeck v1.0.7</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en" class="rel-fallback rel-fallback-zh">A stable release of MiseDeck, a faithful desktop GUI for <a href="https://mise.jdx.dev" rel="noopener">mise</a>. Cross-platform (macOS polished, Windows / Linux beta).</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">What's in this release</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh">Eight pages, each one a part of the mise CLI:</p>
+<ul lang="en" class="rel-fallback rel-fallback-zh">
+  <li><strong>Home</strong>: version gate, guided install when mise is missing, one-click self-update.</li>
+  <li><strong>Tools</strong>: install, uninstall, switch, upgrade, and outdated badges in one table.</li>
+  <li><strong>Overview</strong>: resolved tools, env vars, config files in precedence order, and <code>mise.lock</code> — each row labeled with its source.</li>
+  <li><strong>Env</strong>: add, edit, rename, and unset environment variables, with source badges.</li>
+  <li><strong>Tasks</strong>: list, run with live output, create and edit.</li>
+  <li><strong>Settings</strong>: view, filter, edit, and unset settings, including <code>--all</code>.</li>
+  <li><strong>Doctor</strong>: status, shell activation, warnings, config files, and resolved toolset.</li>
+  <li><strong>Plugins</strong>: installed plugins, install from a git URL, uninstall.</li>
+</ul>
+<p lang="en" class="rel-fallback rel-fallback-zh">Beyond the pages: the execution panel (exact command, live logs, exit code, copy-command, cancel), read-only untrusted directories with one-click <code>mise trust</code>, terminal and activation helpers, light/dark themes, and an English / Simplified Chinese UI.</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">Install</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh">GitHub Releases is the only distribution channel — v1 ships no Homebrew formula or cask (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">macOS</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh">Download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
+<p lang="en" class="rel-fallback rel-fallback-zh"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>MiseDeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<pre lang="en" class="rel-fallback rel-fallback-zh"><code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code></pre>
+<p lang="en" class="rel-fallback rel-fallback-zh">Then launch normally. Subsequent launches work without extra steps.</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">Windows (beta)</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh">Download the <code>.exe</code> installer and run it.</p>
+<p lang="en" class="rel-fallback rel-fallback-zh"><strong>SmartScreen (unsigned)</strong>: the binary is <strong>not code-signed</strong>. Windows SmartScreen will show &quot;Windows protected your PC&quot; — click <strong>More info</strong> → <strong>Run anyway</strong>.</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">Linux (beta)</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh">Pick the package that matches your distro:</p>
+<ul lang="en" class="rel-fallback rel-fallback-zh">
+  <li><code>.deb</code> — Debian / Ubuntu</li>
+  <li><code>.rpm</code> — Fedora / RHEL</li>
+  <li><code>.AppImage</code> — portable, no install</li>
+</ul>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">Verify</h3>
+<p lang="en" class="rel-fallback rel-fallback-zh"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset in this release — run it from the folder you downloaded into.</p>
+<pre lang="en" class="rel-fallback rel-fallback-zh"><code># macOS
+shasum -a 256 -c SHA256SUMS
+
+# Linux
+sha256sum -c SHA256SUMS
+
+# Windows (PowerShell) — one file at a time
+Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.7_x64-setup.exe</code></pre>
+<p lang="en" class="rel-fallback rel-fallback-zh">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned (see Notes).</p>
+<h3 lang="en" class="rel-fallback rel-fallback-zh">Notes</h3>
+<ul lang="en" class="rel-fallback rel-fallback-zh">
+  <li>MiseDeck v1 is distributed <strong>unsigned</strong> on every platform, by design. Code signing and Apple notarization are out of scope for v1.</li>
+  <li>Windows and Linux builds are labeled <strong>beta</strong> in this release.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-6">
   <h2 class="rel-h"><span class="rel-ver">1.0.6</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 

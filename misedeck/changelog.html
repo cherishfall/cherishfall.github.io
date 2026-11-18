@@ -77,6 +77,8 @@
 
 <section class="rel" id="v1-0-3">
   <h2 class="rel-h"><span class="rel-ver">1.0.3</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+
+
 <p lang="en">A patch release that closes the 1.0.2 final review.</p>
 <p lang="en"><strong>Fixed</strong></p>
 <ul lang="en">
@@ -118,6 +120,8 @@
 </section>
 <section class="rel" id="v1-0-2">
   <h2 class="rel-h"><span class="rel-ver">1.0.2</span><time class="rel-date" datetime="2026-10-26">2026-10-26</time></h2>
+
+
 <p lang="en"><strong>Fixes</strong></p>
 <ul lang="en">
   <li>Tools: <code>mise ls-remote --json</code> is no longer truncated at 8 KiB per line, so long remote version lists arrive complete (#282).</li>
@@ -163,6 +167,8 @@
 </section>
 <section class="rel" id="v1-0-1">
   <h2 class="rel-h"><span class="rel-ver">1.0.1</span><time class="rel-date" datetime="2026-10-24">2026-10-24</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <p lang="en"># MiseDeck v1.0.1</p>
 <p lang="en">&gt; <a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 <p lang="en">MiseDeck 1.0.1 — the first patch after 1.0.0.</p>
@@ -270,20 +276,135 @@
   <li>更新检查走 <code>curl</code>，不读 Windows 系统代理——只能靠代理访问 GitHub 的机器请设置 <code>https_proxy</code>。</li>
   <li>MiseDeck 是社区项目，与官方 mise 项目无隶属关系。</li>
 </ul>
-
+<p class="rel-fallback rel-fallback-zh"># MiseDeck v1.0.1</p>
+<p class="rel-fallback rel-fallback-zh">&gt; <a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p class="rel-fallback rel-fallback-zh">MiseDeck 1.0.1 — the first patch after 1.0.0.</p>
+<p class="rel-fallback rel-fallback-zh">Most of this release is the post-GA audit batch. The items under &quot;From a real install&quot; are the three that only showed up after 1.0.0 was actually installed and used on a Windows 11 machine, which is what this patch is mostly about.</p>
+<h3 class="rel-fallback rel-fallback-zh">Fixed in 1.0.1</h3>
+<h3 class="rel-fallback rel-fallback-zh">From a real install</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>A release build can no longer package a test fixture instead of the app.</strong> <code>tauri build</code> compiles with <code>cargo build --bins</code> and then packages &quot;the&quot; app binary; with the app and two test harnesses in the same package it picked a harness, producing a 262 KB installer that printed <code>no fixture for slug</code> and exited 0. Neither <code>mainBinaryName</code> nor <code>-- --bin misedeck</code> steered it. The harnesses now sit behind a <code>fixtures</code> feature, so a release build contains exactly one binary. (The released 1.0.0 installer was never affected — 2.7 MB — but nothing stopped CI.)</li>
+  <li><strong>The activation banner names the PowerShell you actually have.</strong> It always pointed at pwsh 7's <code>Documents/PowerShell/…</code>, so on a machine with only Windows PowerShell 5.1 — which reads <code>Documents/WindowsPowerShell/…</code> and never opens that file — the instruction could not be followed. The prompt now follows <code>where pwsh.exe</code>; both profiles stay in the candidate list.</li>
+  <li><strong>The Home page's update dialog no longer prints <code>-C $HOME</code>.</strong> It read <code>mise -C $HOME self-update --yes</code>, which is the runner's internal anchor, not something anyone types. It now shows <code>mise self-update --yes</code> with the same &quot;Working directory: ~ (home)&quot; line every other command gets.</li>
+  <li><strong>The Home page's raw output block prints its label once, not twice.</strong> The block that the disclosure reveals is now a <code>role=&quot;region&quot;</code> named by its own trigger.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Correctness</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Tasks: inline editing is gated to lossless, in-scope tasks.</li>
+  <li>Env: parent configs no longer leak into directory-scoped writes; trust parsing hardened.</li>
+  <li>Tools: a version that was requested but is missing shows as missing instead of being papered over; remote lists refresh.</li>
+  <li>Data: wrong-shaped read payloads are rejected and surfaced instead of rendering as a healthy-looking blank screen.</li>
+  <li>Overview preview: parent configs are distinguishable from Global.</li>
+  <li>Plugins: installed plugins show their ref and commit.</li>
+  <li>Reads dispatched from the execution panel run with <code>MISE_SAFE</code>.</li>
+  <li>Streaming output is capped with a typed truncation event; Windows shell detection fixed.</li>
+  <li>Layout: Tasks and Settings tables stay usable at 900×600 and 1200×720.</li>
+  <li>Settings: &quot;Show all&quot; lists defaults in Directory mode.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Keyboard and dialogs</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Escape now reaches a confirm dialog nested inside the form that opened it.</li>
+  <li>A bundle of keyboard and control-state polish: focus rings, tooltip tab stops, disabled-state contrast, nested interactives.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Under the hood</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>The line reader retries an interrupted read instead of treating <code>EINTR</code> as end of input — a path that dropped the pipe's read end, SIGPIPE'd the child, and reported <code>exited with status -1</code>.</li>
+  <li><code>terminate_all</code> can no longer kill a neighbouring test's child process; tests that can see the process-global registry are serialized.</li>
+  <li>CI: least-privilege workflow permissions, SHA-pinned actions, a <code>clippy -D warnings</code> gate, and a failure digest that names the failing test.</li>
+  <li>Release notes for lightweight tags render the curated template instead of the commit message.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Install</h3>
+<p class="rel-fallback rel-fallback-zh">GitHub Releases is the only distribution channel (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>macOS (Apple Silicon)</strong>: download the <code>.dmg</code>, open it, drag MiseDeck to Applications. The build is <strong>not notarized</strong> — after installing, clear the quarantine flag once: <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>.</li>
+  <li><strong>Windows x64 (beta)</strong>: run the <code>.exe</code>. It installs per-user into <code>%LOCALAPPDATA%</code> with no administrator rights; uninstall from Settings → Apps. The build is <strong>not code-signed</strong>, so SmartScreen shows &quot;Windows protected your PC&quot; — More info → Run anyway.</li>
+  <li><strong>Linux (beta)</strong>: <code>.deb</code>, <code>.rpm</code>, or <code>.AppImage</code>. Built against Ubuntu 22.04; needs WebKitGTK 2.40+.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Verify</h3>
+<p class="rel-fallback rel-fallback-zh"><code>SHA256SUMS</code> is attached below and lists every asset in this release. Run it from the folder you downloaded into:</p>
+<p class="rel-fallback rel-fallback-zh">```sh</p>
+<p class="rel-fallback rel-fallback-zh">shasum -a 256 -c SHA256SUMS    # macOS</p>
+<p class="rel-fallback rel-fallback-zh">sha256sum -c SHA256SUMS        # Linux</p>
+<p class="rel-fallback rel-fallback-zh">```</p>
+<p class="rel-fallback rel-fallback-zh">On Windows, hash one file at a time: <code>Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.1_x64-setup.exe</code>.</p>
+<h3 class="rel-fallback rel-fallback-zh">Notes</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Builds are unsigned on every platform, by design. Windows and Linux remain beta: Windows has been exercised end-to-end on one real machine (and its installer now installed there), Linux has not been run on a real desktop yet.</li>
+  <li>Update checks shell out to <code>curl</code>, which ignores the Windows system proxy — set <code>https_proxy</code> on a machine that reaches GitHub only through one.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
+<p class="rel-fallback rel-fallback-zh">---</p>
+<p class="rel-fallback rel-fallback-zh"># MiseDeck 1.0.1（简体中文）</p>
+<p class="rel-fallback rel-fallback-zh">1.0.0 之后的第一个补丁版本。主体是发版后审计修掉的正确性问题，而「真机安装后才暴露」的那三项是这一版的重点。</p>
+<h3 class="rel-fallback rel-fallback-zh">本次更新</h3>
+<h3 class="rel-fallback rel-fallback-zh">真机安装后暴露的问题</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>打包不会再拿测试 fixture 当应用。</strong> <code>tauri build</code> 用 <code>cargo build --bins</code> 编译后要打包「那个」应用二进制；同一个包里还有两个测试 harness 时它会挑错，产出 262 KB、运行只打印 <code>no fixture for slug</code> 的安装包。<code>mainBinaryName</code> 与 <code>-- --bin misedeck</code> 都管不住它。现在两个 harness 由 <code>fixtures</code> 特性门控，release 构建里只剩一个二进制。（正式发布的 1.0.0 安装包没有中招，但 CI 也没有任何东西拦着它。）</li>
+  <li><strong>激活提示会指向你真正装着的那个 PowerShell。</strong> 之前无条件指向 pwsh 7 的 <code>Documents/PowerShell/…</code>；只装了 Windows PowerShell 5.1 的机器读的是 <code>Documents/WindowsPowerShell/…</code>，那个文件根本不会被打开，照做也没用。现在由 <code>where pwsh.exe</code> 决定报哪一个，两个 profile 仍在候选里。</li>
+  <li><strong>首页更新弹窗不再打印 <code>-C $HOME</code>。</strong> 之前显示 <code>mise -C $HOME self-update --yes</code>——那是 runner 内部锚定，不是人在终端里会敲的命令。现在显示 <code>mise self-update --yes</code>，并和其余命令一样带「运行目录：~（主目录）」这一行。</li>
+  <li><strong>首页原始输出展开后不再重复标签。</strong> 展开的内容改成 <code>role=&quot;region&quot;</code>，由触发按钮命名。</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">正确性</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>任务页：内联编辑只对无损、作用域正确的任务开放。</li>
+  <li>环境变量页：父级配置不再泄漏进目录作用域的写入；trust 解析加固。</li>
+  <li>工具页：请求了但缺失的版本如实显示为缺失；远程列表可刷新。</li>
+  <li>数据层：结构不对的读取负载会被拒绝并报错，而不是渲染成「看起来正常」的空页。</li>
+  <li>概览预览：父级配置与全局不再混淆。</li>
+  <li>插件页：显示插件的 ref 与 commit。</li>
+  <li>执行面板发起的读取走 <code>MISE_SAFE</code>。</li>
+  <li>流式输出加上限并带类型化截断事件；修正 Windows shell 探测。</li>
+  <li>布局：Tasks / Settings 表格在 900×600 与 1200×720 下仍可用。</li>
+  <li>设置页：「显示全部」在目录模式下也会列出默认值。</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">键盘与弹窗</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Esc 现在能到达嵌套在表单里的确认弹窗。</li>
+  <li>一批键盘与控件状态打磨：焦点环、Tooltip 的 tab 停靠、禁用态对比度、嵌套交互。</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">底层</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>行读取线程遇到被中断的读取会重试，而不是当成输入结束——那条路径会关掉管道读端、让子进程吃 SIGPIPE，最终报 <code>exited with status -1</code>。</li>
+  <li><code>terminate_all</code> 不会再误杀邻居测试的子进程；能看见进程级全局注册表的测试已串行化。</li>
+  <li>CI：最小权限、action 按 SHA 固定、<code>clippy -D warnings</code> 门禁、失败摘要直接点出失败的测试名。</li>
+  <li>lightweight tag 也会渲染整理好的发布说明模板，而不是直接拿提交信息当正文。</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">安装</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>macOS（Apple Silicon）</strong>：下载 <code>.dmg</code>，打开后把 MiseDeck 拖进「应用程序」。构建<strong>未公证</strong>，装好后执行一次 <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>。</li>
+  <li><strong>Windows x64（beta）</strong>：运行 <code>.exe</code>，按用户装进 <code>%LOCALAPPDATA%</code>，不需要管理员权限；卸载走「设置 → 应用」。构建<strong>未签名</strong>，SmartScreen 会拦一次：更多信息 → 仍要运行。</li>
+  <li><strong>Linux（beta）</strong>：<code>.deb</code> / <code>.rpm</code> / <code>.AppImage</code>。以 Ubuntu 22.04 为构建基准，需要 WebKitGTK 2.40+。</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">校验</h3>
+<p class="rel-fallback rel-fallback-zh">本 release 附带 <code>SHA256SUMS</code>，覆盖全部资产；在下好包的目录里执行 <code>shasum -a 256 -c SHA256SUMS</code>（macOS）或 <code>sha256sum -c SHA256SUMS</code>（Linux）。Windows 上逐个文件核对：<code>Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.1_x64-setup.exe</code>。</p>
+<h3 class="rel-fallback rel-fallback-zh">说明</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>各平台构建均未签名，这是既定方案。Windows 与 Linux 仍标为 beta：Windows 已在一台真机上完整走通、安装包也已在该机器上安装，Linux 尚未在真实桌面运行过。</li>
+  <li>更新检查走 <code>curl</code>，不读 Windows 系统代理——只能靠代理访问 GitHub 的机器请设置 <code>https_proxy</code>。</li>
+  <li>MiseDeck 是社区项目，与官方 mise 项目无隶属关系。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0">
   <h2 class="rel-h"><span class="rel-ver">1.0.0</span><time class="rel-date" datetime="2026-10-21">2026-10-21</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <p lang="en">chore(release): cut 1.0.0 (#252)</p>
 <p lang="en">Bump the app version to 1.0.0 across package, Cargo and Tauri</p>
 <p lang="en">metadata; align both READMEs with what ships (mise floor 2025.12.5,</p>
 <p lang="en">18 CI steps, doctor report and failure-notice copy); refresh all 16</p>
 <p lang="en">screenshots at 1.0.0; record the GA re-verification matrix and its</p>
 <p lang="en">open gaps in the pre-release audit.</p>
-
+<p class="rel-fallback rel-fallback-zh">chore(release): cut 1.0.0 (#252)</p>
+<p class="rel-fallback rel-fallback-zh">Bump the app version to 1.0.0 across package, Cargo and Tauri</p>
+<p class="rel-fallback rel-fallback-zh">metadata; align both READMEs with what ships (mise floor 2025.12.5,</p>
+<p class="rel-fallback rel-fallback-zh">18 CI steps, doctor report and failure-notice copy); refresh all 16</p>
+<p class="rel-fallback rel-fallback-zh">screenshots at 1.0.0; record the GA re-verification matrix and its</p>
+<p class="rel-fallback rel-fallback-zh">open gaps in the pre-release audit.</p>
 </section>
 <section class="rel" id="v1-0-0-beta-17">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.17</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-10-21">2026-10-21</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <h3 lang="en">What's new</h3>
 <ul lang="en">
   <li><strong>The app's own version is finally visible.</strong> A quiet colophon line sits at the bottom of the sidebar (<code>1.0.0-beta.17</code>, one size smaller than mise's version on the pages), and it opens a small panel: MiseDeck's version, a manual update check, and the Release page. Collapsing the sidebar to the icon rail keeps it reachable. (#235)</li>
@@ -335,10 +456,62 @@
   <li>Binaries remain <strong>unsigned</strong> on every platform: macOS Gatekeeper needs the quarantine flag cleared on first launch, Windows SmartScreen needs &quot;Run anyway&quot;. Both are documented in the <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">README</a>.</li>
   <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
 </ul>
-
+<h3 class="rel-fallback rel-fallback-zh">What's new</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>The app's own version is finally visible.</strong> A quiet colophon line sits at the bottom of the sidebar (<code>1.0.0-beta.17</code>, one size smaller than mise's version on the pages), and it opens a small panel: MiseDeck's version, a manual update check, and the Release page. Collapsing the sidebar to the icon rail keeps it reachable. (#235)</li>
+  <li><strong>Check for MiseDeck updates without leaving the app.</strong> Manual only — nothing runs at launch. Bounded at 8 seconds, goes through your system proxy, and on success or failure says one sentence and offers one next step. It never downloads or installs a build; the last stop is the Release page, where your browser takes over. (#236)</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Fixed</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>Fonts that never loaded.</strong> The app shipped a CSP of <code>default-src 'self'</code>, which silently blocked the Google Fonts links, so every build until now rendered in fallback system fonts. All three families are now self-hosted (152 KiB total, variable-font files, Latin + Latin Extended). (#241)</li>
+  <li><strong>External links did nothing.</strong> The Release page, the mise docs and the download link were plain <code>target=&quot;_blank&quot;</code> anchors, and a webview does not open windows it was not asked to open — the click was dropped. Links now go through a Rust command that validates the scheme (<code>http</code>/<code>https</code> only) and hands the URL to the system browser. (#248)</li>
+  <li><strong>&quot;Open in editor&quot; was denied by the app's own capability config.</strong> The path opener was granted without a scope, and an empty scope means &quot;nothing is allowed&quot;, so the menu item could only ever produce an error. (#248)</li>
+  <li><strong>Scrollbars shifted the layout</strong> when a long list went from fitting to scrolling. The gutter is now reserved, and the monospace column budget no longer assumes a system font. (#246)</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Windows</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>A console window flashed for every mise call.</strong> Child processes now carry <code>CREATE_NO_WINDOW</code> alongside their own process group. (#240)</li>
+  <li><strong>&quot;Open in terminal&quot; opened Explorer</strong> instead of a terminal window at the directory. (#242)</li>
+  <li><strong>Localized error text came out garbled</strong> — PowerShell output was decoded as UTF-8 while the console emits the machine's code page. The install panel now pins UTF-8 output, and the probe decodes BOM-marked and UTF-16 files instead of guessing. (#243, #244)</li>
+  <li><strong>The activation check read the wrong PowerShell profile.</strong> <code>pwsh</code> 6/7 and Windows PowerShell 5.1 keep their profiles in sibling directories; both are checked now, and an undecodable profile no longer fails the whole probe. (#244)</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Linux</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>The terminal table missed the terminals distros actually ship</strong> — <code>kgx</code>, <code>ptyxis</code> and <code>x-terminal-emulator</code> now come first, and the terminal opens in the right directory. (#245)</li>
+  <li>Packages are built on <code>ubuntu-22.04</code> so the binaries run on older glibc; the WebKitGTK ≥ 2.40 floor is now documented instead of discovered. (#247)</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Changed</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>New application identity, and a branded name on disk.</strong> The bundle identifier moved from a <code>create-tauri-app</code> default (<code>com.lifan.misedeck</code>) to <code>io.github.cherishfall.misedeck</code>, and artifacts are named <code>MiseDeck.*</code> instead of <code>misedeck.*</code>. <strong>If you installed a beta before this one, remove the old copy first</strong> — the new identity is a new app to macOS, so the two will coexist and your theme, language and directory choices start from defaults again.</li>
+</ul>
+<p class="rel-fallback rel-fallback-zh">```bash</p>
+<p class="rel-fallback rel-fallback-zh">rm -rf /Applications/misedeck.app</p>
+<p class="rel-fallback rel-fallback-zh">```</p>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong><code>SHA256SUMS</code> finally covers the whole release.</strong> It used to be computed per platform and then overwritten during the merge, so it listed only Linux's three packages — and with build paths no downloader could match. It is now computed once, after every platform lands, over bare file names. (#251)</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Verify</h3>
+<p class="rel-fallback rel-fallback-zh"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset — run it from the folder you downloaded into.</p>
+<p class="rel-fallback rel-fallback-zh">```sh</p>
+<p class="rel-fallback rel-fallback-zh"># macOS</p>
+<p class="rel-fallback rel-fallback-zh">shasum -a 256 -c SHA256SUMS</p>
+<p class="rel-fallback rel-fallback-zh"># Linux</p>
+<p class="rel-fallback rel-fallback-zh">sha256sum -c SHA256SUMS</p>
+<p class="rel-fallback rel-fallback-zh"># Windows (PowerShell) — one file at a time</p>
+<p class="rel-fallback rel-fallback-zh">Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.0-beta.17_x64-setup.exe</p>
+<p class="rel-fallback rel-fallback-zh">```</p>
+<p class="rel-fallback rel-fallback-zh">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned.</p>
+<h3 class="rel-fallback rel-fallback-zh">Notes</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>macOS is the polished target. Linux is packaged but unverified; Windows is still experimental.</li>
+  <li>Binaries remain <strong>unsigned</strong> on every platform: macOS Gatekeeper needs the quarantine flag cleared on first launch, Windows SmartScreen needs &quot;Run anyway&quot;. Both are documented in the <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">README</a>.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-16">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.16</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-10-20">2026-10-20</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <p lang="en"># MiseDeck v1.0.0-beta.16</p>
 <p lang="en">Fifteenth build since August 2026. This release ships the two pre-release audit batches closed since beta.14: the beta15 remediation and the beta16 deep audit, all verified on real builds (8 pages × en/zh, light/dark, global/directory, plus failure simulations).</p>
 <h3 lang="en">Reads no longer lie</h3>
@@ -378,71 +551,136 @@
   <li>Click-driven flows (dialogs, directory picker, mutations, run panel) were verified at the boundary level (tests + failure simulations); a final hands-on pass remains.</li>
 </ul>
 <p lang="en">&gt; <a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
-
+<p class="rel-fallback rel-fallback-zh"># MiseDeck v1.0.0-beta.16</p>
+<p class="rel-fallback rel-fallback-zh">Fifteenth build since August 2026. This release ships the two pre-release audit batches closed since beta.14: the beta15 remediation and the beta16 deep audit, all verified on real builds (8 pages × en/zh, light/dark, global/directory, plus failure simulations).</p>
+<h3 class="rel-fallback rel-fallback-zh">Reads no longer lie</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>A non-zero mise exit is a failure at the command boundary: install / use / unuse / uninstall / settings set / plugins / tasks mutations no longer show a green success bar, invalidate caches, or clear forms on failure.</li>
+  <li>The Doctor page no longer fabricates a healthy report from zero data when mise is broken: a zero-line report on a non-zero exit is a failure, shown with stderr and a retry.</li>
+  <li>Created dates in the remote-version table are real (<code>created_at</code> field fix); date-fragment filtering works.</li>
+  <li>&quot;Update available&quot; no longer appears when the target equals the current version, and such rows no longer count toward &quot;N tools outdated&quot;.</li>
+  <li>Tools with no config-file source render <code>—</code> / <code>Orphan</code> instead of a fabricated <code>Global</code>; Tools and Preview agree.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Process lifecycle</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Streamed output has a bounded reader shutdown: the execution panel no longer hangs forever when a grandchild process holds stdout, and one invalid UTF-8 byte can no longer truncate the transcript.</li>
+  <li>Every child runs in its own process group: cancel and quit terminate the whole tree (unix <code>killpg</code>, Windows <code>taskkill /F /T</code>), not just the direct child.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Layout, tables, focus</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>All 8 pages share one content baseline; empty tables no longer render a floating header band; empty states carry in-card actions.</li>
+  <li>Version cells render as full-contrast text instead of inheriting disabled-control tint; table headers and data share one padding baseline.</li>
+  <li>Path columns use measured character budgets with head elision, so <code>GOBIN</code> / <code>GOROOT</code> / <code>JAVA_HOME</code> and global-vs-project config paths stay distinguishable.</li>
+  <li>Dialogs open with a safe initial focus target and trap Tab while open; tooltips expand on focus.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Copy</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>The self-invented &quot;scope / 作用域&quot; vocabulary is retired app-wide.</li>
+  <li>The plugin URL placeholder is fully visible; Preview env values match Env's emphasis; command hints never break with an orphaned <code>·</code>.</li>
+  <li>Source badges are neutral — a tool-provided variable no longer wears warning gold.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Platform &amp; safety</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>mise resolution probes well-known locations plus every PATH entry, with Windows <code>.exe</code> install locations; CI runs a <code>windows-latest</code> job.</li>
+  <li>Every directory-scoped command validates its cwd; the lockfile is read off the main thread; <code>MISE_SAFE=1</code> is enforced; the unused opener capability was removed.</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Known limitations</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>Windows is experimental: CI compiles and unit-tests it, but no real-machine verification yet. Linux is packaged but unverified. macOS on Apple Silicon remains the polished target.</li>
+  <li>Click-driven flows (dialogs, directory picker, mutations, run panel) were verified at the boundary level (tests + failure simulations); a final hands-on pass remains.</li>
+</ul>
+<p class="rel-fallback rel-fallback-zh">&gt; <a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 </section>
 <section class="rel" id="v1-0-0-beta-14">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.14</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-22">2026-09-22</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.14</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.14</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.14</p>
 </section>
 <section class="rel" id="v1-0-0-beta-13">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.13</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-21">2026-09-21</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.13</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.13</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.13</p>
 </section>
 <section class="rel" id="v1-0-0-beta-12">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.12</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-20">2026-09-20</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <p lang="en">chore(release): bump version to 1.0.0-beta.12</p>
 <p lang="en">Co-Authored-By: Kimi</p>
-
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.12</p>
+<p class="rel-fallback rel-fallback-zh">Co-Authored-By: Kimi</p>
 </section>
 <section class="rel" id="v1-0-0-beta-11">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.11</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-20">2026-09-20</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.11</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.11</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.11</p>
 </section>
 <section class="rel" id="v1-0-0-beta-10">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.10</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-09">2026-09-09</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.10</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.10</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.10</p>
 </section>
 <section class="rel" id="v1-0-0-beta-9">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.9</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-08">2026-09-08</time></h2>
-<p lang="en">chore(release): v1.0.0-beta.9</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): v1.0.0-beta.9</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): v1.0.0-beta.9</p>
 </section>
 <section class="rel" id="v1-0-0-beta-8">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.8</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-07">2026-09-07</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.8</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.8</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.8</p>
 </section>
 <section class="rel" id="v1-0-0-beta-7">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.7</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-04">2026-09-04</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.7</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.7</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.7</p>
 </section>
 <section class="rel" id="v1-0-0-beta-6">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.6</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-03">2026-09-03</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.6</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.6</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.6</p>
 </section>
 <section class="rel" id="v1-0-0-beta-5">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.5</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-02">2026-09-02</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.5</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.5</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.5</p>
 </section>
 <section class="rel" id="v1-0-0-beta-4">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.4</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-02">2026-09-02</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.4</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.4</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.4</p>
 </section>
 <section class="rel" id="v1-0-0-beta-3">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.3</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-08-31">2026-08-31</time></h2>
-<p lang="en">chore(release): bump version to 1.0.0-beta.3</p>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
 
+<p lang="en">chore(release): bump version to 1.0.0-beta.3</p>
+<p class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.3</p>
 </section>
 <section class="rel" id="v1-0-0-beta-2">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.2</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-08-31">2026-08-31</time></h2>
+<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">此版本的发布说明只有英文。</span><span lang="en">This release has English-only notes.</span></p>
+
 <p lang="en"># MiseDeck v1.0.0-beta.2</p>
 <p lang="en">First stable release of MiseDeck, a faithful desktop GUI for <a href="https://mise.jdx.dev" rel="noopener">mise</a>. Cross-platform (macOS polished, Windows / Linux beta).</p>
 <h3 lang="en">What's in v1</h3>
@@ -495,7 +733,58 @@
   <li>Windows and Linux builds are labeled <strong>beta</strong> in this release.</li>
   <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
 </ul>
-
+<p class="rel-fallback rel-fallback-zh"># MiseDeck v1.0.0-beta.2</p>
+<p class="rel-fallback rel-fallback-zh">First stable release of MiseDeck, a faithful desktop GUI for <a href="https://mise.jdx.dev" rel="noopener">mise</a>. Cross-platform (macOS polished, Windows / Linux beta).</p>
+<h3 class="rel-fallback rel-fallback-zh">What's in v1</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><strong>Global tool management</strong>: install, uninstall, switch, upgrade, and see outdated badges in one table.</li>
+  <li><strong>Directory context</strong>: resolved tools, env vars, and lockfile previews with config-source badges.</li>
+  <li><strong>Config editor</strong>: form-based <code>[tools]</code> and <code>[env]</code> editing for global and per-directory <code>mise.toml</code>.</li>
+  <li><strong>Tasks</strong>: list, run with live output, and simple edits.</li>
+  <li><strong>Trust UX</strong>: read-only untrusted directories with one-click trust.</li>
+  <li><strong>Settings, doctor, and plugin/backend browsing</strong>.</li>
+  <li><strong>mise self-management</strong>: guided install when mise is missing and one-click self-update.</li>
+  <li><strong>Activation helpers</strong>: open the current directory in a terminal, copy the activation command, and check shell setup.</li>
+  <li><strong>English and Simplified Chinese UI</strong>.</li>
+</ul>
+<p class="rel-fallback rel-fallback-zh">&gt; [English](../README.md) · [简体中文](../zh-CN/README.md)</p>
+<h3 class="rel-fallback rel-fallback-zh">Install</h3>
+<h3 class="rel-fallback rel-fallback-zh">macOS</h3>
+<p class="rel-fallback rel-fallback-zh">```bash</p>
+<p class="rel-fallback rel-fallback-zh">brew install --cask cherishfall/tap/misedeck</p>
+<p class="rel-fallback rel-fallback-zh">```</p>
+<p class="rel-fallback rel-fallback-zh">Or download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
+<p class="rel-fallback rel-fallback-zh">&gt; <strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per [ADR-0002](../docs/adr/0002-distribution-github-releases-and-homebrew-tap.md)). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>misedeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<p class="rel-fallback rel-fallback-zh">&gt;</p>
+<p class="rel-fallback rel-fallback-zh">&gt; ```bash</p>
+<p class="rel-fallback rel-fallback-zh">&gt; xattr -dr com.apple.quarantine /Applications/misedeck.app</p>
+<p class="rel-fallback rel-fallback-zh">&gt; ```</p>
+<p class="rel-fallback rel-fallback-zh">&gt;</p>
+<p class="rel-fallback rel-fallback-zh">&gt; Then launch normally. Subsequent launches work without extra steps.</p>
+<h3 class="rel-fallback rel-fallback-zh">Windows (beta)</h3>
+<p class="rel-fallback rel-fallback-zh">Download the <code>.exe</code> installer and run it.</p>
+<p class="rel-fallback rel-fallback-zh">&gt; <strong>SmartScreen (unsigned)</strong>: the binary is <strong>not code-signed</strong>. Windows SmartScreen will show &quot;Windows protected your PC&quot; — click <strong>More info</strong> → <strong>Run anyway</strong>.</p>
+<h3 class="rel-fallback rel-fallback-zh">Linux (beta)</h3>
+<p class="rel-fallback rel-fallback-zh">Pick the package that matches your distro:</p>
+<ul class="rel-fallback rel-fallback-zh">
+  <li><code>.deb</code> — Debian / Ubuntu</li>
+  <li><code>.rpm</code> — Fedora / RHEL</li>
+  <li><code>.AppImage</code> — portable, no install</li>
+</ul>
+<h3 class="rel-fallback rel-fallback-zh">Verify</h3>
+<p class="rel-fallback rel-fallback-zh">A <code>SHA256SUMS</code> file is attached below. Verify before installing:</p>
+<p class="rel-fallback rel-fallback-zh">```sh</p>
+<p class="rel-fallback rel-fallback-zh"># macOS / Linux</p>
+<p class="rel-fallback rel-fallback-zh">shasum -a 256 -c SHA256SUMS</p>
+<p class="rel-fallback rel-fallback-zh"># Windows (PowerShell)</p>
+<p class="rel-fallback rel-fallback-zh">Get-FileHash -Algorithm SHA256 .\&lt;file-you-downloaded&gt;</p>
+<p class="rel-fallback rel-fallback-zh">```</p>
+<h3 class="rel-fallback rel-fallback-zh">Notes</h3>
+<ul class="rel-fallback rel-fallback-zh">
+  <li>MiseDeck v1 is distributed <strong>unsigned</strong> on every platform, by design. Code signing and Apple notarization are out of scope for v1.</li>
+  <li>Windows and Linux builds are labeled <strong>beta</strong> in this release.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
 </section>
       </div>
     </main>

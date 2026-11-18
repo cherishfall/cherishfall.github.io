@@ -223,6 +223,18 @@ html.lang-en body [lang="zh-CN"] {
   display: none;
 }
 
+/* A release body that carries only one language: the missing half is
+   rendered with the other language's text and one of these classes, so
+   it shows in the language that lacks it and stays hidden in the one
+   that already has it (the generator's `rel-fallback-*`). */
+html:not(.lang-en) body .rel-fallback-en {
+  display: none;
+}
+
+html.lang-en body .rel-fallback-zh {
+  display: none;
+}
+
 /* ---------------------------------------------------------------- layout */
 .container {
   max-width: var(--measure);
@@ -806,6 +818,12 @@ html[lang="zh-CN"] .terminal-bar {
 
 .rel li code {
   font-size: 0.88em;
+}
+
+.rel-note {
+  font-size: 13px;
+  color: var(--quiet);
+  margin: 10px 0 0;
 }
 
 .page-head {

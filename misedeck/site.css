@@ -235,6 +235,18 @@ html.lang-en body .rel-fallback-zh {
   display: none;
 }
 
+/* The fallback half carries the `lang` of its own text, so a screen
+   reader reads it in the language it is written in — the language
+   rules above would then hide it. The class decides which language
+   mode shows it; these two rules have the last word. */
+html.lang-en body .rel-fallback-en {
+  display: block;
+}
+
+html:not(.lang-en) body .rel-fallback-zh {
+  display: block;
+}
+
 /* ---------------------------------------------------------------- layout */
 .container {
   max-width: var(--measure);
@@ -832,6 +844,27 @@ html[lang="zh-CN"] .terminal-bar {
 
 .rel li code {
   font-size: 0.88em;
+}
+
+/* A fenced code block from a release note: the code is literal text, so
+   it keeps its own lines and scrolls sideways instead of wrapping. */
+.rel pre {
+  background: var(--chrome-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 12px 14px;
+  margin: 12px 0;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.rel pre code {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  font-size: 1em;
+  white-space: pre;
 }
 
 .rel-note {

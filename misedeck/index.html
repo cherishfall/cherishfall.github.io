@@ -470,8 +470,8 @@
                 <span lang="en">Does any of my data leave the machine?</span>
               </summary>
               <p>
-                <span lang="zh-CN">不会。MiseDeck 没有账号、没有遥测，所有读取与写入都发生在本机，通过 mise 命令完成。唯一的对外请求是手动检查 MiseDeck 是否有新版本。</span>
-                <span lang="en">No. MiseDeck has no account and no telemetry; every read and write happens locally through mise. The only outbound request is the manual check for a newer MiseDeck build.</span>
+                <span lang="zh-CN">不会。MiseDeck 没有账号、没有遥测，所有读取与写入都发生在本机，通过 mise 命令完成。MiseDeck 的对外请求只有版本检查，一共两次：手动触发的「检查 MiseDeck 更新」，以及启动十秒后静默进行的那次——最多一天一次。两者读的是同一份 release feed：MiseDeck 不会下载或安装任何构建，发现新版本时也只会指向它的「发布页」。</span>
+                <span lang="en">No. MiseDeck has no account and no telemetry; every read and write happens locally through mise. MiseDeck makes two outbound requests, and both are version checks: the one behind Check for MiseDeck updates, and a silent check ten seconds after launch, at most once a day. Both read the same releases feed — MiseDeck never downloads or installs a build, and a newer version only ever points at its Release page.</span>
               </p>
             </details>
             <details>

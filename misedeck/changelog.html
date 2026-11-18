@@ -56,7 +56,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.7">v1.0.7</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.8">v1.0.8</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -71,11 +71,37 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.7 · 2026-11-18 · 共 23 个发布</span>
-            <span lang="en">Latest version 1.0.7 · 2026-11-18 · 23 releases</span>
+            <span lang="zh-CN">最新版本 1.0.8 · 2026-11-18 · 共 24 个发布</span>
+            <span lang="en">Latest version 1.0.8 · 2026-11-18 · 24 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-0-8">
+  <h2 class="rel-h"><span class="rel-ver">1.0.8</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
+
+<p lang="en">A re-audit patch: the second review round's fixes, shipped so the next release inherits them.</p>
+<p lang="en"><strong>Changed</strong></p>
+<ul lang="en">
+  <li>The registry search's failure card reads &quot;Could not load search suggestions&quot; — the title no longer uses a word the glossary retires from user-facing copy.</li>
+  <li><code>package.json</code>'s version metadata is <code>1.0.7</code> (the <code>v1.0.7</code> tag carried a malformed string there; the app itself was always 1.0.7 — no behavior changed).</li>
+</ul>
+<p lang="en"><strong>For maintainers</strong></p>
+<ul lang="en">
+  <li>The release template now ships both language halves, so a lightweight tag's notes are bilingual by default (v1.0.7's shipped English-only; these notes are hand-written bilingual).</li>
+  <li>Docs: the developer READMEs' check list renumbers 1–21; ci.md no longer claims Vite injects <code>package.json</code>'s version.</li>
+</ul>
+<p lang="zh-CN">复审补丁：把第二轮复审的修复随版发布。</p>
+<p lang="zh-CN"><strong>变更</strong></p>
+<ul lang="zh-CN">
+  <li>registry 搜索的失败卡片标题改为「无法加载搜索建议」——不再使用术语表从 UI 文案退役的词。</li>
+  <li><code>package.json</code> 的版本元数据修正为 <code>1.0.7</code>（<code>v1.0.7</code> 的 tag 里曾是一个畸形字符串；应用本身一直是 1.0.7——行为无变化）。</li>
+</ul>
+<p lang="zh-CN"><strong>给维护者</strong></p>
+<ul lang="zh-CN">
+  <li>发布模板现在带两个语言半段，轻量 tag 的发布说明默认双语（v1.0.7 发布的是纯英文；本发布说明为手写双语）。</li>
+  <li>文档：开发者 README 的检查清单重新编号为 1–21；ci.md 不再声称 Vite 会注入 <code>package.json</code> 的版本。</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-7">
   <h2 class="rel-h"><span class="rel-ver">1.0.7</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 

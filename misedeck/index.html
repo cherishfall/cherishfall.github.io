@@ -17,7 +17,9 @@
       property="og:description"
       content="MiseDeck 是 mise 的桌面 GUI：每个页面对应 CLI 的一部分，每次写入都真实执行一条 mise 命令。"
     />
-    <meta property="og:image" content="screens/en/tools.webp" />
+    <meta property="og:image" content="https://cherishfall.github.io/misedeck/screens/en/tools.webp" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1292" />
     <link rel="canonical" href="https://cherishfall.github.io/misedeck/" />
     <link rel="stylesheet" href="site.css" />
     <link
@@ -46,7 +48,7 @@
           <img src="icon.svg" alt="" width="26" height="26" />
           MiseDeck
         </a>
-        <nav aria-label="主导航">
+        <nav aria-label="主导航" data-aria-zh="主导航" data-aria-en="Main navigation">
           <ul class="site-nav">
             <li><a href="#features"><span lang="zh-CN">页面</span><span lang="en">Pages</span></a></li>
             <li><a href="#panel"><span lang="zh-CN">执行面板</span><span lang="en">Execution panel</span></a></li>
@@ -116,7 +118,7 @@
           </div>
           <div class="grid">
             <article class="card">
-              <span class="cmd">mise version</span>
+              <span class="cmd">mise version · mise self-update</span>
               <h3><span lang="zh-CN">首页</span><span lang="en">Home</span></h3>
               <p>
                 <span lang="zh-CN">版本门禁、引导安装、一键自更新。</span>
@@ -124,7 +126,7 @@
               </p>
             </article>
             <article class="card" data-accent="tools">
-              <span class="cmd">mise use · mise install</span>
+              <span class="cmd">mise ls · mise registry · mise ls-remote · mise install · mise use · mise uninstall · mise upgrade · mise unuse · mise outdated · mise link</span>
               <h3><span lang="zh-CN">工具</span><span lang="en">Tools</span></h3>
               <p>
                 <span lang="zh-CN">已安装与已激活的工具；安装、切换版本、升级过时版本。</span>
@@ -132,7 +134,7 @@
               </p>
             </article>
             <article class="card">
-              <span class="cmd">mise ls · mise config ls</span>
+              <span class="cmd">mise ls · mise env · mise config ls</span>
               <h3><span lang="zh-CN">概览</span><span lang="en">Overview</span></h3>
               <p>
                 <span lang="zh-CN">解析出的工具与环境变量、配置文件优先级、mise.lock，每行都标注来源。</span>
@@ -140,7 +142,7 @@
               </p>
             </article>
             <article class="card" data-accent="env">
-              <span class="cmd">mise set · mise unset</span>
+              <span class="cmd">mise env · mise set · mise unset</span>
               <h3><span lang="zh-CN">环境变量</span><span lang="en">Env</span></h3>
               <p>
                 <span lang="zh-CN">增删改环境变量，标注来源；超出写入范围时先提醒。</span>
@@ -148,7 +150,7 @@
               </p>
             </article>
             <article class="card" data-accent="tasks">
-              <span class="cmd">mise run · mise tasks add</span>
+              <span class="cmd">mise tasks ls · mise run · mise tasks add · mise tasks edit</span>
               <h3><span lang="zh-CN">任务</span><span lang="en">Tasks</span></h3>
               <p>
                 <span lang="zh-CN">列出、实时运行、创建与编辑 mise 任务。</span>
@@ -156,7 +158,7 @@
               </p>
             </article>
             <article class="card">
-              <span class="cmd">mise settings ls --all</span>
+              <span class="cmd">mise settings ls · mise settings set · mise settings unset</span>
               <h3><span lang="zh-CN">设置</span><span lang="en">Settings</span></h3>
               <p>
                 <span lang="zh-CN">查看、筛选、修改 mise 设置，表类型键只读。</span>
@@ -172,7 +174,7 @@
               </p>
             </article>
             <article class="card" data-accent="plugins">
-              <span class="cmd">mise plugins install</span>
+              <span class="cmd">mise plugins ls · mise plugins install · mise plugins uninstall</span>
               <h3><span lang="zh-CN">插件</span><span lang="en">Plugins</span></h3>
               <p>
                 <span lang="zh-CN">已安装插件、从 git 地址安装、卸载。</span>
@@ -223,8 +225,8 @@
               <span lang="en">This is what it actually looks like.</span>
             </h2>
             <p>
-              <span lang="zh-CN">英文与简体中文界面，浅色与深色主题。</span>
-              <span lang="en">English and Simplified Chinese, light and dark themes.</span>
+              <span lang="zh-CN">英文与简体中文界面，浅色主题。</span>
+              <span lang="en">English and Simplified Chinese, light theme.</span>
             </p>
           </div>
           <div class="shot-grid">
@@ -372,7 +374,7 @@
                 <span lang="zh-CN">macOS</span><span lang="en">macOS</span>
                 <span class="tag"><span lang="zh-CN">Apple Silicon</span><span lang="en">Apple Silicon</span></span>
               </h3>
-              <p><span lang="zh-CN">下载 dmg，拖入「应用程序」。</span><span lang="en">Download the dmg, drag it into Applications.</span></p>
+              <p><span lang="zh-CN">下载 dmg，拖入「应用程序」。没有 Intel macOS 构建；需要请从源码构建。</span><span lang="en">Download the dmg, drag it into Applications. No Intel macOS build — build from source if you need one.</span></p>
               <code class="file-name">MiseDeck_1.0.3_aarch64.dmg</code>
             </article>
             <article class="card">
@@ -528,6 +530,8 @@
           var ogDesc = document.querySelector('meta[property="og:description"]');
           if (ogDesc) ogDesc.setAttribute("content", en ? root.dataset.descEn : root.dataset.descZh);
           if (group) group.setAttribute("aria-label", en ? "Language" : "界面语言");
+          var nav = document.querySelector("nav[data-aria-zh]");
+          if (nav) nav.setAttribute("aria-label", en ? nav.dataset.ariaEn : nav.dataset.ariaZh);
           for (var i = 0; i < shots.length; i++) {
             var src = shots[i].getAttribute(en ? "data-src-en" : "data-src-zh");
             var alt = shots[i].getAttribute(en ? "data-alt-en" : "data-alt-zh");

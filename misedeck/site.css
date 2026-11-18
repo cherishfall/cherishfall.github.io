@@ -551,7 +551,7 @@ html[lang="zh-CN"] .terminal-bar {
 /* --------------------------------------------------------------- feature */
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
 
@@ -564,7 +564,7 @@ html[lang="zh-CN"] .terminal-bar {
 .card .cmd {
   display: block;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--accent);
   margin-bottom: 10px;
   overflow-wrap: anywhere;
@@ -793,6 +793,20 @@ html[lang="zh-CN"] .terminal-bar {
   color: var(--accent);
 }
 
+/* The pre-release badge: the same pill as the install cards' `.tag`,
+   with the accent border that marks it as a state rather than a word. */
+.rel-tag {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
 .rel-date {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -824,6 +838,16 @@ html[lang="zh-CN"] .terminal-bar {
   font-size: 13px;
   color: var(--quiet);
   margin: 10px 0 0;
+}
+
+/* A line of a historical release that names an install channel that no
+   longer exists (the Homebrew tap of v1.0.0-beta.2). */
+.rel-dead {
+  color: var(--quiet);
+  font-size: 14px;
+  border-inline-start: 2px solid var(--warn);
+  padding-inline-start: 10px;
+  margin: 10px 0;
 }
 
 .page-head {

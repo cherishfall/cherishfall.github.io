@@ -342,120 +342,72 @@ sha256sum -c SHA256SUMS        # Linux</code></pre>
 </section>
 <section class="rel" id="v1-0-0">
   <h2 class="rel-h"><span class="rel-ver">1.0.0</span><time class="rel-date" datetime="2026-10-21">2026-10-21</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): cut 1.0.0 (#252)</p>
-<p lang="en">Bump the app version to 1.0.0 across package, Cargo and Tauri</p>
-<p lang="en">metadata; align both READMEs with what ships (mise floor 2025.12.5,</p>
-<p lang="en">18 CI steps, doctor report and failure-notice copy); refresh all 16</p>
-<p lang="en">screenshots at 1.0.0; record the GA re-verification matrix and its</p>
-<p lang="en">open gaps in the pre-release audit.</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): cut 1.0.0 (#252)</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">Bump the app version to 1.0.0 across package, Cargo and Tauri</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">metadata; align both READMEs with what ships (mise floor 2025.12.5,</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">18 CI steps, doctor report and failure-notice copy); refresh all 16</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">screenshots at 1.0.0; record the GA re-verification matrix and its</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">open gaps in the pre-release audit.</p>
+
+<p lang="en">The first stable release of MiseDeck: eight pages, each one a part of the mise CLI.</p>
+<h3 lang="en">What's in it</h3>
+<ul lang="en">
+  <li><strong>Home</strong> — version gate, guided install when mise is missing, one-click self-update.</li>
+  <li><strong>Tools</strong> — installed and active tools; install, switch, upgrade, and outdated badges in one table.</li>
+  <li><strong>Overview</strong> — resolved tools, env vars, config files in precedence order, and mise.lock, every row labeled with its source.</li>
+  <li><strong>Env</strong> — add, edit, rename, and unset environment variables, with source badges.</li>
+  <li><strong>Tasks</strong> — list, run with live output, create, and edit.</li>
+  <li><strong>Settings</strong> — view, filter, edit, and unset settings, including --all.</li>
+  <li><strong>Doctor</strong> — status, shell activation, warnings, config files, and the resolved toolset.</li>
+  <li><strong>Plugins</strong> — installed plugins, install from a git URL, uninstall.</li>
+</ul>
+<p lang="en">Beyond the pages: the execution panel (the exact command, live logs, the exit code, copy-command, cancel), read-only untrusted directories with one-click mise trust, terminal and activation helpers, light and dark themes, and an English / Simplified Chinese UI.</p>
+<p lang="en">GitHub Releases is the only distribution channel — v1 ships no Homebrew formula or cask.</p>
+<p lang="zh-CN">MiseDeck 的第一个稳定版：八个页面，每个对应 mise 命令行的一部分。</p>
+<h3 lang="zh-CN">包含什么</h3>
+<ul lang="zh-CN">
+  <li><strong>首页</strong>——版本门禁、缺 mise 时的引导安装、一键自更新。</li>
+  <li><strong>工具</strong>——已安装与已激活的工具；一张表里完成安装、切换、升级与过时标记。</li>
+  <li><strong>概览</strong>——解析出的工具与环境变量、按优先级排列的配置文件，以及 mise.lock，每一行都标注来源。</li>
+  <li><strong>环境变量</strong>——增删改环境变量，带来源徽标。</li>
+  <li><strong>任务</strong>——列出、实时运行、创建与编辑。</li>
+  <li><strong>设置</strong>——查看、筛选、修改与取消设置，支持 --all。</li>
+  <li><strong>诊断</strong>——状态、shell 激活、警告、配置文件与解析出的工具集。</li>
+  <li><strong>插件</strong>——已安装插件、从 git 地址安装、卸载。</li>
+</ul>
+<p lang="zh-CN">页面之外还有：执行面板（确切的命令行、实时日志、退出码、复制命令、取消）、未受信任目录只读并可一键 mise trust、终端与激活助手、浅色与深色主题，以及英文 / 简体中文界面。</p>
+<p lang="zh-CN">唯一的分发渠道是 GitHub Releases——v1 不提供 Homebrew formula 或 cask。</p>
 </section>
 <section class="rel" id="v1-0-0-beta-17">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.17</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-10-21">2026-10-21</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
+
+<p lang="en">The last pre-release before v1.0.0. It closes the two things a new user notices first: the app now shows its own version, and the update check never leaves the app.</p>
 <h3 lang="en">What's new</h3>
 <ul lang="en">
-  <li><strong>The app's own version is finally visible.</strong> A quiet colophon line sits at the bottom of the sidebar (<code>1.0.0-beta.17</code>, one size smaller than mise's version on the pages), and it opens a small panel: MiseDeck's version, a manual update check, and the Release page. Collapsing the sidebar to the icon rail keeps it reachable. (#235)</li>
-  <li><strong>Check for MiseDeck updates without leaving the app.</strong> Manual only — nothing runs at launch. Bounded at 8 seconds, goes through your system proxy, and on success or failure says one sentence and offers one next step. It never downloads or installs a build; the last stop is the Release page, where your browser takes over. (#236)</li>
+  <li><strong>The app's own version is finally visible.</strong> A quiet colophon line sits at the bottom of the sidebar, one size smaller than mise's version on the pages, and it opens a small panel: MiseDeck's version, a manual update check, and the Release page. Collapsing the sidebar to the icon rail keeps it reachable.</li>
+  <li><strong>Check for MiseDeck updates without leaving the app.</strong> Manual only — nothing runs at launch. Bounded at 8 seconds, goes through your system proxy, and on success or failure says one sentence and offers one next step. It never downloads or installs a build; the last stop is the Release page, where your browser takes over.</li>
 </ul>
 <h3 lang="en">Fixed</h3>
 <ul lang="en">
-  <li><strong>Fonts that never loaded.</strong> The app shipped a CSP of <code>default-src 'self'</code>, which silently blocked the Google Fonts links, so every build until now rendered in fallback system fonts. All three families are now self-hosted (152 KiB total, variable-font files, Latin + Latin Extended). (#241)</li>
-  <li><strong>External links did nothing.</strong> The Release page, the mise docs and the download link were plain <code>target=&quot;_blank&quot;</code> anchors, and a webview does not open windows it was not asked to open — the click was dropped. Links now go through a Rust command that validates the scheme (<code>http</code>/<code>https</code> only) and hands the URL to the system browser. (#248)</li>
-  <li><strong>&quot;Open in editor&quot; was denied by the app's own capability config.</strong> The path opener was granted without a scope, and an empty scope means &quot;nothing is allowed&quot;, so the menu item could only ever produce an error. (#248)</li>
-  <li><strong>Scrollbars shifted the layout</strong> when a long list went from fitting to scrolling. The gutter is now reserved, and the monospace column budget no longer assumes a system font. (#246)</li>
+  <li><strong>Fonts that never loaded.</strong> The app shipped a CSP of default-src 'self', which silently blocked the Google Fonts links, so every build until now rendered in fallback system fonts. All three families are now self-hosted.</li>
+  <li><strong>External links did nothing.</strong> The Release page, the mise docs and the download link were plain target=&quot;_blank&quot; anchors, and a webview does not open windows it was not asked to open — the click was dropped. Links now go through a Rust command that validates the scheme (http / https only) and hands the URL to the system browser.</li>
+  <li><strong>&quot;Open in editor&quot; was denied by the app's own capability config.</strong> The path opener was granted without a scope, and an empty scope means &quot;nothing is allowed&quot;, so the menu item could only ever produce an error.</li>
 </ul>
-<h3 lang="en">Windows</h3>
+<h3 lang="en">Also</h3>
 <ul lang="en">
-  <li><strong>A console window flashed for every mise call.</strong> Child processes now carry <code>CREATE_NO_WINDOW</code> alongside their own process group. (#240)</li>
-  <li><strong>&quot;Open in terminal&quot; opened Explorer</strong> instead of a terminal window at the directory. (#242)</li>
-  <li><strong>Localized error text came out garbled</strong> — PowerShell output was decoded as UTF-8 while the console emits the machine's code page. The install panel now pins UTF-8 output, and the probe decodes BOM-marked and UTF-16 files instead of guessing. (#243, #244)</li>
-  <li><strong>The activation check read the wrong PowerShell profile.</strong> <code>pwsh</code> 6/7 and Windows PowerShell 5.1 keep their profiles in sibling directories; both are checked now, and an undecodable profile no longer fails the whole probe. (#244)</li>
+  <li>The macOS app icon was rescaled to a safe area, so it no longer renders larger than every other app in the Dock.</li>
+  <li>SHA256SUMS now ships with every release, covering all five packages.</li>
 </ul>
-<h3 lang="en">Linux</h3>
-<ul lang="en">
-  <li><strong>The terminal table missed the terminals distros actually ship</strong> — <code>kgx</code>, <code>ptyxis</code> and <code>x-terminal-emulator</code> now come first, and the terminal opens in the right directory. (#245)</li>
-  <li>Packages are built on <code>ubuntu-22.04</code> so the binaries run on older glibc; the WebKitGTK ≥ 2.40 floor is now documented instead of discovered. (#247)</li>
+<p lang="zh-CN">v1.0.0 之前的最后一个预发布版。它收尾了新用户最先注意到的两件事：应用终于显示自己的版本号，更新检查也不离开应用。</p>
+<h3 lang="zh-CN">新增</h3>
+<ul lang="zh-CN">
+  <li><strong>应用自己的版本号终于可见。</strong> 侧栏底部有一行安静的版本信息，比页面上的 mise 版本号小一号，点开是一个小面板：MiseDeck 的版本、手动更新检查、发布页。侧栏收起成图标轨道后依然可以点到。</li>
+  <li><strong>在应用内检查 MiseDeck 更新。</strong> 仅手动触发——启动时不做任何事。最长 8 秒，走系统代理，成功或失败都只说一句并给出一个下一步。它从不下载或安装构建产物；终点是发布页，之后交给浏览器。</li>
 </ul>
-<h3 lang="en">Changed</h3>
-<ul lang="en">
-  <li><strong>New application identity, and a branded name on disk.</strong> The bundle identifier moved from a <code>create-tauri-app</code> default (<code>com.lifan.misedeck</code>) to <code>io.github.cherishfall.misedeck</code>, and artifacts are named <code>MiseDeck.*</code> instead of <code>misedeck.*</code>. <strong>If you installed a beta before this one, remove the old copy first</strong> — the new identity is a new app to macOS, so the two will coexist and your theme, language and directory choices start from defaults again.</li>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>字体一直加载不出来。</strong> 应用使用 default-src 'self' 的 CSP，悄悄挡掉了 Google Fonts 链接，所以此前的每个构建都退回系统字体。现在三个字族全部自托管。</li>
+  <li><strong>外部链接点了没反应。</strong> 发布页、mise 文档与下载链接原本是普通的 target=&quot;_blank&quot; 锚点，而 webview 不会打开它没被要求打开的窗口——点击被丢弃。现在链接经由一条 Rust 命令，校验协议（仅 http / https）后交给系统浏览器。</li>
+  <li><strong>「在编辑器中打开」被应用自己的能力配置拒绝。</strong> 路径打开器没有配置范围，而空范围意味着「什么都不允许」，所以这个菜单项只能报错。</li>
 </ul>
-<pre lang="en"><code>  rm -rf /Applications/misedeck.app</code></pre>
-<ul lang="en">
-  <li><strong><code>SHA256SUMS</code> finally covers the whole release.</strong> It used to be computed per platform and then overwritten during the merge, so it listed only Linux's three packages — and with build paths no downloader could match. It is now computed once, after every platform lands, over bare file names. (#251)</li>
-</ul>
-<h3 lang="en">Verify</h3>
-<p lang="en"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset — run it from the folder you downloaded into.</p>
-<pre lang="en"><code># macOS
-shasum -a 256 -c SHA256SUMS
-
-# Linux
-sha256sum -c SHA256SUMS
-
-# Windows (PowerShell) — one file at a time
-Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.0-beta.17_x64-setup.exe</code></pre>
-<p lang="en">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned.</p>
-<h3 lang="en">Notes</h3>
-<ul lang="en">
-  <li>macOS is the polished target. Linux is packaged but unverified; Windows is still experimental.</li>
-  <li>Binaries remain <strong>unsigned</strong> on every platform: macOS Gatekeeper needs the quarantine flag cleared on first launch, Windows SmartScreen needs &quot;Run anyway&quot;. Both are documented in the <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">README</a>.</li>
-  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">What's new</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong>The app's own version is finally visible.</strong> A quiet colophon line sits at the bottom of the sidebar (<code>1.0.0-beta.17</code>, one size smaller than mise's version on the pages), and it opens a small panel: MiseDeck's version, a manual update check, and the Release page. Collapsing the sidebar to the icon rail keeps it reachable. (#235)</li>
-  <li><strong>Check for MiseDeck updates without leaving the app.</strong> Manual only — nothing runs at launch. Bounded at 8 seconds, goes through your system proxy, and on success or failure says one sentence and offers one next step. It never downloads or installs a build; the last stop is the Release page, where your browser takes over. (#236)</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Fixed</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong>Fonts that never loaded.</strong> The app shipped a CSP of <code>default-src 'self'</code>, which silently blocked the Google Fonts links, so every build until now rendered in fallback system fonts. All three families are now self-hosted (152 KiB total, variable-font files, Latin + Latin Extended). (#241)</li>
-  <li><strong>External links did nothing.</strong> The Release page, the mise docs and the download link were plain <code>target=&quot;_blank&quot;</code> anchors, and a webview does not open windows it was not asked to open — the click was dropped. Links now go through a Rust command that validates the scheme (<code>http</code>/<code>https</code> only) and hands the URL to the system browser. (#248)</li>
-  <li><strong>&quot;Open in editor&quot; was denied by the app's own capability config.</strong> The path opener was granted without a scope, and an empty scope means &quot;nothing is allowed&quot;, so the menu item could only ever produce an error. (#248)</li>
-  <li><strong>Scrollbars shifted the layout</strong> when a long list went from fitting to scrolling. The gutter is now reserved, and the monospace column budget no longer assumes a system font. (#246)</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Windows</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong>A console window flashed for every mise call.</strong> Child processes now carry <code>CREATE_NO_WINDOW</code> alongside their own process group. (#240)</li>
-  <li><strong>&quot;Open in terminal&quot; opened Explorer</strong> instead of a terminal window at the directory. (#242)</li>
-  <li><strong>Localized error text came out garbled</strong> — PowerShell output was decoded as UTF-8 while the console emits the machine's code page. The install panel now pins UTF-8 output, and the probe decodes BOM-marked and UTF-16 files instead of guessing. (#243, #244)</li>
-  <li><strong>The activation check read the wrong PowerShell profile.</strong> <code>pwsh</code> 6/7 and Windows PowerShell 5.1 keep their profiles in sibling directories; both are checked now, and an undecodable profile no longer fails the whole probe. (#244)</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Linux</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong>The terminal table missed the terminals distros actually ship</strong> — <code>kgx</code>, <code>ptyxis</code> and <code>x-terminal-emulator</code> now come first, and the terminal opens in the right directory. (#245)</li>
-  <li>Packages are built on <code>ubuntu-22.04</code> so the binaries run on older glibc; the WebKitGTK ≥ 2.40 floor is now documented instead of discovered. (#247)</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Changed</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong>New application identity, and a branded name on disk.</strong> The bundle identifier moved from a <code>create-tauri-app</code> default (<code>com.lifan.misedeck</code>) to <code>io.github.cherishfall.misedeck</code>, and artifacts are named <code>MiseDeck.*</code> instead of <code>misedeck.*</code>. <strong>If you installed a beta before this one, remove the old copy first</strong> — the new identity is a new app to macOS, so the two will coexist and your theme, language and directory choices start from defaults again.</li>
-</ul>
-<pre lang="en" class="rel-fallback rel-fallback-zh"><code>  rm -rf /Applications/misedeck.app</code></pre>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li><strong><code>SHA256SUMS</code> finally covers the whole release.</strong> It used to be computed per platform and then overwritten during the merge, so it listed only Linux's three packages — and with build paths no downloader could match. It is now computed once, after every platform lands, over bare file names. (#251)</li>
-</ul>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Verify</h3>
-<p lang="en" class="rel-fallback rel-fallback-zh"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset — run it from the folder you downloaded into.</p>
-<pre lang="en" class="rel-fallback rel-fallback-zh"><code># macOS
-shasum -a 256 -c SHA256SUMS
-
-# Linux
-sha256sum -c SHA256SUMS
-
-# Windows (PowerShell) — one file at a time
-Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.0-beta.17_x64-setup.exe</code></pre>
-<p lang="en" class="rel-fallback rel-fallback-zh">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned.</p>
-<h3 lang="en" class="rel-fallback rel-fallback-zh">Notes</h3>
-<ul lang="en" class="rel-fallback rel-fallback-zh">
-  <li>macOS is the polished target. Linux is packaged but unverified; Windows is still experimental.</li>
-  <li>Binaries remain <strong>unsigned</strong> on every platform: macOS Gatekeeper needs the quarantine flag cleared on first launch, Windows SmartScreen needs &quot;Run anyway&quot;. Both are documented in the <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">README</a>.</li>
-  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+<h3 lang="zh-CN">另外</h3>
+<ul lang="zh-CN">
+  <li>macOS 应用图标按安全区重新缩放，不再在 Dock 里显得比别人大一圈。</li>
+  <li>每个发布都附带 SHA256SUMS，覆盖全部五个安装包。</li>
 </ul>
 </section>
 <section class="rel" id="v1-0-0-beta-16">
@@ -542,77 +494,225 @@ Get-FileHash -Algorithm SHA256 .\MiseDeck_1.0.0-beta.17_x64-setup.exe</code></pr
 </section>
 <section class="rel" id="v1-0-0-beta-14">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.14</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-22">2026-09-22</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.14</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.14</p>
+
+<p lang="en">Two review waves closed. The directory picker speaks one language now, the Tools page's advanced section is a panel instead of a floating form, and the execution panel's header finally behaves the way the rules describe.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>The directory picker says one thing.</strong> &quot;Choose directory&quot; everywhere it appears, in both languages.</li>
+  <li><strong>The Tools page's advanced section is a real panel.</strong> The trigger sits in the panel's header row, and the content fills the panel's width.</li>
+  <li><strong>The execution panel header was rebuilt.</strong> Dismiss is always rendered and always rightmost; Cancel became a secondary button (cancelling is routine, not destructive); the panel can never be closed while it runs.</li>
+  <li><strong>A StrictMode double-mount left the run-lock stuck.</strong> Every confirm dialog in the app was disabled after a hot reload.</li>
+  <li><strong>The outdated hint had three states where it needed four.</strong> It now shows loading, outdated, up to date, and failed-with-retry — a failed check no longer renders as &quot;still checking&quot;.</li>
+  <li><strong>The Env and Settings pages repeated what the top strip already said.</strong> Their scope badges are gone; the strip is the one place a directory context appears.</li>
+</ul>
+<p lang="zh-CN">两轮评审收尾。目录选择器现在只有一种说法，工具页的「高级」区是一个真正的面板，执行面板的页头也终于按规则描述的方式工作。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>目录选择器只有一种说法。</strong> 无论出现在哪里，中英文都统一为「选择目录」。</li>
+  <li><strong>工具页的「高级」区是一个真正的面板。</strong> 触发器位于面板标题行，内容填满面板宽度。</li>
+  <li><strong>执行面板页头重做。</strong> Dismiss 恒渲染且恒在最右；Cancel 降为次要按钮（取消是日常操作，不是破坏性操作）；面板运行时无法被关闭。</li>
+  <li><strong>StrictMode 的双次挂载让运行锁卡死。</strong> 热重载之后，应用里每个确认框都是禁用的。</li>
+  <li><strong>过时提示缺了第四种状态。</strong> 现在有加载中、有过时、已最新、失败可重试——检查失败不再渲染成「仍在检查」。</li>
+  <li><strong>环境变量页与设置页重复了顶栏已经说过的话。</strong> 它们的范围徽标已删除；目录上下文只在顶栏出现一次。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-13">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.13</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-21">2026-09-21</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.13</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.13</p>
+
+<p lang="en">The version management area was rebuilt, and the command echo became what you would actually type.</p>
+<h3 lang="en">What's new</h3>
+<ul lang="en">
+  <li><strong>A version-management region below the tools table.</strong> It searches the registry, and once a tool is picked it shows three sections in a fixed order: active, installed, and not installed. The active section carries the upgrade affordance.</li>
+  <li><strong>The main table's action is now a ghost &quot;Manage versions&quot; entry</strong>, and an outdated tool shows an upgrade chip instead of a column of its own.</li>
+  <li><strong>The removal vocabulary was settled</strong> in ADR-0008: Unuse for a tool, Uninstall for a version, Uninstall for a plugin.</li>
+</ul>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>The command echo became terminal-perspective.</strong> A Global-mode echo shows no <code>-C $HOME</code>; a separate line names the working directory instead. The same shape is used by the confirmation dialog.</li>
+  <li><strong>Pasting a Global-mode echo into a project directory means something else</strong> for commands without a <code>-g</code> flag — the working-directory line is the disclosure that carries it.</li>
+</ul>
+<p lang="zh-CN">版本管理区重做，命令回显也变成你真正会输入的那一行。</p>
+<h3 lang="zh-CN">新增</h3>
+<ul lang="zh-CN">
+  <li><strong>工具表下方新增版本管理区。</strong> 它搜索注册表，选中工具后按固定顺序显示三段：已激活、已安装、未安装。已激活段承载升级入口。</li>
+  <li><strong>主表的操作改为幽灵按钮「版本管理」</strong>，过时工具显示升级徽标，而不再单开一列。</li>
+  <li><strong>移除词汇在 ADR-0008 里定稿</strong>：工具用「取消使用」、版本用「卸载」、插件用「卸载」。</li>
+</ul>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>命令回显变成终端视角。</strong> 全局模式的回显不再带 <code>-C $HOME</code>，改用单独一行说明工作目录。确认框使用同一种形态。</li>
+  <li><strong>把全局模式的回显粘进项目目录，对没有 <code>-g</code> 参数的命令意味着另一回事</strong>——工作目录那一行就是承载这件事的说明。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-12">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.12</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-20">2026-09-20</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.12</p>
-<p lang="en">Co-Authored-By: Kimi</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.12</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">Co-Authored-By: Kimi</p>
+
+<p lang="en">A six-pass professional review of the code and the docs, plus a macOS icon fix.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>Six audit passes ran in parallel</strong> — docs against code, the zh-CN mirror, code residue, interaction logic, i18n, and doc-internal consistency. All seven tickets are closed.</li>
+  <li><strong>The frontend test baseline entered CI</strong>, along with a lint that rejects a stray ellipsis in a button label.</li>
+  <li><strong>Renaming an env var onto an existing one now confirms first</strong>, and the Tasks run editor refuses a multi-line run — <code>mise tasks add</code> has no lossless path for one — with an explanation instead of silently flattening it.</li>
+  <li><strong>The i18n lint gained a dead-key guard</strong>, so a key that nothing references can no longer survive.</li>
+  <li><strong>The Doctor page got its own missing-mise copy</strong> instead of borrowing the Tools page's.</li>
+</ul>
+<h3 lang="en">Also</h3>
+<ul lang="en">
+  <li>The macOS icon was rescaled to a safe area, so it no longer renders larger than every other app in the Dock.</li>
+</ul>
+<p lang="zh-CN">对代码与文档做了六路并行专业评审，另有一处 macOS 图标修复。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>六路并行审计</strong>——文档对代码、zh-CN 镜像、代码残留、交互逻辑、i18n、文档内部一致性。七个 ticket 全部关闭。</li>
+  <li><strong>前端测试基线进入 CI</strong>，同时新增一条守卫：按钮文案里的多余省略号会被拒绝。</li>
+  <li><strong>把环境变量改名到已存在的名字，现在先确认</strong>；任务运行编辑器拒绝多行 run——<code>mise tasks add</code> 对多行没有无损路径——并给出解释，而不是悄悄压平。</li>
+  <li><strong>i18n 守卫新增死键检查</strong>，没有任何地方引用的键不再能存活。</li>
+  <li><strong>诊断页有了自己的「缺 mise」文案</strong>，不再借用工具页的。</li>
+</ul>
+<h3 lang="zh-CN">另外</h3>
+<ul lang="zh-CN">
+  <li>macOS 图标按安全区重新缩放，不再在 Dock 里显得比别人大一圈。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-11">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.11</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-20">2026-09-20</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.11</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.11</p>
+
+<p lang="en">The largest batch so far: 26 tickets, and the app grew its first shared components.</p>
+<h3 lang="en">What's new</h3>
+<ul lang="en">
+  <li><strong>One TrustBanner, one SuccessBar, one ListLoading, one Tooltip, one OutdatedHint.</strong> Five copies of the same idea became one component each; four pages were reworked around them.</li>
+  <li><strong>A version-management region replaced the old version centre</strong>, and the version cell itself became the trigger.</li>
+  <li><strong>The Env and Settings editors gained datalists and an overwrite confirmation.</strong></li>
+  <li><strong>The Tasks page gained create, and a run editor that splits arguments quote-aware.</strong></li>
+  <li><strong>Settings' unset became a danger action with a confirmation</strong>, and a setting outside the write scope is disabled with a reason.</li>
+  <li><strong>The Plugins page gained an install form</strong> with a live preview of the command it will run.</li>
+  <li><strong>The Doctor page learned &quot;unknown&quot;</strong> — a probe that could not run says so instead of claiming the shell is not activated.</li>
+  <li><strong>The frontend gained its first test baseline.</strong></li>
+</ul>
+<p lang="zh-CN">迄今最大的一批：26 个 ticket，应用长出了第一批共享组件。</p>
+<h3 lang="zh-CN">新增</h3>
+<ul lang="zh-CN">
+  <li><strong>一个 TrustBanner、一个 SuccessBar、一个 ListLoading、一个 Tooltip、一个 OutdatedHint。</strong> 同一个想法的五份拷贝各变成一个组件；四个页面围绕它们重做。</li>
+  <li><strong>版本管理区取代了旧的版本中心</strong>，版本单元格本身成了触发器。</li>
+  <li><strong>环境变量页与设置页的编辑器加上 datalist 与改名确认。</strong></li>
+  <li><strong>任务页新增新建，以及按引号规则拆词的运行编辑器。</strong></li>
+  <li><strong>设置页的「取消设置」变成带确认的破坏性操作</strong>，写出范围之外的设置被禁用并给出原因。</li>
+  <li><strong>插件页新增安装表单</strong>，实时预览它将执行的命令。</li>
+  <li><strong>诊断页学会了「未知」</strong>——跑不了的探针会直说，而不是宣称 shell 未激活。</li>
+  <li><strong>前端有了第一条测试基线。</strong></li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-10">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.10</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-09">2026-09-09</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.10</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.10</p>
+
+<p lang="en">The pre-release audit's must-fix batch: failures stopped disappearing, and the copy for &quot;something went wrong, try again&quot; became one thing instead of five.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>A failure that was swallowed now reaches the user.</strong> Several error paths ended in silence; they now render their reason and a retry.</li>
+  <li><strong>The error and retry recipes were unified</strong>, so the same failure reads the same way on every page.</li>
+  <li><strong>The soft-cancel aftermath was cleaned up</strong>: cancelling no longer leaves the page claiming a command is still running.</li>
+</ul>
+<p lang="zh-CN">发版前审计的必修批次：失败不再消失，「出错了，重试」的文案从五处变成一处。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>被吞掉的失败现在会到达用户面前。</strong> 有几条错误路径以沉默收场；它们现在会说明原因并给出重试。</li>
+  <li><strong>错误与重试的说法被统一</strong>，同一个失败在每个页面读起来都一样。</li>
+  <li><strong>取消之后的状态收拾干净了</strong>：取消后页面不再声称还有命令在运行。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-9">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.9</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-08">2026-09-08</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): v1.0.0-beta.9</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): v1.0.0-beta.9</p>
+
+<p lang="en">A typography and lint batch, plus the table work the Tools page needed.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>One OutdatedHint owns the loading, outdated and up-to-date states</strong>, so the hint cannot disagree with the badge.</li>
+  <li><strong>A lint now rejects a translation concatenated with <code>+</code></strong> — the class of bug that silently drops a string.</li>
+  <li><strong>Component font sizes moved onto tokens</strong>, and a guard keeps them there.</li>
+  <li><strong>One refresh button per page</strong>, owned by the page shell instead of copied into it.</li>
+  <li><strong>The Home page compares versions segment by segment</strong>, so 2026.10.17 is correctly newer than 2026.9.1.</li>
+  <li><strong>The glyph sweep finished</strong>: no caret or triangle markers are left in the UI.</li>
+  <li><strong>Table columns use pixel widths</strong>, and the Tools table gained drag-resize, sorting and a text filter.</li>
+</ul>
+<p lang="zh-CN">一批排版与守卫的工作，加上工具页需要的表格能力。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>一个 OutdatedHint 负责加载中、有过时、已最新三种状态</strong>，提示不会再和徽标互相矛盾。</li>
+  <li><strong>新增守卫：拒绝与 <code>+</code> 拼接的翻译</strong>——这类 bug 会悄悄吞掉一个字符串。</li>
+  <li><strong>组件字号改用 token</strong>，并有守卫守着。</li>
+  <li><strong>每页只有一个刷新按钮</strong>，由页面外壳拥有，而不是各页复制。</li>
+  <li><strong>首页按段比较版本号</strong>，2026.10.17 正确地新于 2026.9.1。</li>
+  <li><strong>字形清扫收尾</strong>：界面里不再残留插入符或三角标记。</li>
+  <li><strong>表格列改用像素宽度</strong>，工具表新增拖拽调宽、排序与文本筛选。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-8">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.8</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-07">2026-09-07</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.8</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.8</p>
+
+<p lang="en">The caret removal, the collapsed icon rail, and the failure-notice queue.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>Menu triggers lost their carets.</strong> Expandability is shown by interaction, not by a <code>▾</code>.</li>
+  <li><strong>The sidebar collapses to an icon rail</strong> and every feature stays reachable there, including the language and theme switches.</li>
+  <li><strong>A rejected command now raises a dismissible notice</strong> instead of failing silently, with the same copy on every page.</li>
+  <li><strong>The Home page's RAW output became a disclosure</strong> — collapsed by default, one click away, with the copy button intact.</li>
+</ul>
+<p lang="zh-CN">去掉插入符、侧栏收成图标轨道、失败通知队列。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>菜单触发器不再带插入符。</strong> 可展开由交互体现，而不是一个 <code>▾</code>。</li>
+  <li><strong>侧栏可收成图标轨道</strong>，每个功能在那里依然可达，包括语言与主题切换。</li>
+  <li><strong>被拒绝的命令现在会弹出一条可关闭的通知</strong>，而不是静默失败，各页文案一致。</li>
+  <li><strong>首页的原始输出变成一个展开控件</strong>——默认折叠，一点即开，复制按钮保留。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-7">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.7</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-04">2026-09-04</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.7</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.7</p>
+
+<p lang="en">The review batch that reshaped the primitives: one Tooltip with a copy button, fixed table widths, and the Home page's update row.</p>
+<h3 lang="en">Fixed</h3>
+<ul lang="en">
+  <li><strong>One Tooltip primitive replaced every native <code>title</code></strong> — it pops only on a real value, and it carries the copy button.</li>
+  <li><strong>The link-tool path now comes only from the directory picker</strong>, so it can never point at a path mise did not report.</li>
+  <li><strong>Command hints were audited</strong> so each page lists exactly the commands it can run.</li>
+  <li><strong>Tables got a fixed min-width</strong>, so a narrow window scrolls the table instead of crushing its columns.</li>
+  <li><strong>The Home page shows when a newer mise exists</strong> and offers the update button.</li>
+  <li><strong>The Doctor page reads the shell activation from the rc file</strong>, not from a guess.</li>
+</ul>
+<p lang="zh-CN">重塑基础组件的一轮评审：一个带复制按钮的 Tooltip、固定的表格宽度，以及首页的更新行。</p>
+<h3 lang="zh-CN">修复</h3>
+<ul lang="zh-CN">
+  <li><strong>一个 Tooltip 组件取代了所有原生 <code>title</code></strong>——只在真的有值时弹出，并带上复制按钮。</li>
+  <li><strong>链接工具的路径现在只来自目录选择器</strong>，因此它永远不会指向 mise 没有报告过的路径。</li>
+  <li><strong>命令提示经过审计</strong>，每页只列出它真正能执行的命令。</li>
+  <li><strong>表格有了固定的最小宽度</strong>，窄窗口下表格滚动，而不是把列压扁。</li>
+  <li><strong>首页会提示有更新的 mise</strong>，并给出更新按钮。</li>
+  <li><strong>诊断页从 rc 文件读出 shell 激活状态</strong>，不再靠猜。</li>
+</ul>
 </section>
 <section class="rel" id="v1-0-0-beta-6">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.6</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-03">2026-09-03</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.6</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.6</p>
+
+<p lang="en">An intermediate pre-release. From this batch on, the owner's rule has been that no agent may claim a visual verification: every closed issue is marked &quot;not visually verified&quot; and the owner's own eyes are the gate.</p>
+<p lang="zh-CN">中间预发布版本。从这一批开始，维护者定的规矩是：任何 agent 都不能声称&quot;已视觉验证&quot;——每个关闭的 issue 都标注&quot;未经视觉验证&quot;，由维护者本人的眼睛把关。</p>
 </section>
 <section class="rel" id="v1-0-0-beta-5">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.5</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-02">2026-09-02</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.5</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.5</p>
+
+<p lang="en">An intermediate pre-release. Its release notes were never written — the tag and the binaries are the record, and the changes are in the commit history between the neighbouring tags.</p>
+<p lang="zh-CN">中间预发布版本。当时没有撰写发布说明——tag 与构建产物即为记录，改动见相邻 tag 之间的提交历史。</p>
 </section>
 <section class="rel" id="v1-0-0-beta-4">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.4</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-02">2026-09-02</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.4</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.4</p>
+
+<p lang="en">An intermediate pre-release. Its release notes were never written — the tag and the binaries are the record, and the changes are in the commit history between the neighbouring tags.</p>
+<p lang="zh-CN">中间预发布版本。当时没有撰写发布说明——tag 与构建产物即为记录，改动见相邻 tag 之间的提交历史。</p>
 </section>
 <section class="rel" id="v1-0-0-beta-3">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.3</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-08-31">2026-08-31</time></h2>
-<p class="rel-note rel-fallback rel-fallback-zh"><span lang="zh-CN">这次发布的说明未能按语言拆分，下面是原文。</span><span lang="en">These release notes could not be split by language; the original text follows.</span></p>
-<p lang="en">chore(release): bump version to 1.0.0-beta.3</p>
-<p lang="en" class="rel-fallback rel-fallback-zh">chore(release): bump version to 1.0.0-beta.3</p>
+
+<p lang="en">An intermediate pre-release. Its release notes were never written — the tag and the binaries are the record, and the changes are in the commit history between the neighbouring tags.</p>
+<p lang="zh-CN">中间预发布版本。当时没有撰写发布说明——tag 与构建产物即为记录，改动见相邻 tag 之间的提交历史。</p>
 </section>
 <section class="rel" id="v1-0-0-beta-2">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.2</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-08-31">2026-08-31</time></h2>

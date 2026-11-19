@@ -56,7 +56,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/misedeck/releases/tag/v1.0.8">v1.0.8</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/mise-deck/releases/tag/v1.0.8">v1.0.8</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -302,7 +302,7 @@
   <li>Invocation routing links ADR-0005 instead of restating it; the Use / Active vocabulary is unified (#288).</li>
 </ul>
 <p lang="en"><strong>Installers</strong></p>
-<p lang="en">Builds are unsigned: macOS needs the Gatekeeper step, Windows may show SmartScreen, and Linux packages carry no GPG signature. Verify every asset with the release's <code>SHA256SUMS</code>; instructions are in the README — <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">https://github.com/cherishfall/misedeck#readme</a></p>
+<p lang="en">Builds are unsigned: macOS needs the Gatekeeper step, Windows may show SmartScreen, and Linux packages carry no GPG signature. Verify every asset with the release's <code>SHA256SUMS</code>; instructions are in the README — <a href="https://github.com/cherishfall/mise-deck#readme" rel="noopener">https://github.com/cherishfall/mise-deck#readme</a></p>
 <p lang="zh-CN"><strong>修复</strong></p>
 <ul lang="zh-CN">
   <li>工具页：<code>mise ls-remote --json</code> 不再被单行 8 KiB 截断，较长的远程版本列表可以完整到达（#282）。</li>
@@ -323,13 +323,13 @@
   <li>命令路由改为链接 ADR-0005 而非复述；“使用 / 已激活”用词统一（#288）。</li>
 </ul>
 <p lang="zh-CN"><strong>安装包</strong></p>
-<p lang="zh-CN">构建未签名：macOS 需走 Gatekeeper 步骤，Windows 可能显示 SmartScreen，Linux 包没有 GPG 签名。请用本次 release 的 <code>SHA256SUMS</code> 校验全部资产；说明见 README —— <a href="https://github.com/cherishfall/misedeck#readme" rel="noopener">https://github.com/cherishfall/misedeck#readme</a></p>
+<p lang="zh-CN">构建未签名：macOS 需走 Gatekeeper 步骤，Windows 可能显示 SmartScreen，Linux 包没有 GPG 签名。请用本次 release 的 <code>SHA256SUMS</code> 校验全部资产；说明见 README —— <a href="https://github.com/cherishfall/mise-deck#readme" rel="noopener">https://github.com/cherishfall/mise-deck#readme</a></p>
 </section>
 <section class="rel" id="v1-0-1">
   <h2 class="rel-h"><span class="rel-ver">1.0.1</span><time class="rel-date" datetime="2026-10-24">2026-10-24</time></h2>
 
 <h3 lang="en">MiseDeck v1.0.1</h3>
-<p lang="en"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 <p lang="en">MiseDeck 1.0.1 — the first patch after 1.0.0.</p>
 <p lang="en">Most of this release is the post-GA audit batch. The items under &quot;From a real install&quot; are the three that only showed up after 1.0.0 was actually installed and used on a Windows 11 machine, which is what this patch is mostly about.</p>
 <h3 lang="en">Fixed in 1.0.1</h3>
@@ -366,7 +366,7 @@
   <li>Release notes for lightweight tags render the curated template instead of the commit message.</li>
 </ul>
 <h3 lang="en">Install</h3>
-<p lang="en">GitHub Releases is the only distribution channel (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
+<p lang="en">GitHub Releases is the only distribution channel (per <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
 <ul lang="en">
   <li><strong>macOS (Apple Silicon)</strong>: download the <code>.dmg</code>, open it, drag MiseDeck to Applications. The build is <strong>not notarized</strong> — after installing, clear the quarantine flag once: <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>.</li>
   <li><strong>Windows x64 (beta)</strong>: run the <code>.exe</code>. It installs per-user into <code>%LOCALAPPDATA%</code> with no administrator rights; uninstall from Settings → Apps. The build is <strong>not code-signed</strong>, so SmartScreen shows &quot;Windows protected your PC&quot; — More info → Run anyway.</li>
@@ -544,7 +544,7 @@ sha256sum -c SHA256SUMS        # Linux</code></pre>
   <li>Windows is experimental: CI compiles and unit-tests it, but no real-machine verification yet. Linux is packaged but unverified. macOS on Apple Silicon remains the polished target.</li>
   <li>Click-driven flows (dialogs, directory picker, mutations, run panel) were verified at the boundary level (tests + failure simulations); a final hands-on pass remains.</li>
 </ul>
-<p lang="en"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 <h3 lang="en" class="rel-fallback rel-fallback-zh">MiseDeck v1.0.0-beta.16</h3>
 <p lang="en" class="rel-fallback rel-fallback-zh">Fifteenth build since August 2026. This release ships the two pre-release audit batches closed since beta.14: the beta15 remediation and the beta16 deep audit, all verified on real builds (8 pages × en/zh, light/dark, global/directory, plus failure simulations).</p>
 <h3 lang="en" class="rel-fallback rel-fallback-zh">Reads no longer lie</h3>
@@ -583,7 +583,7 @@ sha256sum -c SHA256SUMS        # Linux</code></pre>
   <li>Windows is experimental: CI compiles and unit-tests it, but no real-machine verification yet. Linux is packaged but unverified. macOS on Apple Silicon remains the polished target.</li>
   <li>Click-driven flows (dialogs, directory picker, mutations, run panel) were verified at the boundary level (tests + failure simulations); a final hands-on pass remains.</li>
 </ul>
-<p lang="en" class="rel-fallback rel-fallback-zh"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en" class="rel-fallback rel-fallback-zh"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 </section>
 <section class="rel" id="v1-0-0-beta-14">
   <h2 class="rel-h"><span class="rel-ver">1.0.0-beta.14</span><span class="rel-tag"><span lang="zh-CN">预发布</span><span lang="en">Pre-release</span></span><time class="rel-date" datetime="2026-09-22">2026-09-22</time></h2>
@@ -824,12 +824,12 @@ sha256sum -c SHA256SUMS        # Linux</code></pre>
   <li><strong>Activation helpers</strong>: open the current directory in a terminal, copy the activation command, and check shell setup.</li>
   <li><strong>English and Simplified Chinese UI</strong>.</li>
 </ul>
-<p lang="en"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 <h3 lang="en">Install</h3>
 <h3 lang="en">macOS</h3>
 <p class="rel-dead"><span lang="zh-CN">（这条 Homebrew 安装命令已经失效：MiseDeck v1 只通过 GitHub Releases 分发。）</span><span lang="en">(This Homebrew command no longer works: MiseDeck v1 ships through GitHub Releases only.)</span></p>
 <p lang="en">Or download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
-<p lang="en"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>misedeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<p lang="en"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>misedeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
 <pre lang="en"><code>xattr -dr com.apple.quarantine /Applications/misedeck.app</code></pre>
 <p lang="en">Then launch normally. Subsequent launches work without extra steps.</p>
 <h3 lang="en">Windows (beta)</h3>
@@ -869,12 +869,12 @@ Get-FileHash -Algorithm SHA256 .\&lt;file-you-downloaded&gt;</code></pre>
   <li><strong>Activation helpers</strong>: open the current directory in a terminal, copy the activation command, and check shell setup.</li>
   <li><strong>English and Simplified Chinese UI</strong>.</li>
 </ul>
-<p lang="en" class="rel-fallback rel-fallback-zh"><a href="https://github.com/cherishfall/misedeck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/misedeck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en" class="rel-fallback rel-fallback-zh"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
 <h3 lang="en" class="rel-fallback rel-fallback-zh">Install</h3>
 <h3 lang="en" class="rel-fallback rel-fallback-zh">macOS</h3>
 <p class="rel-dead rel-fallback rel-fallback-zh"><span lang="zh-CN">（这条 Homebrew 安装命令已经失效：MiseDeck v1 只通过 GitHub Releases 分发。）</span><span lang="en">(This Homebrew command no longer works: MiseDeck v1 ships through GitHub Releases only.)</span></p>
 <p lang="en" class="rel-fallback rel-fallback-zh">Or download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
-<p lang="en" class="rel-fallback rel-fallback-zh"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/misedeck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>misedeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<p lang="en" class="rel-fallback rel-fallback-zh"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>misedeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
 <pre lang="en" class="rel-fallback rel-fallback-zh"><code>xattr -dr com.apple.quarantine /Applications/misedeck.app</code></pre>
 <p lang="en" class="rel-fallback rel-fallback-zh">Then launch normally. Subsequent launches work without extra steps.</p>
 <h3 lang="en" class="rel-fallback rel-fallback-zh">Windows (beta)</h3>
@@ -906,9 +906,9 @@ Get-FileHash -Algorithm SHA256 .\&lt;file-you-downloaded&gt;</code></pre>
 
     <footer class="site-foot">
       <div class="container inner">
-        <a href="https://github.com/cherishfall/misedeck">GitHub</a>
+        <a href="https://github.com/cherishfall/mise-deck">GitHub</a>
         <a href="./"><span lang="zh-CN">首页</span><span lang="en">Home</span></a>
-        <a href="https://github.com/cherishfall/misedeck/blob/master/LICENSE">MIT License</a>
+        <a href="https://github.com/cherishfall/mise-deck/blob/master/LICENSE">MIT License</a>
         <span class="spacer">© 2026 cherishfall</span>
       </div>
     </footer>

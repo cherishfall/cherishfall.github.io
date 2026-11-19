@@ -1,0 +1,678 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-title-zh="MiseDeck · mise 的桌面图形客户端"
+  data-title-en="MiseDeck · A desktop GUI for mise"
+  data-desc-zh="MiseDeck 是 mise 的桌面 GUI：每个页面对应 CLI 的一部分，每次写入都真实执行一条 mise 命令，命令行、日志与退出码原样留在执行面板里。独立的社区项目。"
+  data-desc-en="MiseDeck is a desktop GUI for mise: each page mirrors a part of the CLI, and every write runs a real mise command, shown verbatim — command, logs, exit code. An independent community project."
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MiseDeck · mise 的桌面图形客户端</title>
+    <meta name="description" content="MiseDeck 是 mise 的桌面 GUI：每个页面对应 CLI 的一部分，每次写入都真实执行一条 mise 命令，命令行、日志与退出码原样留在执行面板里。独立的社区项目。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MiseDeck · mise 的桌面图形客户端" />
+    <meta
+      property="og:description"
+      content="MiseDeck 是 mise 的桌面 GUI：每个页面对应 CLI 的一部分，每次写入都真实执行一条 mise 命令。"
+    />
+    <meta property="og:image" content="https://cherishfall.github.io/mise-deck/screens/en/tools.webp" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1289" />
+    <link rel="canonical" href="https://cherishfall.github.io/mise-deck/" />
+    <link rel="stylesheet" href="site.css" />
+    <link rel="icon" type="image/png" sizes="256x256" href="icon.png" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <script>
+      /* 语言偏好在首次绘制前应用，避免英文用户看到中文闪一下（JS 关闭时保持默认中文）。 */
+      (function () {
+        "use strict";
+        try {
+          if (localStorage.getItem("misedeck-lang") === "en") {
+            document.documentElement.classList.add("lang-en");
+            document.documentElement.lang = "en";
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main"><span lang="zh-CN">跳到正文</span><span lang="en">Skip to content</span></a>
+
+    <header class="site-head">
+      <div class="container inner">
+        <a class="brand" href="./">
+          <img src="icon.png" alt="" width="26" height="26" />
+          MiseDeck
+        </a>
+        <nav aria-label="主导航" data-aria-zh="主导航" data-aria-en="Main navigation">
+          <ul class="site-nav">
+            <li><a href="#features"><span lang="zh-CN">页面</span><span lang="en">Pages</span></a></li>
+            <li><a href="#panel"><span lang="zh-CN">执行面板</span><span lang="en">Execution panel</span></a></li>
+            <li><a href="#screens"><span lang="zh-CN">截图</span><span lang="en">Screens</span></a></li>
+            <li><a href="#install"><span lang="zh-CN">安装</span><span lang="en">Install</span></a></li>
+            <li><a href="changelog.html"><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></a></li>
+          </ul>
+        </nav>
+        <div class="head-right">
+          <a class="ver-chip" href="https://github.com/cherishfall/mise-deck/releases/tag/v1.0.8">v1.0.8</a>
+          <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
+            <button type="button" id="lang-zh" aria-pressed="true">中文</button>
+            <button type="button" id="lang-en" aria-pressed="false">English</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ------------------------------------------------------------ hero -->
+      <section class="hero">
+        <div class="container">
+          <img class="app-icon" src="icon.png" alt="" width="72" height="72" />
+          <h1>MiseDeck</h1>
+          <p class="slogan">
+            <span lang="zh-CN">mise 的命令行，长成一个桌面应用。</span>
+            <span lang="en">The mise CLI, as a desktop app.</span>
+          </p>
+          <p class="lede">
+            <span lang="zh-CN">八个页面，每个对应 CLI 的一部分。安装、切换、升级、写入环境变量——每一步都真的执行一条 mise 命令，命令行、日志与退出码原样留在执行面板里。</span>
+            <span lang="en">Eight pages, each one a part of the CLI. Install, switch, upgrade, write an env var — every step runs a real mise command, and the panel keeps the argv, the logs, and the exit code exactly as they were.</span>
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/cherishfall/mise-deck/releases/latest">
+              <span lang="zh-CN">下载</span><span lang="en">Download</span>
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/cherishfall/mise-deck">
+              <span lang="zh-CN">查看源码</span><span lang="en">View the source</span>
+            </a>
+          </div>
+          <p class="trust">
+            <span lang="zh-CN">独立的社区项目，与 mise 及其维护者没有隶属关系。macOS（Apple Silicon）打磨完成；Windows x64 与 Linux 为 beta。</span>
+            <span lang="en">An independent community project, not affiliated with mise or its maintainer. macOS on Apple Silicon is polished; Windows x64 and Linux are beta.</span>
+          </p>
+          <div class="facts">
+            <span>MIT licensed</span>
+            <span>Tauri 2 + React</span>
+            <span>macOS · Windows · Linux</span>
+            <span>mise &ge; 2025.12.5</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- features -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Pages</p>
+            <h2>
+              <span lang="zh-CN">CLI 的哪一部分，就对应哪一页。</span>
+              <span lang="en">Each page is one part of the CLI.</span>
+            </h2>
+            <p>
+              <span lang="zh-CN">不发明新概念：界面里的每个动作，都是一条 mise 命令。</span>
+              <span lang="en">No invented concepts: every action in the UI is a mise command.</span>
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <span class="cmd">mise version · mise self-update</span>
+              <h3><span lang="zh-CN">首页</span><span lang="en">Home</span></h3>
+              <p>
+                <span lang="zh-CN">版本门禁、引导安装、一键自更新。</span>
+                <span lang="en">Version gate, guided install, one-click self-update.</span>
+              </p>
+            </article>
+            <article class="card" data-accent="tools">
+              <span class="cmd">mise ls · mise registry · mise ls-remote · mise install · mise use · mise uninstall · mise upgrade · mise unuse · mise outdated · mise link</span>
+              <h3><span lang="zh-CN">工具</span><span lang="en">Tools</span></h3>
+              <p>
+                <span lang="zh-CN">已安装与已激活的工具；安装、切换版本、升级过时版本。</span>
+                <span lang="en">Installed and active tools; install, switch versions, upgrade outdated ones.</span>
+              </p>
+            </article>
+            <article class="card">
+              <span class="cmd">mise trust · mise ls · mise env · mise config ls</span>
+              <h3><span lang="zh-CN">概览</span><span lang="en">Overview</span></h3>
+              <p>
+                <span lang="zh-CN">解析出的工具与环境变量、配置文件优先级、mise.lock，每行都标注来源。</span>
+                <span lang="en">Resolved tools and env vars, config files in precedence order, mise.lock — every row labeled with its source.</span>
+              </p>
+            </article>
+            <article class="card" data-accent="env">
+              <span class="cmd">mise env · mise set · mise unset</span>
+              <h3><span lang="zh-CN">环境变量</span><span lang="en">Env</span></h3>
+              <p>
+                <span lang="zh-CN">增删改环境变量，标注来源；超出写入范围时先提醒。</span>
+                <span lang="en">Add, edit, and unset variables with source badges; warns when a var sits outside the write scope.</span>
+              </p>
+            </article>
+            <article class="card" data-accent="tasks">
+              <span class="cmd">mise tasks ls · mise run · mise tasks add · mise tasks edit · mise config ls</span>
+              <h3><span lang="zh-CN">任务</span><span lang="en">Tasks</span></h3>
+              <p>
+                <span lang="zh-CN">列出、实时运行、创建与编辑 mise 任务。</span>
+                <span lang="en">List, run with live output, create, and edit mise tasks.</span>
+              </p>
+            </article>
+            <article class="card">
+              <span class="cmd">mise settings ls · mise settings set · mise settings unset</span>
+              <h3><span lang="zh-CN">设置</span><span lang="en">Settings</span></h3>
+              <p>
+                <span lang="zh-CN">查看、筛选、修改 mise 设置，表类型键只读。</span>
+                <span lang="en">View, filter, and edit mise settings; table-typed keys are read-only.</span>
+              </p>
+            </article>
+            <article class="card">
+              <span class="cmd">mise doctor</span>
+              <h3><span lang="zh-CN">诊断</span><span lang="en">Doctor</span></h3>
+              <p>
+                <span lang="zh-CN">健康状态、shell 激活、警告，以及一份可复制的报告。</span>
+                <span lang="en">Health, shell activation, warnings, and a report you can copy into a bug.</span>
+              </p>
+            </article>
+            <article class="card" data-accent="plugins">
+              <span class="cmd">mise plugins ls · mise plugins install · mise plugins uninstall</span>
+              <h3><span lang="zh-CN">插件</span><span lang="en">Plugins</span></h3>
+              <p>
+                <span lang="zh-CN">已安装插件、从 git 地址安装、卸载。</span>
+                <span lang="en">Installed plugins, install from a git URL, uninstall.</span>
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ----------------------------------------------------- exec panel -->
+      <section class="section band" id="panel">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Execution panel</p>
+            <h2>
+              <span lang="zh-CN">每一步都真的执行一条命令，过程原样可见。</span>
+              <span lang="en">Every action really runs a command, and you watch it happen.</span>
+            </h2>
+            <p>
+              <span lang="zh-CN">执行面板记下确切的命令行、工作目录、逐行日志、耗时与退出码，可以随时复制命令。</span>
+              <span lang="en">The panel keeps the exact argv, the working directory, the streamed logs, the duration, and the exit code — copy the command whenever you need it.</span>
+            </p>
+          </div>
+          <div class="terminal">
+            <div class="terminal-bar">
+              <span lang="zh-CN">执行面板</span><span lang="en">Execution panel</span>
+            </div>
+            <div class="terminal-lines">
+              <div><span class="prompt">$</span> <span class="cmd">mise use node@lts</span></div>
+              <div><span class="ok">✔</span> <span class="cmd">node@lts</span> <span class="dim"><span lang="zh-CN">· 24.22.3 · 已安装</span><span lang="en">· 24.22.3 · installed</span></span></div>
+              <div><span class="dim"><span lang="zh-CN">解析自</span><span lang="en">Resolved from</span></span> <span class="cmd">./mise.toml</span></div>
+              <div><span class="prompt">$</span> <span class="cmd">mise env --json-extended</span></div>
+              <div><span class="dim">NODE_HOME</span> <span class="cmd">/Users/you/.local/share/mise/installs/node/24.22.3</span></div>
+              <div><span class="warn">exit 0</span> <span class="dim"><span lang="zh-CN">· 0.4s · 复制命令</span><span lang="en">· 0.4s · copy command</span></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- screens -->
+      <section class="section" id="screens">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Screens</p>
+            <h2>
+              <span lang="zh-CN">真的长这样。</span>
+              <span lang="en">This is what it actually looks like.</span>
+            </h2>
+            <p>
+              <span lang="zh-CN">英文与简体中文界面，浅色主题。点击任意截图可放大查看。</span>
+              <span lang="en">English and Simplified Chinese, light theme. Click a screenshot to view it full size.</span>
+            </p>
+          </div>
+          <div class="shot-grid">
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/home.webp"
+                  data-src-en="screens/en/home.webp"
+                  data-src-zh="screens/zh/home.webp"
+                  data-alt-en="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
+                  data-alt-zh="首页：mise 的版本门禁，mise 缺失时的引导安装，以及更新检查。"
+                  alt="The Home page: the mise version gate, a guided install when mise is missing, and the update check."
+                  width="1920"
+                  height="1289"
+                                    decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">首页</span><span lang="en">Home</span></span>
+                <span lang="zh-CN">— 版本门禁、引导安装、一键自更新。</span>
+                <span lang="en">— the version gate, a guided install, one-click self-update.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/overview.webp"
+                  data-src-en="screens/en/overview.webp"
+                  data-src-zh="screens/zh/overview.webp"
+                  data-alt-en="The Overview page: resolved tools and env vars, config files in precedence order, and the lockfile."
+                  data-alt-zh="概览页：解析出的工具与环境变量、按优先级排列的配置文件，以及锁文件。"
+                  alt="The Overview page: resolved tools and env vars, config files in precedence order, and the lockfile."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">概览</span><span lang="en">Overview</span></span>
+                <span lang="zh-CN">— 当前目录解析出的环境与配置文件。</span>
+                <span lang="en">— what the current directory resolves to.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/tools.webp"
+                  data-src-en="screens/en/tools.webp"
+                  data-src-zh="screens/zh/tools.webp"
+                  data-alt-en="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
+                  data-alt-zh="工具页：已安装的工具、版本、请求的版本与来源，以及「版本管理」入口。"
+                  alt="The Tools page: installed tools with versions, requested versions, sources, and a Manage versions action."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">工具</span><span lang="en">Tools</span></span>
+                <span lang="zh-CN">— 已安装与已激活的工具，一行看清来源。</span>
+                <span lang="en">— installed and active tools, each row with its source.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/tools-versions.webp"
+                  data-src-en="screens/en/tools-versions.webp"
+                  data-src-zh="screens/zh/tools-versions.webp"
+                  data-alt-en="The Tools page's version-management view for one tool: its active, installed, and not-installed versions, each row with its actions."
+                  data-alt-zh="工具页的版本管理视图：一个工具的已激活、已安装与未安装版本，每行带操作。"
+                  alt="The Tools page's version-management view for one tool: its active, installed, and not-installed versions, each row with its actions."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">工具 · 版本管理</span><span lang="en">Tools · Manage versions</span></span>
+                <span lang="zh-CN">— 按版本安装、切换、升级：已激活、已安装、未安装，一屏看清。</span>
+                <span lang="en">— install, switch, and upgrade per version: active, installed, and not installed in one view.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/env.webp"
+                  data-src-en="screens/en/env.webp"
+                  data-src-zh="screens/zh/env.webp"
+                  data-alt-en="The Env page: resolved environment variables with value, source badge, and actions."
+                  data-alt-zh="环境变量页：解析出的环境变量、取值、来源徽标与操作。"
+                  alt="The Env page: resolved environment variables with value, source badge, and actions."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">环境变量</span><span lang="en">Env</span></span>
+                <span lang="zh-CN">— 解析结果带来源徽标，写入范围外会先提醒。</span>
+                <span lang="en">— resolved values with source badges; out-of-scope writes warn first.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/tasks.webp"
+                  data-src-en="screens/en/tasks.webp"
+                  data-src-zh="screens/zh/tasks.webp"
+                  data-alt-en="The Tasks page: the task list with Run, Edit, and Open in editor actions."
+                  data-alt-zh="任务页：任务列表，以及运行、编辑、在编辑器中打开三个操作。"
+                  alt="The Tasks page: the task list with Run, Edit, and Open in editor actions."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">任务</span><span lang="en">Tasks</span></span>
+                <span lang="zh-CN">— 任务的列表、运行与编辑。</span>
+                <span lang="en">— list, run, and edit tasks.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/plugins.webp"
+                  data-src-en="screens/en/plugins.webp"
+                  data-src-zh="screens/zh/plugins.webp"
+                  data-alt-en="The Plugins page: installed plugins, with install from a git URL and uninstall actions."
+                  data-alt-zh="插件页：已安装插件，以及从 git 地址安装与卸载的操作。"
+                  alt="The Plugins page: installed plugins, with install from a git URL and uninstall actions."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">插件</span><span lang="en">Plugins</span></span>
+                <span lang="zh-CN">— 已安装插件，可从 git 地址安装或卸载。</span>
+                <span lang="en">— installed plugins; install from a git URL, uninstall.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/doctor.webp"
+                  data-src-en="screens/en/doctor.webp"
+                  data-src-zh="screens/zh/doctor.webp"
+                  data-alt-en="The Doctor page: health status, shell activation, and warnings from mise doctor."
+                  data-alt-zh="诊断页：健康状态、shell 激活状态，以及 mise doctor 给出的警告。"
+                  alt="The Doctor page: health status, shell activation, and warnings from mise doctor."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">诊断</span><span lang="en">Doctor</span></span>
+                <span lang="zh-CN">— mise doctor 的结果，报告可直接复制。</span>
+                <span lang="en">— mise doctor's report, copyable as is.</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <button class="shot-frame" type="button" data-shot>
+                <img
+                  src="screens/zh/settings.webp"
+                  data-src-en="screens/en/settings.webp"
+                  data-src-zh="screens/zh/settings.webp"
+                  data-alt-en="The Settings page: mise settings with type badges, source, and edit actions."
+                  data-alt-zh="设置页：mise 设置、类型徽标、来源与编辑操作。"
+                  alt="The Settings page: mise settings with type badges, source, and edit actions."
+                  width="1920"
+                  height="1289"
+                   loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="name"><span lang="zh-CN">设置</span><span lang="en">Settings</span></span>
+                <span lang="zh-CN">— mise 的设置项与来源。</span>
+                <span lang="en">— mise's settings and where they come from.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <dialog id="shot-lightbox" closedby="any" aria-labelledby="lightbox-title">
+            <p class="visually-hidden" id="lightbox-title">
+              <span lang="zh-CN">MiseDeck 截图，放大查看</span>
+              <span lang="en">MiseDeck screenshot, full size</span>
+            </p>
+            <img id="lightbox-img" alt="" />
+            <div id="lightbox-cap"></div>
+            <form method="dialog">
+              <button type="submit" autofocus>
+                <span lang="zh-CN">关闭</span><span lang="en">Close</span>
+              </button>
+            </form>
+          </dialog>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- install -->
+      <section class="section band" id="install">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Install</p>
+            <h2>
+              <span lang="zh-CN">从 GitHub Releases 下载。</span>
+              <span lang="en">Download from GitHub Releases.</span>
+            </h2>
+            <p>
+              <span lang="zh-CN">MiseDeck 调用 mise 的命令行，不捆绑它：机器上需要 mise ≥ 2025.12.5，首页可以引导安装。</span>
+              <span lang="en">MiseDeck calls the mise CLI rather than bundling it: mise ≥ 2025.12.5 must be on the machine — the Home page can guide the install.</span>
+            </p>
+          </div>
+          <div class="install-grid">
+            <article class="card">
+              <h3>
+                <span lang="zh-CN">macOS</span><span lang="en">macOS</span>
+                <span class="tag"><span lang="zh-CN">Apple Silicon</span><span lang="en">Apple Silicon</span></span>
+              </h3>
+              <p><span lang="zh-CN">下载 dmg，拖入「应用程序」。没有 Intel macOS 构建；需要请从源码构建。</span><span lang="en">Download the dmg, drag it into Applications. No Intel macOS build — build from source if you need one.</span></p>
+              <code class="file-name">MiseDeck_1.0.8_aarch64.dmg</code>
+            </article>
+            <article class="card">
+              <h3>
+                <span lang="zh-CN">Windows</span><span lang="en">Windows</span>
+                <span class="tag">x64 · beta</span>
+              </h3>
+              <p><span lang="zh-CN">NSIS 安装包，无需管理员权限。</span><span lang="en">NSIS installer, no administrator rights needed.</span></p>
+              <code class="file-name">MiseDeck_1.0.8_x64-setup.exe</code>
+            </article>
+            <article class="card">
+              <h3>
+                <span lang="zh-CN">Linux</span><span lang="en">Linux</span>
+                <span class="tag">x86_64 · beta</span>
+              </h3>
+              <p><span lang="zh-CN">deb / rpm / AppImage。</span><span lang="en">deb / rpm / AppImage.</span></p>
+              <code class="file-name">MiseDeck_1.0.8_amd64.deb</code>
+            </article>
+          </div>
+          <p style="margin-top: 22px">
+            <span lang="zh-CN">每个发布都附带 SHA256SUMS：</span>
+            <span lang="en">Every release ships a SHA256SUMS manifest:</span>
+            <code class="file-name">shasum -a 256 -c SHA256SUMS</code>
+          </p>
+          <div class="note" style="margin-top: 18px">
+            <p style="margin: 0">
+              <span lang="zh-CN"><strong>macOS 构建未签名、未公证。</strong>首次打开会被 Gatekeeper 拦住：拖进「应用程序」后执行 <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>，或在「系统设置 → 隐私与安全性」里点「仍要打开」。Windows 构建同样未签名，SmartScreen 提示时选「更多信息 → 仍要运行」。</span>
+              <span lang="en"><strong>The macOS build is unsigned and not notarized.</strong> Gatekeeper blocks the first launch: after dragging the app into Applications run <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>, or use System Settings → Privacy &amp; Security → Open Anyway. The Windows build is unsigned too — when SmartScreen appears, choose More info → Run anyway.</span>
+            </p>
+          </div>
+          <div class="cta" style="justify-content: flex-start; margin-top: 26px">
+            <a class="btn btn-primary" href="https://github.com/cherishfall/mise-deck/releases/latest">
+              <span lang="zh-CN">前往下载</span><span lang="en">Go to the releases</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ------------------------------------------------------------- faq -->
+      <section class="section" id="faq">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">FAQ</p>
+            <h2>
+              <span lang="zh-CN">常见问题。</span>
+              <span lang="en">Questions.</span>
+            </h2>
+          </div>
+          <div class="faq">
+            <details>
+              <summary>
+                <span lang="zh-CN">MiseDeck 和 mise 是什么关系？</span>
+                <span lang="en">How is MiseDeck related to mise?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">MiseDeck 是独立的社区项目，与 mise 及其维护者没有隶属关系。它只是给 mise 的命令行套了一层图形界面：界面里的每个动作，底层都是一条真实的 mise 命令。</span>
+                <span lang="en">MiseDeck is an independent community project, not affiliated with mise or its maintainer. It is a graphical layer over the mise CLI: every action in the UI is a real mise command underneath.</span>
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span lang="zh-CN">会捆绑 mise 吗？</span>
+                <span lang="en">Does it bundle mise?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">不会。MiseDeck 调用你机器上的 mise，需要 mise ≥ 2025.12.5。如果没装，首页会给出引导安装。</span>
+                <span lang="en">No. MiseDeck calls the mise on your machine and needs mise ≥ 2025.12.5. If it is missing, the Home page offers a guided install.</span>
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span lang="zh-CN">支持哪些平台？</span>
+                <span lang="en">Which platforms are supported?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">macOS（Apple Silicon）打磨完成；Windows x64 能跑，已在真实机器上走通，安装包也已实测安装；Linux 提供 deb / rpm / AppImage，但尚未在真实桌面环境验证。</span>
+                <span lang="en">macOS on Apple Silicon is polished. Windows x64 runs and has been exercised end-to-end on real hardware, including the installer. Linux ships deb / rpm / AppImage but is not yet verified on a real desktop.</span>
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span lang="zh-CN">macOS 上打不开怎么办？</span>
+                <span lang="en">macOS says the app is damaged — now what?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">那是 Gatekeeper 的隔离标记，不是文件损坏。执行 <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code> 即可；也可以在「系统设置 → 隐私与安全性」里点「仍要打开」。</span>
+                <span lang="en">That is Gatekeeper's quarantine flag, not a corrupted download. Run <code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code>, or use System Settings → Privacy &amp; Security → Open Anyway.</span>
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span lang="zh-CN">我的数据会离开本机吗？</span>
+                <span lang="en">Does any of my data leave the machine?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">不会。MiseDeck 没有账号、没有遥测，所有读取与写入都发生在本机，通过 mise 命令完成。对外请求只有两个，都是版本检查：手动触发的「检查 MiseDeck 更新」，以及启动十秒后的静默检查（最多一天一次）。两者读的是同一份 release feed——MiseDeck 不会下载或安装任何构建，发现新版本时只会指向它的发布页。</span>
+                <span lang="en">No. MiseDeck has no account and no telemetry; every read and write happens locally, through mise. Two outbound requests exist, and both are version checks: the manual Check for MiseDeck updates, and a silent check ten seconds after launch (at most once a day). Both read the same releases feed — MiseDeck never downloads or installs a build; a newer version only ever points at its Release page.</span>
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span lang="zh-CN">能和 mise CLI 一起用吗？</span>
+                <span lang="en">Can I keep using the mise CLI alongside it?</span>
+              </summary>
+              <p>
+                <span lang="zh-CN">可以，两者操作的是同一份配置。你在终端里 mise use 过的版本，MiseDeck 里立刻能看到；反过来也一样。</span>
+                <span lang="en">Yes — both act on the same configuration files. A version you use in the terminal shows up in MiseDeck immediately, and the other way round works too.</span>
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="container inner">
+        <a href="https://github.com/cherishfall/mise-deck">GitHub</a>
+        <a href="changelog.html"><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></a>
+        <a href="https://github.com/cherishfall/mise-deck/blob/master/LICENSE">MIT License</a>
+        <span class="spacer">© 2026 cherishfall</span>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        "use strict";
+        var KEY = "misedeck-lang";
+        var root = document.documentElement;
+        var btnZh = document.getElementById("lang-zh");
+        var btnEn = document.getElementById("lang-en");
+        var group = document.getElementById("lang-group");
+        var shots = document.querySelectorAll("img[data-src-zh]");
+
+        function stored() {
+          try {
+            return localStorage.getItem(KEY);
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function apply(lang, persist) {
+          var en = lang === "en";
+          root.classList.toggle("lang-en", en);
+          root.lang = en ? "en" : "zh-CN";
+          btnZh.setAttribute("aria-pressed", en ? "false" : "true");
+          btnEn.setAttribute("aria-pressed", en ? "true" : "false");
+          document.title = en ? root.dataset.titleEn : root.dataset.titleZh;
+          var desc = document.querySelector('meta[name="description"]');
+          if (desc) desc.setAttribute("content", en ? root.dataset.descEn : root.dataset.descZh);
+          var ogTitle = document.querySelector('meta[property="og:title"]');
+          if (ogTitle) ogTitle.setAttribute("content", en ? root.dataset.titleEn : root.dataset.titleZh);
+          var ogDesc = document.querySelector('meta[property="og:description"]');
+          if (ogDesc) ogDesc.setAttribute("content", en ? root.dataset.descEn : root.dataset.descZh);
+          if (group) group.setAttribute("aria-label", en ? "Language" : "界面语言");
+          var nav = document.querySelector("nav[data-aria-zh]");
+          if (nav) nav.setAttribute("aria-label", en ? nav.dataset.ariaEn : nav.dataset.ariaZh);
+          for (var i = 0; i < shots.length; i++) {
+            var src = shots[i].getAttribute(en ? "data-src-en" : "data-src-zh");
+            var alt = shots[i].getAttribute(en ? "data-alt-en" : "data-alt-zh");
+            if (src && shots[i].getAttribute("src") !== src) shots[i].setAttribute("src", src);
+            if (alt) shots[i].setAttribute("alt", alt);
+          }
+          if (persist) {
+            try {
+              localStorage.setItem(KEY, lang);
+            } catch (e) {}
+          }
+        }
+
+        btnZh.addEventListener("click", function () {
+          apply("zh", true);
+        });
+        btnEn.addEventListener("click", function () {
+          apply("en", true);
+        });
+
+        // A stored preference wins; without storage the page keeps the
+        // language the head script already applied (the default is Chinese).
+        var saved = stored();
+        apply(saved === "en" ? "en" : saved === "zh" ? "zh" : root.lang === "en" ? "en" : "zh", false);
+
+        // The screenshot lightbox: one native dialog reused by every frame.
+        // The dialog carries the image and caption at open time, so the
+        // language switch never needs to know about it.
+        var lightbox = document.getElementById("shot-lightbox");
+        var lightboxImg = document.getElementById("lightbox-img");
+        var lightboxCap = document.getElementById("lightbox-cap");
+        var frames = document.querySelectorAll("button[data-shot]");
+        for (var i = 0; i < frames.length; i++) {
+          frames[i].addEventListener("click", function () {
+            var img = this.querySelector("img");
+            lightboxImg.src = img.currentSrc || img.src;
+            lightboxImg.alt = img.alt;
+            var cap = this.closest("figure").querySelector("figcaption");
+            if (cap) lightboxCap.innerHTML = cap.innerHTML;
+            lightbox.showModal();
+          });
+        }
+        // Light dismiss where `closedby` is unsupported (Safari): close only
+        // when the press starts and ends outside the dialog's content box.
+        if (!("closedBy" in HTMLDialogElement.prototype)) {
+          var outside = function (e) {
+            var r = lightbox.getBoundingClientRect();
+            return (
+              e.clientX < r.left || e.clientX > r.right ||
+              e.clientY < r.top || e.clientY > r.bottom
+            );
+          };
+          var pressedOutside = false;
+          lightbox.addEventListener("pointerdown", function (e) {
+            pressedOutside = outside(e);
+          });
+          lightbox.addEventListener("pointerup", function (e) {
+            if (pressedOutside && outside(e)) lightbox.close();
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

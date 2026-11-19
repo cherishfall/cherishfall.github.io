@@ -56,7 +56,7 @@
           </ul>
         </nav>
         <div class="head-right">
-          <a class="ver-chip" href="https://github.com/cherishfall/mise-deck/releases/tag/v1.0.8">v1.0.8</a>
+          <a class="ver-chip" href="https://github.com/cherishfall/mise-deck/releases/tag/v1.1.0">v1.1.0</a>
           <div class="lang-group" id="lang-group" role="group" aria-label="界面语言">
             <button type="button" id="lang-zh" aria-pressed="true">中文</button>
             <button type="button" id="lang-en" aria-pressed="false">English</button>
@@ -71,11 +71,87 @@
           <a class="back-link" href="./"><span lang="zh-CN">← 返回首页</span><span lang="en">← Back to home</span></a>
           <h1><span lang="zh-CN">更新日志</span><span lang="en">Changelog</span></h1>
           <p class="page-meta">
-            <span lang="zh-CN">最新版本 1.0.8 · 2026-11-18 · 共 24 个发布</span>
-            <span lang="en">Latest version 1.0.8 · 2026-11-18 · 24 releases</span>
+            <span lang="zh-CN">最新版本 1.1.0 · 2026-11-19 · 共 25 个发布</span>
+            <span lang="en">Latest version 1.1.0 · 2026-11-19 · 25 releases</span>
           </p>
         </div>
 
+<section class="rel" id="v1-1-0">
+  <h2 class="rel-h"><span class="rel-ver">1.1.0</span><time class="rel-date" datetime="2026-11-19">2026-11-19</time></h2>
+
+<h3 lang="en">MiseDeck v1.1.0</h3>
+<p lang="en"><a href="https://github.com/cherishfall/mise-deck/blob/master/README.md" rel="noopener">English</a> · <a href="https://github.com/cherishfall/mise-deck/blob/master/zh-CN/README.md" rel="noopener">简体中文</a></p>
+<p lang="en">The project's identity release. The app itself is unchanged from 1.0.8 apart from where it checks for updates.</p>
+<h3 lang="en">What's in this release</h3>
+<ul lang="en">
+  <li><strong>New repository name</strong>: <code>cherishfall/misedeck</code> → <strong><code>cherishfall/mise-deck</code></strong>. GitHub redirects the old name, so existing links keep working.</li>
+  <li><strong>Update check follows the rename</strong>: the in-app manual check and the silent daily check now target the new repository's <code>releases.atom</code> feed directly. Installed clients (1.0.8 and older) keep working through GitHub's redirect of the old feed URL.</li>
+  <li><strong>README</strong>: a header banner (the landing-page hero, clickable through to the project page), and the Website section moved to the front of the document.</li>
+  <li><strong>Project page moved</strong>: <a href="https://cherishfall.github.io/mise-deck/" rel="noopener">cherishfall.github.io/mise-deck</a> — the old <code>/misedeck/</code> page path no longer redirects.</li>
+</ul>
+<p lang="en">No feature, UI, or behavior changes beyond the update-check URL: same eight pages, same mise requirements, same platform support as 1.0.8 (macOS on Apple Silicon polished; Windows x64 exercised end-to-end on one real machine; Linux packaged but not verified on real hardware).</p>
+<h3 lang="en">Install</h3>
+<p lang="en">GitHub Releases is the only distribution channel — v1 ships no Homebrew formula or cask (per <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>).</p>
+<p lang="en"><strong>macOS</strong> — download the <code>.dmg</code> from the assets below, open it, and drag MiseDeck to Applications.</p>
+<p lang="en"><strong>First launch (unsigned)</strong>: the binary is <strong>not notarized</strong> (per <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>). macOS Gatekeeper will block the first open and may report that the app is damaged. After dragging <code>MiseDeck.app</code> to <code>/Applications</code>, remove the quarantine flag from Terminal:</p>
+<pre lang="en"><code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code></pre>
+<p lang="en">Then launch normally. Subsequent launches work without extra steps.</p>
+<p lang="en"><strong>Windows (beta)</strong> — download the <code>.exe</code> installer and run it.</p>
+<p lang="en"><strong>SmartScreen (unsigned)</strong>: the binary is <strong>not code-signed</strong>. Windows SmartScreen will show &quot;Windows protected your PC&quot; — click <strong>More info</strong> → <strong>Run anyway</strong>.</p>
+<p lang="en"><strong>Linux (beta)</strong> — pick the package that matches your distro: <code>.deb</code> (Debian / Ubuntu), <code>.rpm</code> (Fedora / RHEL), or <code>.AppImage</code> (portable, no install).</p>
+<h3 lang="en">Verify</h3>
+<p lang="en"><code>SHA256SUMS</code> is attached below and lists <strong>every</strong> asset in this release — run it from the folder you downloaded into.</p>
+<pre lang="en"><code># macOS
+shasum -a 256 -c SHA256SUMS
+
+# Linux
+sha256sum -c SHA256SUMS
+
+# Windows (PowerShell) — one file at a time
+Get-FileHash -Algorithm SHA256 .\MiseDeck_1.1.0_x64-setup.exe</code></pre>
+<p lang="en">This catches a truncated download, a proxy that served the wrong file, or an asset replaced after upload. It does not prove who built the binary — the builds are unsigned (see Notes).</p>
+<h3 lang="en">Notes</h3>
+<ul lang="en">
+  <li>MiseDeck v1 is distributed <strong>unsigned</strong> on every platform, by design. Code signing and Apple notarization are out of scope for v1.</li>
+  <li>Windows and Linux builds are labeled <strong>beta</strong> in this release.</li>
+  <li>MiseDeck is a community project, not affiliated with or endorsed by the official mise project.</li>
+</ul>
+<p lang="zh-CN">本次是项目身份的更新。应用本身与 1.0.8 一致，只有检查更新的地址变了。</p>
+<h3 lang="zh-CN">本版内容</h3>
+<ul lang="zh-CN">
+  <li><strong>仓库更名</strong>：<code>cherishfall/misedeck</code> → <strong><code>cherishfall/mise-deck</code></strong>。GitHub 会对旧名重定向，已有链接不受影响。</li>
+  <li><strong>检查更新跟随更名</strong>：应用内的手动检查更新与每日静默检查，现在直接指向新仓库的 <code>releases.atom</code> feed。已安装的旧版本（1.0.8 及更早）经 GitHub 对旧地址的重定向照常工作。</li>
+  <li><strong>README</strong>：新增头图（落地页首屏，点击跳转项目页），「站点」一节移到文档前部。</li>
+  <li><strong>项目页迁移</strong>：<a href="https://cherishfall.github.io/mise-deck/" rel="noopener">cherishfall.github.io/mise-deck</a> —— 旧的 <code>/misedeck/</code> 页面路径不再重定向。</li>
+</ul>
+<p lang="zh-CN">除检查更新地址外没有任何功能、界面或行为改动：八个页面、mise 版本要求、平台支持都与 1.0.8 相同（macOS Apple Silicon 打磨完成；Windows x64 已在一台真实机器上完整走通；Linux 有包但未在真机验证）。</p>
+<h3 lang="zh-CN">安装</h3>
+<p lang="zh-CN">GitHub Releases 是唯一分发渠道——v1 不提供 Homebrew formula 或 cask（见 <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>）。</p>
+<p lang="zh-CN"><strong>macOS</strong> —— 从下方资产下载 <code>.dmg</code>，打开并把 MiseDeck 拖进「应用程序」。</p>
+<p lang="zh-CN"><strong>首次启动（未签名）</strong>：二进制<strong>未经公证</strong>（见 <a href="https://github.com/cherishfall/mise-deck/blob/master/docs/adr/0002-distribution-github-releases-and-homebrew-tap.md" rel="noopener">ADR-0002</a>）。macOS Gatekeeper 会拦下第一次打开，并可能提示应用「已损坏」。把 <code>MiseDeck.app</code> 拖进 <code>/Applications</code> 后，在终端执行：</p>
+<pre lang="zh-CN"><code>xattr -dr com.apple.quarantine /Applications/MiseDeck.app</code></pre>
+<p lang="zh-CN">然后正常打开。之后的启动无需额外步骤。</p>
+<p lang="zh-CN"><strong>Windows（beta）</strong> —— 下载 <code>.exe</code> 安装包并运行。</p>
+<p lang="zh-CN"><strong>SmartScreen（未签名）</strong>：二进制<strong>未经代码签名</strong>。Windows SmartScreen 会显示「已保护你的电脑」——点「更多信息」→「仍要运行」。</p>
+<p lang="zh-CN"><strong>Linux（beta）</strong> —— 选择匹配发行版的包：<code>.deb</code>（Debian / Ubuntu）、<code>.rpm</code>（Fedora / RHEL）或 <code>.AppImage</code>（免安装）。</p>
+<h3 lang="zh-CN">校验</h3>
+<p lang="zh-CN">下方附有 <code>SHA256SUMS</code>，覆盖本发布的<strong>全部</strong>资产——在你下载的目录里运行：</p>
+<pre lang="zh-CN"><code># macOS
+shasum -a 256 -c SHA256SUMS
+
+# Linux
+sha256sum -c SHA256SUMS
+
+# Windows (PowerShell) —— 逐个文件
+Get-FileHash -Algorithm SHA256 .\MiseDeck_1.1.0_x64-setup.exe</code></pre>
+<p lang="zh-CN">它能发现被截断的下载、代发了错误文件的代理、或上传后被替换的资产。它不能证明二进制是谁构建的——构建未签名（见说明）。</p>
+<h3 lang="zh-CN">说明</h3>
+<ul lang="zh-CN">
+  <li>MiseDeck v1 在所有平台<strong>有意未签名</strong>分发。代码签名与 Apple 公证不在 v1 范围内。</li>
+  <li>本发布中 Windows 与 Linux 构建标注为 <strong>beta</strong>。</li>
+  <li>MiseDeck 是社区项目，与官方 mise 项目无隶属或背书关系。</li>
+</ul>
+</section>
 <section class="rel" id="v1-0-8">
   <h2 class="rel-h"><span class="rel-ver">1.0.8</span><time class="rel-date" datetime="2026-11-18">2026-11-18</time></h2>
 
